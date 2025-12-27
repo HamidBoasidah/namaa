@@ -27,6 +27,7 @@ class UserFactory extends Factory
             'phone_number' => fake()->numerify('5########'),
             'whatsapp_number' => fake()->numerify('7########'),
             'password' => static::$password ??= Hash::make('password'),
+            'user_type' => fake()->randomElement(['customer', 'consultant']),
             'facebook' => 'https://facebook.com/' . fake()->userName(),
             'x_url' => 'https://x.com/' . fake()->userName(),
             'linkedin' => 'https://linkedin.com/in/' . fake()->userName(),

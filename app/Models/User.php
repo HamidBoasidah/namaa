@@ -21,6 +21,7 @@ class User extends Authenticatable
         'phone_number',
         'whatsapp_number',
         'password',
+        'user_type',
         'facebook',
         'x_url',
         'linkedin',

@@ -89,7 +89,7 @@ const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
 
 const menuItems = [
-  { href: '/profile', icon: UserCircleIcon, text: 'user.editProfile' },
+  { href: route('admin.profile'), icon: UserCircleIcon, text: 'user.editProfile' },
   // { href: '/chat', icon: SettingsIcon, text: 'user.accountSettings' }, // commented out
   // { href: '/profile', icon: InfoCircleIcon, text: 'user.support' }, // commented out
 ]

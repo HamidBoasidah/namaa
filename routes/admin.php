@@ -7,12 +7,11 @@ use App\Http\Controllers\Admin\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
-use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AreaController;
 use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\GovernorateController;
+use App\Http\Controllers\Admin\KycController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\RoleController;
@@ -106,6 +105,14 @@ Route::middleware('auth:admin')
 
         Route::patch('areas/{id}/deactivate', [AreaController::class, 'deactivate'])
             ->name('areas.deactivate');
+
+        // KYCs
+        Route::get('kycs/{kyc}/document/view', [KycController::class, 'viewDocument'])
+            ->name('kycs.document.view');
+        Route::get('kycs/{kyc}/document/download', [KycController::class, 'downloadDocument'])
+            ->name('kycs.document.download');
+        Route::resource('kycs', KycController::class)
+            ->names('kycs');
 
         // Users
         Route::resource('users', UserController::class)

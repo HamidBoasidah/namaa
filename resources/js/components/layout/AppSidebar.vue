@@ -301,6 +301,12 @@ const menuGroups = computed(() =>
         },
         {
           icon: UserCircleIcon,
+          name: t('menu.kycs'),
+          path: route('admin.kycs.index'),
+          permission: 'kycs.view',
+        },
+        {
+          icon: UserCircleIcon,
           name: t('menu.profile'),
           path: route('admin.profile'),
           permission: 'profile.view',

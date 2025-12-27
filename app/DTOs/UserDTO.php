@@ -13,6 +13,7 @@ class UserDTO extends BaseDTO
     public $address;
     public $phone_number;
     public $whatsapp_number;
+    public $user_type;
     public $facebook;
     public $x_url;
     public $linkedin;
@@ -26,7 +27,7 @@ class UserDTO extends BaseDTO
     public $created_at;
     public $deleted_at;
 
-    public function __construct($id, $first_name, $last_name, $email, $address, $phone_number, $whatsapp_number, $facebook, $x_url, $linkedin, $instagram, $is_active, $locale, $avatar, $created_by, $updated_by, $created_at = null, $deleted_at = null)
+    public function __construct($id, $first_name, $last_name, $email, $address, $phone_number, $whatsapp_number, $user_type, $facebook, $x_url, $linkedin, $instagram, $is_active, $locale, $avatar, $created_by, $updated_by, $created_at = null, $deleted_at = null)
     {
         $this->id = $id;
         $this->first_name = $first_name;
@@ -35,6 +36,7 @@ class UserDTO extends BaseDTO
         $this->address = $address;
         $this->phone_number = $phone_number;
         $this->whatsapp_number = $whatsapp_number;
+        $this->user_type = $user_type;
         $this->facebook = $facebook;
         $this->x_url = $x_url;
         $this->linkedin = $linkedin;
@@ -58,6 +60,7 @@ class UserDTO extends BaseDTO
             $user->address ?? null,
             $user->phone_number ?? null,
             $user->whatsapp_number ?? null,
+            $user->user_type ?? 'customer',
             $user->facebook ?? null,
             $user->x_url ?? null,
             $user->linkedin ?? null,
@@ -82,6 +85,7 @@ class UserDTO extends BaseDTO
             'address' => $this->address,
             'phone_number' => $this->phone_number,
             'whatsapp_number' => $this->whatsapp_number,
+            'user_type' => $this->user_type,
             'facebook' => $this->facebook,
             'x_url' => $this->x_url,
             'linkedin' => $this->linkedin,
@@ -105,6 +109,7 @@ class UserDTO extends BaseDTO
             'last_name' => $this->last_name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
+            'user_type' => $this->user_type,
             'is_active' => $this->is_active,
             'avatar' => $this->avatar,
             

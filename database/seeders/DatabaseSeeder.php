@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             GovernorateSeeder::class,
             DistrictSeeder::class,
             AreaSeeder::class,
+            InitialDataSeeder::class,
         ]);
     }
 }

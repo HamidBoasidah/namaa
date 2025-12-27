@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('whatsapp_number')->nullable();
             $table->string('address')->nullable();
             $table->string('password');
+            $table->enum('user_type', ['customer', 'consultant'])->default('customer');
             $table->string('facebook')->nullable();
             $table->string('x_url')->nullable();
             $table->string('linkedin')->nullable();

@@ -12,9 +12,4 @@ class GovernorateRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // مثال توسيع مخصص:
-    public function active()
-    {
-        return $this->query()->where('is_active', true)->get();
-    }
 }
