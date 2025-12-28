@@ -22,6 +22,7 @@ class KycDTO extends BaseDTO
     public $updated_by;
     public $created_at;
     public $deleted_at;
+    public $user;
 
     public function __construct(
         $id,
@@ -39,7 +40,8 @@ class KycDTO extends BaseDTO
         $created_by,
         $updated_by,
         $created_at = null,
-        $deleted_at = null
+        $deleted_at = null,
+        $user = null
     ) {
         $this->id = $id;
         $this->user_id = $user_id;
@@ -57,10 +59,15 @@ class KycDTO extends BaseDTO
         $this->updated_by = $updated_by;
         $this->created_at = $created_at;
         $this->deleted_at = $deleted_at;
+        $this->user = $user;
     }
 
     public static function fromModel(Kyc $kyc): self
     {
+        $userData = $kyc->user
+            ? $kyc->user->only(['id', 'first_name', 'last_name', 'email', 'phone_number', 'avatar'])
+            : null;
+
         return new self(
             $kyc->id,
             $kyc->user_id ?? null,
@@ -78,6 +85,7 @@ class KycDTO extends BaseDTO
             $kyc->updated_by ?? null,
             $kyc->created_at?->toDateTimeString() ?? null,
             $kyc->deleted_at?->toDateTimeString() ?? null,
+            $userData,
         );
     }
 
@@ -100,6 +108,7 @@ class KycDTO extends BaseDTO
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,
+            'user' => $this->user,
         ];
     }
 

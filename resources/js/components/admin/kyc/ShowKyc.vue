@@ -150,7 +150,7 @@ import { computed } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import { useI18n } from 'vue-i18n'
 import { UserCircleIcon } from '@/icons'
-import Badge from '@/Components/ui/Badge.vue'
+import Badge from '@/components/ui/Badge.vue'
 import { route } from '@/route'
 
 const props = defineProps({

@@ -353,7 +353,7 @@
                   />
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-sm font-medium text-gray-700 dark:text-gray-400">{{ user.name }}</span>
+                  <span class="text-sm font-medium text-gray-700 dark:text-gray-400">{{ (user.first_name || user.last_name) ? `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim() : user.name }}</span>
                   <!-- <span class="text-xs text-gray-500 dark:text-gray-400">{{ user.email }}</span> -->
                 </div>
               </div>
