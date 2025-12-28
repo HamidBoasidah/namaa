@@ -43,6 +43,20 @@
               />
               <p v-if="form.errors.last_name" class="mt-1 text-sm text-error-500">{{ form.errors.last_name }}</p>
             </div>
+            <!-- User Type Select -->
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                {{ t('users.userType') }}
+              </label>
+              <select
+                v-model="form.user_type"
+                class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-brand-800"
+              >
+                <option value="customer">{{ t('users.types.customer') }}</option>
+                <option value="consultant">{{ t('users.types.consultant') }}</option>
+              </select>
+              <p v-if="form.errors.user_type" class="mt-1 text-sm text-error-500">{{ form.errors.user_type }}</p>
+            </div>
             <!-- Email Input -->
             <div>
               <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
@@ -485,6 +499,7 @@ const form = useForm({
   role_id: '',
   first_name: '',
   last_name: '',
+  user_type: 'customer',
   facebook: '',
   x_url: '',
   linkedin: '',

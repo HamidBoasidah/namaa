@@ -27,6 +27,14 @@
             <p class="text-base text-gray-800 dark:text-white/90">{{ user.email }}</p>
           </div>
 
+          <!-- User Type -->
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('users.userType') }}</label>
+            <p class="text-base text-gray-800 dark:text-white/90">
+              {{ t('users.types.' + (user.user_type || 'customer')) }}
+            </p>
+          </div>
+
           <!-- Phone Number -->
           <div>
             <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('common.phoneNumber') }}</label>

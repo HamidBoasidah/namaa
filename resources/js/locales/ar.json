@@ -126,6 +126,11 @@
     "userImage" : "صورة المستخدم",
     "userInformation": "معلومات المستخدم",
     "socialLinks": "روابط التواصل",
+    "userType": "نوع المستخدم",
+    "types": {
+      "customer": "عميل",
+      "consultant": "مستشار"
+    },
     "facebook": "فيسبوك",
     "facebookPlaceholder": "https://facebook.com/username",
     "x_url": "X.com",

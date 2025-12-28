@@ -32,6 +32,7 @@ class UpdateUserRequest extends FormRequest
             'whatsapp_number' => ['nullable', 'regex:/^\\d{9,15}$/'],
             'address' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:8',
+            'user_type' => 'sometimes|in:customer,consultant',
             'facebook' => 'nullable|url',
             'x_url' => 'nullable|url',
             'linkedin' => 'nullable|url',
