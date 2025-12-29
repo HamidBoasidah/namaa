@@ -13,7 +13,7 @@ class GovernorateFactory extends Factory
         return [
             'name_ar' => $this->faker->citySuffix . ' عربي',
             'name_en' => $this->faker->city,
-            'is_active' => true,
+            'is_active' => $this->faker->boolean(),
             'created_by' => \App\Models\User::inRandomOrder()->first()?->id,
             'updated_by' => \App\Models\User::inRandomOrder()->first()?->id,
         ];

@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\Auth\ProfileController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Support\RoutePermissions;
 use Illuminate\Support\Facades\Route;
 
@@ -124,6 +125,23 @@ Route::middleware('auth:admin')
 
         Route::patch('tags/{id}/deactivate', [TagController::class, 'deactivate'])
             ->name('tags.deactivate');
+
+        // Categories
+        Route::resource('categories', CategoryController::class)
+            ->names('categories');
+
+        Route::patch('categories/{id}/activate', [CategoryController::class, 'activate'])
+            ->name('categories.activate');
+
+        Route::patch('categories/{id}/deactivate', [CategoryController::class, 'deactivate'])
+            ->name('categories.deactivate');
+
+        // Category Icons
+        Route::post('categories/{id}/icon', [CategoryController::class, 'uploadIcon'])
+            ->name('categories.uploadIcon');
+
+        Route::delete('categories/{id}/icon', [CategoryController::class, 'removeIcon'])
+            ->name('categories.removeIcon');
 
         // Users
         Route::resource('users', UserController::class)

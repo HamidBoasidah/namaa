@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'x_url' => 'https://x.com/' . fake()->userName(),
             'linkedin' => 'https://linkedin.com/in/' . fake()->userName(),
             'instagram' => 'https://instagram.com/' . fake()->userName(),
-            'is_active' => true,
+            'is_active' => $this->faker->boolean(),
             'locale' => 'ar',
             'created_by' => null,
             'updated_by' => null,

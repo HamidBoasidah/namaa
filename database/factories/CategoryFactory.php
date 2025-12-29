@@ -2,19 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Tag;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class TagFactory extends Factory
+class CategoryFactory extends Factory
 {
-    protected $model = Tag::class;
+    protected $model = Category::class;
 
     public function definition()
     {
-        $name = $this->faker->unique()->word;
         return [
-            'name' => $name,
-            'slug' => \Illuminate\Support\Str::slug($name),
+            'name' => $this->faker->unique()->word,
+            'slug' => $this->faker->unique()->slug,
             'is_active' => $this->faker->boolean(),
             'created_by' => null,
             'updated_by' => null,

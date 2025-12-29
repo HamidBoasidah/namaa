@@ -307,6 +307,12 @@ const menuGroups = computed(() =>
           permission: 'kycs.view',
         },
         {
+          icon: GridIcon,
+          name: t('menu.categories'),
+          path: route('admin.categories.index'),
+          permission: 'categories.view',
+        },
+        {
           icon: TagIcon,
           name: t('menu.tags'),
           path: route('admin.tags.index'),

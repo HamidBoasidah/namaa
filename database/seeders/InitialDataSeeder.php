@@ -9,7 +9,6 @@ use App\Models\Kyc;
 use App\Models\Tag;
 
 
-
 class InitialDataSeeder extends Seeder
 {
     public function run()
@@ -18,7 +17,7 @@ class InitialDataSeeder extends Seeder
         $users = User::all();
 
         Tag::factory()->count(12)->create();
-
+        Category::factory()->count(8)->create();
         // If no users exist, create some
         if ($users->isEmpty()) {
             $users = User::factory()->count(10)->create();

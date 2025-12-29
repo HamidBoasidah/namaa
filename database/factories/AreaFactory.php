@@ -13,7 +13,7 @@ class AreaFactory extends Factory
         return [
             'name_ar' => $this->faker->citySuffix . ' عربي',
             'name_en' => $this->faker->city,
-            'is_active' => true,
+            'is_active' => $this->faker->boolean(),
             'district_id' => \App\Models\District::inRandomOrder()->first()?->id ?? 1,
             'created_by' => 1,
             'updated_by' => 1,
