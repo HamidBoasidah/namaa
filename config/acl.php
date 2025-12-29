@@ -37,9 +37,8 @@ return [
     'areas'        => ['view', 'create', 'update', 'delete'],
     'districts'    => ['view', 'create', 'update', 'delete'],
     'governorates' => ['view', 'create', 'update', 'delete'],
+    'tags'         => ['view', 'create', 'update', 'delete'],
     'kycs'         => ['view', 'create', 'update', 'delete'],
-
-    // backend management resources
     'users'        => ['view', 'create', 'update', 'delete'],
     'admins'       => ['view', 'create', 'update', 'delete'],
     'roles'        => ['view', 'create', 'update', 'delete'],
@@ -60,7 +59,7 @@ return [
     'districts'    => ['en' => 'Districts',     'ar' => 'المديريات'],
     'governorates' => ['en' => 'Governorates',  'ar' => 'المحافظات'],
     'kycs'         => ['en' => 'KYC Requests',  'ar' => 'طلبات KYC'],
-
+    'tags'         => ['en' => 'Tags',          'ar' => 'الوسوم'],
     'users'        => ['en' => 'Users',         'ar' => 'المستخدمون'],
     'admins'       => ['en' => 'Admins',        'ar' => 'المشرفون'],
     'roles'        => ['en' => 'Roles',         'ar' => 'الأدوار'],

@@ -5,22 +5,10 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Category;
-use App\Models\Tag;
-use App\Models\WithdrawalMethod;
-use App\Models\Chef;
-use App\Models\ChefService;
-use App\Models\ChefGallery;
-use App\Models\ChefServiceImage;
-use App\Models\ChefCategory;
-use App\Models\ChefServiceTag;
-use App\Models\Address;
 use App\Models\Kyc;
-use App\Models\Booking;
-use App\Models\BookingTransaction;
-use App\Models\ChefWallet;
-use App\Models\ChefWalletTransaction;
-use App\Models\ChefWithdrawalRequest;
-use App\Models\ChefServiceRating;
+use App\Models\Tag;
+
+
 
 class InitialDataSeeder extends Seeder
 {
@@ -28,6 +16,8 @@ class InitialDataSeeder extends Seeder
     {
         // Get existing users
         $users = User::all();
+
+        Tag::factory()->count(12)->create();
 
         // If no users exist, create some
         if ($users->isEmpty()) {

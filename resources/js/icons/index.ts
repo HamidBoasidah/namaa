@@ -8,6 +8,8 @@ import LogoutIcon from "./LogoutIcon.vue";
 import ErrorHexaIcon from "./ErrorHexaIcon.vue";
 import SuccessIcon from "./SuccessIcon.vue";
 import GlobalIcon from "./GlobalIcon.vue";
+import TagIcon from "./TagIcon.vue";
+
 
 export {
   GridIcon,
@@ -20,5 +22,6 @@ export {
   ErrorHexaIcon,
   SuccessIcon,
   GlobalIcon,
+  TagIcon,
 };
  

@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\Auth\ProfileController;
+use App\Http\Controllers\Admin\TagController;
 use App\Support\RoutePermissions;
 use Illuminate\Support\Facades\Route;
 
@@ -113,6 +114,16 @@ Route::middleware('auth:admin')
             ->name('kycs.document.download');
         Route::resource('kycs', KycController::class)
             ->names('kycs');
+
+        // Tags
+        Route::resource('tags', TagController::class)
+            ->names('tags');
+
+        Route::patch('tags/{id}/activate', [TagController::class, 'activate'])
+            ->name('tags.activate');
+
+        Route::patch('tags/{id}/deactivate', [TagController::class, 'deactivate'])
+            ->name('tags.deactivate');
 
         // Users
         Route::resource('users', UserController::class)

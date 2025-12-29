@@ -212,7 +212,8 @@ import {
   ChevronDownIcon,
   HorizontalDots,
   BuildingIcon,
-  HistoryIcon
+  HistoryIcon,
+  TagIcon,
 } from "../../icons"
 import { useSidebar } from "@/composables/useSidebar"
 import { usePermissions } from "@/composables/usePermissions"
@@ -304,6 +305,12 @@ const menuGroups = computed(() =>
           name: t('menu.kycs'),
           path: route('admin.kycs.index'),
           permission: 'kycs.view',
+        },
+        {
+          icon: TagIcon,
+          name: t('menu.tags'),
+          path: route('admin.tags.index'),
+          permission: 'tags.view',
         },
         {
           icon: UserCircleIcon,

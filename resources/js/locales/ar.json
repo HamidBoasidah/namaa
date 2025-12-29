@@ -36,7 +36,8 @@
     "areas": "المناطق",
     "governorates": "المحافظات",
     "districts": "المديريات",
-    "activityLogs": "سجل التغييرات"
+    "activityLogs": "سجل التغييرات",
+    "tags": "الوسوم"
   },
   "pages": {
     "welcomeLoggedIn": "لقد قمت بتسجيل الدخول!",
@@ -51,6 +52,7 @@
     "daysLeft": "متبقي من الأيام",
     "areYouSure": "هل أنت متأكد؟",
     "deleteKycConfirmation": "هل أنت متأكد أنك تريد حذف سجل KYC هذا؟",
+    "deleteTagConfirmation": "هل أنت متأكد أنك تريد حذف هذا الوسم؟",
     "deleteUserConfirmation": "هل أنت متأكد أنك تريد حذف هذا المستخدم؟",
     "deleteAdminConfirmation": "هل أنت متأكد أنك تريد حذف هذا المشرف؟",
     "deleteGovernorateConfirmation": "هل أنت متأكد أنك تريد حذف هذه المحافظة؟",
@@ -247,6 +249,28 @@
     "errors": {
       "already_has_pending_or_approved": "لديك طلب KYC سابق قيد الانتظار أو مُوافق عليه. لا يمكنك تقديم طلب جديد إلا إذا رُفض الطلب السابق."
     }
+  },
+    "tags": {
+    "tagInformation": "معلومات الوسم",
+    "name": "الاسم",
+    "nameAr": "الاسم بالعربية",
+    "nameEn": "الاسم بالإنجليزية",
+    "nameArPlaceholder": "ادخل الاسم بالعربية",
+    "nameEnPlaceholder": "ادخل الاسم بالإنجليزية",
+    "slug": "الاسم التعريفي (slug)",
+    "addTag": "إضافة وسم",
+    "createTag": "إنشاء وسم",
+    "editTag": "تعديل وسم",
+    "showTag": "عرض وسم",
+    "noTag": "لا توجد وسوم",
+    "tagCreatedSuccessfully": "تم إنشاء الوسم بنجاح",
+    "tagCreationFailed": "فشل إنشاء الوسم",
+    "tagUpdatedSuccessfully": "تم تحديث الوسم بنجاح",
+    "tagUpdateFailed": "فشل تحديث الوسم",
+    "tagDeletedSuccessfully": "تم حذف الوسم بنجاح",
+    "tagDeleteFailed": "فشل حذف الوسم",
+    "tagStatusUpdated": "تم تحديث حالة الوسم",
+    "tagStatusUpdateFailed": "فشل تحديث حالة الوسم"
   },
   "activitylogs": {
     "add": "إضافة سجل نشاط",
