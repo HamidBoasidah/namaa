@@ -1,0 +1,259 @@
+<template>
+  <div class="space-y-6">
+    <!-- Header / Profile Card -->
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
+      <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+        <div class="flex flex-col items-center gap-6 xl:flex-row xl:items-center">
+          <!-- Avatar -->
+          <div class="relative">
+            <div
+              class="h-20 w-20 overflow-hidden rounded-full border border-gray-200 dark:border-gray-800 flex items-center justify-center"
+            >
+              <img
+                v-if="consultant?.profile_image"
+                :src="`/storage/${consultant.profile_image}`"
+                alt="Consultant"
+                class="h-full w-full object-cover object-center"
+              />
+              <UserCircleIcon v-else class="h-20 w-20 text-gray-400" />
+            </div>
+          </div>
+
+          <!-- Name + quick meta -->
+          <div class="text-center xl:text-left">
+            <h4 class="mb-1 text-lg font-semibold text-gray-800 dark:text-white/90">
+              {{ consultant?.display_name || `#${consultant?.id ?? ''}` }}
+            </h4>
+
+          </div>
+        </div>
+
+        <!-- Badges + actions -->
+        <div class="flex flex-col items-center gap-3 sm:flex-row xl:justify-end">
+          <div class="flex items-center gap-2">
+            <!-- Status badge -->
+            <span
+              class="inline-flex items-center justify-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
+              :class="{
+                'bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-500': consultant?.is_active,
+                'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500': !consultant?.is_active,
+              }"
+            >
+              {{ consultant?.is_active ? t('common.active') : t('common.inactive') }}
+            </span>
+
+            <!-- Rating badge -->
+            <span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700 dark:bg-white/10 dark:text-gray-300">
+              ★ {{ ratingAvgText }}
+              <span class="text-gray-500 dark:text-gray-400">({{ consultant?.ratings_count ?? 0 }})</span>
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- General Information -->
+    <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+      <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+        <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+          {{ t('consultants.consultantInformation') }}
+        </h2>
+      </div>
+
+      <div class="p-4 sm:p-6">
+        <div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-2">
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('consultants.displayName') }}
+            </label>
+            <p class="text-base text-gray-800 dark:text-white/90">
+              {{ consultant?.display_name || 'N/A' }}
+            </p>
+          </div>
+
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('common.email') }}
+            </label>
+            <p class="text-base text-gray-800 dark:text-white/90">
+              {{ consultant?.email || 'N/A' }}
+            </p>
+          </div>
+
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('common.phoneNumber') }}
+            </label>
+            <p class="text-base text-gray-800 dark:text-white/90">
+              {{ consultant?.phone || 'N/A' }}
+            </p>
+          </div>
+
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('common.status') }}
+            </label>
+            <span
+              class="inline-flex items-center justify-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
+              :class="{
+                'bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-500': consultant?.is_active,
+                'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500': !consultant?.is_active,
+              }"
+            >
+              {{ consultant?.is_active ? t('common.active') : t('common.inactive') }}
+            </span>
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('common.address') }}
+            </label>
+            <p class="text-base text-gray-800 dark:text-white/90">
+              {{ consultant?.address || 'N/A' }}
+            </p>
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('consultants.bio') }}
+            </label>
+            <p class="whitespace-pre-line text-base text-gray-800 dark:text-white/90">
+              {{ consultant?.bio || 'N/A' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience & Specialization -->
+    <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+      <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+        <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+          {{ t('consultants.experienceAndSpecialization') }}
+        </h2>
+      </div>
+
+      <div class="p-4 sm:p-6">
+        <div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-2">
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('consultants.yearsOfExperience') }}
+            </label>
+            <p class="text-base text-gray-800 dark:text-white/90">
+              {{ consultant?.years_of_experience ?? 'N/A' }}
+            </p>
+          </div>
+
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('consultants.specializationSummary') }}
+            </label>
+            <p class="whitespace-pre-line text-base text-gray-800 dark:text-white/90">
+              {{ consultant?.specialization_summary || 'N/A' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location Section -->
+    <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+      <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+        <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+          {{ t('common.location') }}
+        </h2>
+      </div>
+
+      <div class="p-4 sm:p-6">
+        <div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-3">
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('governorates.governorate') }}
+            </label>
+            <p class="text-base text-gray-800 dark:text-white/90">
+              {{ governorateName || 'N/A' }}
+            </p>
+          </div>
+
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('districts.district') }}
+            </label>
+            <p class="text-base text-gray-800 dark:text-white/90">
+              {{ districtName || 'N/A' }}
+            </p>
+          </div>
+
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+              {{ t('areas.area') }}
+            </label>
+            <p class="text-base text-gray-800 dark:text-white/90">
+              {{ areaName || 'N/A' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Buttons -->
+    <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
+      <Link
+        :href="route('admin.consultants.index')"
+        class="shadow-theme-xs inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 ring-1 ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
+      >
+        {{ t('buttons.backToList') }}
+      </Link>
+      <Link
+        :href="route('admin.consultants.edit', consultant.id)"
+        class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white transition"
+      >
+        {{ t('buttons.edit') }}
+      </Link>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { Link } from '@inertiajs/vue3'
+import { useI18n } from 'vue-i18n'
+import { route } from '@/route'
+import { UserCircleIcon } from '@/icons'
+
+const { t, locale } = useI18n()
+
+const props = defineProps({
+  consultant: Object,
+})
+
+
+
+const governorateName = computed(() => {
+  const c = props.consultant
+  return locale.value === 'ar' ? c?.governorate_name_ar : c?.governorate_name_en
+})
+
+const districtName = computed(() => {
+  const c = props.consultant
+  return locale.value === 'ar' ? c?.district_name_ar : c?.district_name_en
+})
+
+const areaName = computed(() => {
+  const c = props.consultant
+  return locale.value === 'ar' ? c?.area_name_ar : c?.area_name_en
+})
+
+const locationText = computed(() => {
+  const parts = [governorateName.value, districtName.value, areaName.value].filter(Boolean)
+  return parts.length ? parts.join(' - ') : 'N/A'
+})
+
+const ratingAvgText = computed(() => {
+  const v = props.consultant?.rating_avg ?? 0
+  // يطبع رقمين عشرية لو كان رقم
+  return typeof v === 'number' ? v.toFixed(2) : String(v)
+})
+</script>

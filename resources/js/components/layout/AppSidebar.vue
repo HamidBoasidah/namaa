@@ -214,6 +214,7 @@ import {
   BuildingIcon,
   HistoryIcon,
   TagIcon,
+  ConsultIcon,
 } from "../../icons"
 import { useSidebar } from "@/composables/useSidebar"
 import { usePermissions } from "@/composables/usePermissions"
@@ -317,6 +318,12 @@ const menuGroups = computed(() =>
           name: t('menu.tags'),
           path: route('admin.tags.index'),
           permission: 'tags.view',
+        },
+        {
+          icon: ConsultIcon,
+          name: t('menu.consultants'),
+          path: route('admin.consultants.index'),
+          permission: 'consultants.view',
         },
         {
           icon: UserCircleIcon,

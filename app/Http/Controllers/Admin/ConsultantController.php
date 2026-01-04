@@ -1,0 +1,155 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+use App\Services\ConsultantService;
+use App\DTOs\ConsultantDTO;
+
+use App\Models\Consultant;
+use App\Models\Governorate;
+use App\Models\District;
+use App\Models\Area;
+use App\Models\User;
+
+use App\Http\Requests\StoreConsultantRequest;
+use App\Http\Requests\UpdateConsultantRequest;
+
+class ConsultantController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('permission:consultants.view')->only(['index', 'show']);
+        $this->middleware('permission:consultants.create')->only(['create', 'store']);
+        $this->middleware('permission:consultants.update')->only(['edit', 'update', 'activate', 'deactivate']);
+        $this->middleware('permission:consultants.delete')->only(['destroy']);
+    }
+
+    public function index(Request $request, ConsultantService $consultantService)
+    {
+        $perPage = $request->input('per_page', 10);
+        $consultants = $consultantService->paginate($perPage);
+
+        // تجهيز بيانات كل مستشار لعرض الجدول
+        $consultants->getCollection()->transform(function ($consultant) {
+            return ConsultantDTO::fromModel($consultant)->toIndexArray();
+        });
+
+        return Inertia::render('Admin/Consultant/Index', [
+            'consultants' => $consultants
+        ]);
+    }
+
+    public function create()
+    {
+        // حسب حاجتك في الواجهة (قوائم المناطق)
+        $governorates = Governorate::select('id', 'name_ar', 'name_en')->get();
+        $districts    = District::select('id', 'name_ar', 'name_en', 'governorate_id')->get();
+        $areas        = Area::select('id', 'name_ar', 'name_en', 'district_id')->get();
+
+        // إحضار المستخدمين الذين نوعهم مستشار
+        $users = User::select('id', 'first_name', 'last_name', 'email')
+            ->where('user_type', 'consultant')
+            ->get()
+            ->map(function ($u) {
+                return [
+                    'id' => $u->id,
+                    'name' => $u->name,
+                ];
+            });
+
+        return Inertia::render('Admin/Consultant/Create', [
+            'governorates' => $governorates,
+            'districts' => $districts,
+            'areas' => $areas,
+            'users' => $users,
+        ]);
+    }
+
+    public function store(StoreConsultantRequest $request, ConsultantService $consultantService)
+    {
+        $data = $request->validated();
+
+        // تمرير صورة الملف الشخصي للمستودع ليتولى تخزينها
+        if ($request->hasFile('profile_image')) {
+            $data['profile_image'] = $request->file('profile_image');
+        }
+
+        $consultantService->create($data);
+
+        return redirect()->route('admin.consultants.index');
+    }
+
+    public function show(Consultant $consultant)
+    {
+        $consultantDTO = ConsultantDTO::fromModel($consultant)->toArray();
+
+        return Inertia::render('Admin/Consultant/Show', [
+            'consultant' => $consultantDTO,
+        ]);
+    }
+
+    public function edit(Consultant $consultant)
+    {
+        $governorates = Governorate::select('id', 'name_ar', 'name_en')->get();
+        $districts    = District::select('id', 'name_ar', 'name_en', 'governorate_id')->get();
+        $areas        = Area::select('id', 'name_ar', 'name_en', 'district_id')->get();
+
+        $consultantDTO = ConsultantDTO::fromModel($consultant)->toArray();
+
+        // إحضار المستخدمين الذين نوعهم مستشار
+        $users = User::select('id', 'first_name', 'last_name', 'email')
+            ->where('user_type', 'consultant')
+            ->get()
+            ->map(function ($u) {
+                return [
+                    'id' => $u->id,
+                    'name' => $u->name,
+                ];
+            });
+
+        return Inertia::render('Admin/Consultant/Edit', [
+            'consultant' => $consultantDTO,
+            'governorates' => $governorates,
+            'districts' => $districts,
+            'areas' => $areas,
+            'users' => $users,
+        ]);
+    }
+
+    public function update(UpdateConsultantRequest $request, ConsultantService $consultantService, Consultant $consultant)
+    {
+        $data = $request->validated();
+
+        // تمرير الصورة للمستودع ليتولى تحديثها وحذف القديمة تلقائيًا
+        if ($request->hasFile('profile_image')) {
+            $data['profile_image'] = $request->file('profile_image');
+        }
+
+        $consultantService->update($consultant->id, $data);
+
+        return redirect()->route('admin.consultants.index');
+    }
+
+    public function destroy(ConsultantService $consultantService, Consultant $consultant)
+    {
+        $consultantService->delete($consultant->id);
+
+        return redirect()->route('admin.consultants.index');
+    }
+
+    public function activate(ConsultantService $consultantService, $id)
+    {
+        $consultantService->activate($id);
+        return back()->with('success', 'Consultant activated successfully');
+    }
+
+    public function deactivate(ConsultantService $consultantService, $id)
+    {
+        $consultantService->deactivate($id);
+        return back()->with('success', 'Consultant deactivated successfully');
+    }
+}

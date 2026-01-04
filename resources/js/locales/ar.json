@@ -6,6 +6,7 @@
     "dashboard_short": "لوحة التحكم",
     "ecommerce": "التجارة الإلكترونية",
     "kycs": "طلبات KYC",
+    "consultants": "المستشارون",
     "calendar": "التقويم",
     "profile": "الملف الشخصي",
     "users": "المستخدمون",
@@ -62,7 +63,8 @@
     "deleteDistrictConfirmation": "هل أنت متأكد أنك تريد حذف هذه المديرية؟",
     "deleteAreaConfirmation": "هل أنت متأكد أنك تريد حذف هذه المنطقة؟",
     "deleteRoleConfirmation": "هل أنت متأكد أنك تريد حذف هذا الدور؟",
-    "notAuthorized": "غير مصرح لك"
+    "notAuthorized": "غير مصرح لك",
+    "deleteConsultantConfirmation": "هل أنت متأكد أنك تريد حذف هذا المستشار؟"
   },
   "charts": {
     "lineChart": "مخطط خطي",
@@ -99,7 +101,9 @@
     "all": "الكل",
     "read": "قراءة",
     "write": "كتابة",
-    "view": "عرض"
+    "view": "عرض",
+    "location": "الموقع",
+    "rating": "التقييم"
   },
   "user": {
     "name": "كود براينس",
@@ -119,8 +123,8 @@
     "passwordPlaceholder": "ادخل كلمة المرور",
     "confirmPassword": "تأكيد كلمة المرور",
     "addressPlaceholder": "ادخل عنوان المستخدم",
-    "phonePlaceholder": "777 777 777",
-    "whatsappPlaceholder": "777 777 777",
+    "phonePlaceholder": "05xxxxxxxx",
+    "whatsappPlaceholder": "05xxxxxxxx",
     "password": "كلمة المرور",
     "medicalFacility": "المرفق الطبي",
     "selectMedicalFacility": "اختر المرفق الطبي",
@@ -152,13 +156,45 @@
     "userUpdateFailed": "فشل تحديث المستخدم"
   ,"noImage": "لا توجد صورة للمستخدم"
   },
+
+  "consultants": {
+    "addConsultant": "إضافة مستشار",
+    "editConsultant": "تعديل مستشار",
+    "showConsultant": "عرض مستشار",
+    "consultantInformation": "معلومات المستشار",
+    "displayName": "الاسم الظاهر",
+    "displayNamePlaceholder": "ادخل الاسم الظاهر",
+    "selectUser": "المستخدم المرتبط",
+    "selectUserPlaceholder": "اختر مستخدمًا",
+    "emailPlaceholder": "ادخل البريد الإلكتروني",
+    "phone": "رقم الجوال",
+    "phonePlaceholder": "05xxxxxxxx",
+    "bio": "نبذة",
+    "bioPlaceholder": "اكتب نبذة عن المستشار",
+    "experienceAndSpecialization": "الخبرة والتخصص",
+    "yearsOfExperience": "سنوات الخبرة",
+    "yearsOfExperiencePlaceholder": "ادخل عدد سنوات الخبرة",
+    "specializationSummary": "ملخص التخصص",
+    "specializationSummaryPlaceholder": "اكتب ملخص التخصص",
+    "locationInformation": "معلومات الموقع",
+    "addressPlaceholder": "ادخل العنوان",
+    "profileImage": "صورة الملف الشخصي",
+    "consultantCreatedSuccessfully": "تم إنشاء المستشار بنجاح",
+    "consultantCreationFailed": "فشل إنشاء المستشار",
+    "consultantUpdatedSuccessfully": "تم تحديث المستشار بنجاح",
+    "consultantUpdateFailed": "فشل تحديث المستشار",
+    "consultantDeletedSuccessfully": "تم حذف المستشار بنجاح",
+    "consultantDeletionFailed": "فشل حذف المستشار",
+    "noImage": "لا توجد صورة للمستشار"
+  },
+
   "admins": {
     "userNamePlaceholder": "ادخل اسم المشرف",
     "emailPlaceholder": "ادخل البريد الإلكتروني",
     "passwordPlaceholder": "ادخل كلمة المرور",
     "addressPlaceholder": "ادخل عنوان المشرف",
-    "phonePlaceholder": "777 777 777",
-    "whatsappPlaceholder": "777 777 777",
+    "phonePlaceholder": "05xxxxxxxx",
+    "whatsappPlaceholder": "05xxxxxxxx",
     "password": "كلمة المرور",
     "medicalFacility": "المرفق الطبي",
     "selectMedicalFacility": "اختر المرفق الطبي",

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Kyc;
 use App\Models\Tag;
+use App\Models\Consultant;
 
 
 class InitialDataSeeder extends Seeder
@@ -29,5 +30,8 @@ class InitialDataSeeder extends Seeder
                 'user_id' => $user->id,
             ]);
         }
+
+        // Create some consultants
+        Consultant::factory()->count(10)->create();
     }
 }

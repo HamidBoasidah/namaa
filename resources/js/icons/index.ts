@@ -9,6 +9,7 @@ import ErrorHexaIcon from "./ErrorHexaIcon.vue";
 import SuccessIcon from "./SuccessIcon.vue";
 import GlobalIcon from "./GlobalIcon.vue";
 import TagIcon from "./TagIcon.vue";
+import ConsultIcon from './ConsultIcon.vue';
 
 
 export {
@@ -23,5 +24,6 @@ export {
   SuccessIcon,
   GlobalIcon,
   TagIcon,
+  ConsultIcon,
 };
  

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Admin\ConsultantController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordController;
@@ -152,6 +153,16 @@ Route::middleware('auth:admin')
 
         Route::patch('users/{id}/deactivate', [UserController::class, 'deactivate'])
             ->name('users.deactivate');
+
+        // Consultants
+        Route::resource('consultants', ConsultantController::class)
+            ->names('consultants');
+
+        Route::patch('consultants/{id}/activate', [ConsultantController::class, 'activate'])
+            ->name('consultants.activate');
+
+        Route::patch('consultants/{id}/deactivate', [ConsultantController::class, 'deactivate'])
+            ->name('consultants.deactivate');
 
         // Admins (managers of the system)
         Route::resource('admins', AdminController::class)
