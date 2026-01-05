@@ -103,7 +103,14 @@
     "write": "كتابة",
     "view": "عرض",
     "location": "الموقع",
-    "rating": "التقييم"
+    "rating": "التقييم",
+    "items": "عناصر",
+    "startTime": "وقت البداية",
+    "endTime": "وقت النهاية",
+    "selectTime": "اختر الوقت",
+    "startEndRequired": "يجب إدخال وقتي البداية والنهاية.",
+    "endAfterStart": "يجب أن يكون وقت النهاية بعد وقت البداية.",
+    "validationErrors": "أخطاء التحقق"
   },
   "user": {
     "name": "كود براينس",
@@ -179,6 +186,12 @@
     "locationInformation": "معلومات الموقع",
     "addressPlaceholder": "ادخل العنوان",
     "profileImage": "صورة الملف الشخصي",
+    "workingHours": "أوقات العمل",
+    "noWorkingHoursForDay": "لم تتم إضافة أوقات عمل لهذا اليوم.",
+    "workingHoursOverlap": "تداخل هذه الفترة مع فترة أخرى.",
+    "workingHoursDuplicate": "هذه الفترة مكررة بالفعل.",
+    "workingHoursSavedSuccessfully": "تم حفظ أوقات العمل بنجاح",
+    "workingHoursSaveFailed": "فشل حفظ أوقات العمل",
     "consultantCreatedSuccessfully": "تم إنشاء المستشار بنجاح",
     "consultantCreationFailed": "فشل إنشاء المستشار",
     "consultantUpdatedSuccessfully": "تم تحديث المستشار بنجاح",
@@ -518,6 +531,8 @@
     "edit": "تعديل",
     "delete": "حذف",
     "backToList": "العودة إلى القائمة"
+    ,"add": "إضافة",
+    "saveWorkingHours": "حفظ أوقات العمل"
   },
   "notifications": {
     "requestsPermission": "يطلب إذنًا للتغيير",

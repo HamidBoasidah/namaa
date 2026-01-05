@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Services\ConsultantService;
+use App\Services\ConsultantWorkingHourService;
+
 use App\DTOs\ConsultantDTO;
 
 use App\Models\Consultant;
@@ -24,7 +26,7 @@ class ConsultantController extends Controller
     {
         $this->middleware('permission:consultants.view')->only(['index', 'show']);
         $this->middleware('permission:consultants.create')->only(['create', 'store']);
-        $this->middleware('permission:consultants.update')->only(['edit', 'update', 'activate', 'deactivate']);
+        $this->middleware('permission:consultants.update')->only(['edit', 'update', 'replaceWeeklyWorkingHours', 'activate', 'deactivate']);
         $this->middleware('permission:consultants.delete')->only(['destroy']);
     }
 
@@ -33,7 +35,6 @@ class ConsultantController extends Controller
         $perPage = $request->input('per_page', 10);
         $consultants = $consultantService->paginate($perPage);
 
-        // تجهيز بيانات كل مستشار لعرض الجدول
         $consultants->getCollection()->transform(function ($consultant) {
             return ConsultantDTO::fromModel($consultant)->toIndexArray();
         });
@@ -45,12 +46,10 @@ class ConsultantController extends Controller
 
     public function create()
     {
-        // حسب حاجتك في الواجهة (قوائم المناطق)
         $governorates = Governorate::select('id', 'name_ar', 'name_en')->get();
         $districts    = District::select('id', 'name_ar', 'name_en', 'governorate_id')->get();
         $areas        = Area::select('id', 'name_ar', 'name_en', 'district_id')->get();
 
-        // إحضار المستخدمين الذين نوعهم مستشار
         $users = User::select('id', 'first_name', 'last_name', 'email')
             ->where('user_type', 'consultant')
             ->get()
@@ -73,7 +72,6 @@ class ConsultantController extends Controller
     {
         $data = $request->validated();
 
-        // تمرير صورة الملف الشخصي للمستودع ليتولى تخزينها
         if ($request->hasFile('profile_image')) {
             $data['profile_image'] = $request->file('profile_image');
         }
@@ -85,6 +83,9 @@ class ConsultantController extends Controller
 
     public function show(Consultant $consultant)
     {
+        // ✅ الخيار A: تحميل ساعات العمل فقط هنا
+        $consultant->load('workingHours');
+
         $consultantDTO = ConsultantDTO::fromModel($consultant)->toArray();
 
         return Inertia::render('Admin/Consultant/Show', [
@@ -94,13 +95,15 @@ class ConsultantController extends Controller
 
     public function edit(Consultant $consultant)
     {
+        // ✅ الخيار A: تحميل ساعات العمل فقط هنا
+        $consultant->load('workingHours');
+
         $governorates = Governorate::select('id', 'name_ar', 'name_en')->get();
         $districts    = District::select('id', 'name_ar', 'name_en', 'governorate_id')->get();
         $areas        = Area::select('id', 'name_ar', 'name_en', 'district_id')->get();
 
         $consultantDTO = ConsultantDTO::fromModel($consultant)->toArray();
 
-        // إحضار المستخدمين الذين نوعهم مستشار
         $users = User::select('id', 'first_name', 'last_name', 'email')
             ->where('user_type', 'consultant')
             ->get()
@@ -124,7 +127,6 @@ class ConsultantController extends Controller
     {
         $data = $request->validated();
 
-        // تمرير الصورة للمستودع ليتولى تحديثها وحذف القديمة تلقائيًا
         if ($request->hasFile('profile_image')) {
             $data['profile_image'] = $request->file('profile_image');
         }
@@ -151,5 +153,29 @@ class ConsultantController extends Controller
     {
         $consultantService->deactivate($id);
         return back()->with('success', 'Consultant deactivated successfully');
+    }
+
+    /**
+     * ✅ Weekly Schedule Only
+     * استبدال جدول الأسبوع بالكامل
+     */
+    public function replaceWeeklyWorkingHours(
+        Request $request,
+        Consultant $consultant,
+        ConsultantWorkingHourService $workingHourService
+    ) {
+        $data = $request->validate([
+            'week' => ['required', 'array'],
+            'week.*' => ['nullable', 'array'],
+
+            // كل عنصر في اليوم عبارة عن فترة
+            'week.*.*.start_time' => ['required', 'date_format:H:i'],
+            'week.*.*.end_time'   => ['required', 'date_format:H:i', 'after:week.*.*.start_time'],
+            'week.*.*.is_active'  => ['nullable', 'boolean'],
+        ]);
+
+        $workingHourService->replaceWeeklySchedule($consultant->id, $data['week']);
+
+        return back()->with('success', 'تم تحديث جدول أوقات العمل للأسبوع بنجاح');
     }
 }

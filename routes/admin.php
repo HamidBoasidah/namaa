@@ -164,6 +164,11 @@ Route::middleware('auth:admin')
         Route::patch('consultants/{id}/deactivate', [ConsultantController::class, 'deactivate'])
             ->name('consultants.deactivate');
 
+        
+        // ✅ Weekly schedule (replace)
+        Route::put('consultants/{consultant}/working-hours/replace', [ConsultantController::class, 'replaceWeeklyWorkingHours'])
+            ->name('consultants.working-hours.replace');
+
         // Admins (managers of the system)
         Route::resource('admins', AdminController::class)
             ->names('admins');

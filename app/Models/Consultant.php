@@ -58,4 +58,17 @@ class Consultant extends BaseModel
         return $this->belongsTo(Area::class);
     }
 
+    public function workingHours()
+    {
+        return $this->hasMany(ConsultantWorkingHour::class);
+    }
+
+    public function activeWorkingHours()
+    {
+        return $this->hasMany(ConsultantWorkingHour::class)
+            ->where('is_active', true)
+            ->orderBy('day_of_week')
+            ->orderBy('start_time');
+    }
+
 }

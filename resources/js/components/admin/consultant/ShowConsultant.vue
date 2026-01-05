@@ -197,6 +197,48 @@
       </div>
     </div>
 
+    <!-- Working Hours -->
+    <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+      <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+        <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+          {{ t('consultants.workingHours') }}
+        </h2>
+      </div>
+
+      <div class="p-4 sm:p-6">
+        <div v-if="groupedWorkingHours.length" class="space-y-4">
+          <div
+            v-for="day in groupedWorkingHours"
+            :key="day.day_of_week"
+            class="rounded-xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div class="text-sm font-semibold text-gray-800 dark:text-white/90">
+                {{ dayLabel(day.day_of_week) }}
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                <span
+                  v-for="slot in day.slots"
+                  :key="slot.id"
+                  class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium"
+                  :class="slot.is_active
+                    ? 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400'
+                    : 'bg-gray-200 text-gray-700 dark:bg-white/10 dark:text-gray-300'
+                  "
+                >
+                  {{ formatTime(slot.start_time) }} - {{ formatTime(slot.end_time) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-else class="text-sm text-gray-500 dark:text-gray-400">
+          {{ t('consultants.noWorkingHours') }}
+        </div>
+      </div>
+    </div>
 
     <!-- Buttons -->
     <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
@@ -245,6 +287,46 @@ const areaName = computed(() => {
   const c = props.consultant
   return locale.value === 'ar' ? c?.area_name_ar : c?.area_name_en
 })
+
+
+const rawWorkingHours = computed(() => {
+  const c = props.consultant || {}
+  // نعطي أولوية للمفعّل إن وُجد، وإلا نعرض الكل
+  return (c.active_working_hours && c.active_working_hours.length)
+    ? c.active_working_hours
+    : (c.working_hours || [])
+})
+
+const groupedWorkingHours = computed(() => {
+  const map = new Map()
+
+  for (const wh of rawWorkingHours.value || []) {
+    const day = Number(wh.day_of_week)
+    if (!map.has(day)) map.set(day, [])
+    map.get(day).push(wh)
+  }
+
+  return Array.from(map.entries())
+    .sort((a, b) => a[0] - b[0])
+    .map(([day_of_week, slots]) => ({
+      day_of_week,
+      slots: (slots || [])
+        .slice()
+        .sort((x, y) => String(x.start_time).localeCompare(String(y.start_time))),
+    }))
+})
+
+function dayLabel(day) {
+  const namesAr = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
+  const namesEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  const idx = Number(day)
+  return (locale.value === 'ar' ? namesAr : namesEn)[idx] ?? `Day ${idx}`
+}
+
+function formatTime(t) {
+  if (!t) return ''
+  return String(t).slice(0, 5) // HH:MM
+}
 
 const locationText = computed(() => {
   const parts = [governorateName.value, districtName.value, areaName.value].filter(Boolean)

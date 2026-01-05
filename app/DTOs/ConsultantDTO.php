@@ -21,7 +21,6 @@ class ConsultantDTO extends BaseDTO
     public $specialization_summary;
 
     public $profile_image;
-
     public $address;
 
     // Location IDs
@@ -45,6 +44,10 @@ class ConsultantDTO extends BaseDTO
 
     public $is_active;
 
+    // ✅ Working hours
+    public array $working_hours = [];
+    public array $active_working_hours = [];
+
     public $created_at;
     public $deleted_at;
 
@@ -54,12 +57,15 @@ class ConsultantDTO extends BaseDTO
         $user_name,
         $user_email,
         $user_phone,
+
         $display_name,
         $bio,
         $email,
         $phone,
+
         $years_of_experience,
         $specialization_summary,
+
         $profile_image,
         $address,
 
@@ -79,6 +85,9 @@ class ConsultantDTO extends BaseDTO
         $rating_avg,
         $ratings_count,
         $is_active,
+
+        array $working_hours = [],
+        array $active_working_hours = [],
 
         $created_at = null,
         $deleted_at = null
@@ -116,6 +125,9 @@ class ConsultantDTO extends BaseDTO
         $this->rating_avg = $rating_avg;
         $this->ratings_count = $ratings_count;
         $this->is_active = $is_active;
+
+        $this->working_hours = $working_hours;
+        $this->active_working_hours = $active_working_hours;
 
         $this->created_at = $created_at;
         $this->deleted_at = $deleted_at;
@@ -161,6 +173,23 @@ class ConsultantDTO extends BaseDTO
             (int) ($consultant->ratings_count ?? 0),
             (bool) ($consultant->is_active ?? false),
 
+            // ✅ Working hours (requires eager loading in controller)
+            $consultant->workingHours?->map(fn ($wh) => [
+                'id' => $wh->id,
+                'day_of_week' => (int) $wh->day_of_week,
+                'start_time' => (string) $wh->start_time,
+                'end_time' => (string) $wh->end_time,
+                'is_active' => (bool) $wh->is_active,
+            ])->values()->all() ?? [],
+
+            $consultant->activeWorkingHours?->map(fn ($wh) => [
+                'id' => $wh->id,
+                'day_of_week' => (int) $wh->day_of_week,
+                'start_time' => (string) $wh->start_time,
+                'end_time' => (string) $wh->end_time,
+                'is_active' => (bool) $wh->is_active,
+            ])->values()->all() ?? [],
+
             $consultant->created_at?->toDateTimeString(),
             $consultant->deleted_at?->toDateTimeString()
         );
@@ -201,6 +230,10 @@ class ConsultantDTO extends BaseDTO
             'rating_avg' => $this->rating_avg,
             'ratings_count' => $this->ratings_count,
             'is_active' => $this->is_active,
+
+            // ✅ Working hours
+            'working_hours' => $this->working_hours,
+            'active_working_hours' => $this->active_working_hours,
 
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,
