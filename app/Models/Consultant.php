@@ -71,4 +71,9 @@ class Consultant extends BaseModel
             ->orderBy('start_time');
     }
 
+    public function service()
+    {
+        return $this->hasOne(ConsultantService::class);
+    }
+
 }

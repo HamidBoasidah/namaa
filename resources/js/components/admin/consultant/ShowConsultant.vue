@@ -24,7 +24,6 @@
             <h4 class="mb-1 text-lg font-semibold text-gray-800 dark:text-white/90">
               {{ consultant?.display_name || `#${consultant?.id ?? ''}` }}
             </h4>
-
           </div>
         </div>
 
@@ -48,194 +47,255 @@
               <span class="text-gray-500 dark:text-gray-400">({{ consultant?.ratings_count ?? 0 }})</span>
             </span>
           </div>
-
         </div>
       </div>
     </div>
 
-    <!-- General Information -->
+    <!-- Tabs Header -->
     <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-      <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
-        <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-          {{ t('consultants.consultantInformation') }}
-        </h2>
-      </div>
+      <div class="border-b border-gray-200 px-4 py-3 dark:border-gray-800 sm:px-6">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+            {{ t('consultants.consultantInformation') }}
+          </h2>
 
-      <div class="p-4 sm:p-6">
-        <div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-2">
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('consultants.displayName') }}
-            </label>
-            <p class="text-base text-gray-800 dark:text-white/90">
-              {{ consultant?.display_name || 'N/A' }}
-            </p>
-          </div>
-
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('common.email') }}
-            </label>
-            <p class="text-base text-gray-800 dark:text-white/90">
-              {{ consultant?.email || 'N/A' }}
-            </p>
-          </div>
-
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('common.phoneNumber') }}
-            </label>
-            <p class="text-base text-gray-800 dark:text-white/90">
-              {{ consultant?.phone || 'N/A' }}
-            </p>
-          </div>
-
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('common.status') }}
-            </label>
-            <span
-              class="inline-flex items-center justify-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
-              :class="{
-                'bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-500': consultant?.is_active,
-                'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500': !consultant?.is_active,
-              }"
-            >
-              {{ consultant?.is_active ? t('common.active') : t('common.inactive') }}
-            </span>
-          </div>
-
-          <div class="md:col-span-2">
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('common.address') }}
-            </label>
-            <p class="text-base text-gray-800 dark:text-white/90">
-              {{ consultant?.address || 'N/A' }}
-            </p>
-          </div>
-
-          <div class="md:col-span-2">
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('consultants.bio') }}
-            </label>
-            <p class="whitespace-pre-line text-base text-gray-800 dark:text-white/90">
-              {{ consultant?.bio || 'N/A' }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Experience & Specialization -->
-    <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-      <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
-        <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-          {{ t('consultants.experienceAndSpecialization') }}
-        </h2>
-      </div>
-
-      <div class="p-4 sm:p-6">
-        <div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-2">
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('consultants.yearsOfExperience') }}
-            </label>
-            <p class="text-base text-gray-800 dark:text-white/90">
-              {{ consultant?.years_of_experience ?? 'N/A' }}
-            </p>
-          </div>
-
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('consultants.specializationSummary') }}
-            </label>
-            <p class="whitespace-pre-line text-base text-gray-800 dark:text-white/90">
-              {{ consultant?.specialization_summary || 'N/A' }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Location Section -->
-    <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-      <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
-        <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-          {{ t('common.location') }}
-        </h2>
-      </div>
-
-      <div class="p-4 sm:p-6">
-        <div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-3">
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('governorates.governorate') }}
-            </label>
-            <p class="text-base text-gray-800 dark:text-white/90">
-              {{ governorateName || 'N/A' }}
-            </p>
-          </div>
-
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('districts.district') }}
-            </label>
-            <p class="text-base text-gray-800 dark:text-white/90">
-              {{ districtName || 'N/A' }}
-            </p>
-          </div>
-
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-              {{ t('areas.area') }}
-            </label>
-            <p class="text-base text-gray-800 dark:text-white/90">
-              {{ areaName || 'N/A' }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Working Hours -->
-    <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-      <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
-        <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-          {{ t('consultants.workingHours') }}
-        </h2>
-      </div>
-
-      <div class="p-4 sm:p-6">
-        <div v-if="groupedWorkingHours.length" class="space-y-4">
           <div
-            v-for="day in groupedWorkingHours"
-            :key="day.day_of_week"
-            class="rounded-xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900"
+            class="inline-flex w-full rounded-xl bg-gray-100 p-1 dark:bg-gray-900 sm:w-auto"
+            role="tablist"
+            aria-label="Consultant tabs"
           >
-            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <div class="text-sm font-semibold text-gray-800 dark:text-white/90">
-                {{ dayLabel(day.day_of_week) }}
-              </div>
+            <button
+              type="button"
+              role="tab"
+              :aria-selected="activeTab === 'info'"
+              @click="activeTab = 'info'"
+              class="flex-1 rounded-lg px-4 py-2 text-sm font-medium transition sm:flex-none"
+              :class="activeTab === 'info'
+                ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-white/[0.06] dark:text-white'
+                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'"
+            >
+              {{ t('consultants.consultantInformation') || 'Info' }}
+            </button>
 
-              <div class="flex flex-wrap gap-2">
-                <span
-                  v-for="slot in day.slots"
-                  :key="slot.id"
-                  class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium"
-                  :class="slot.is_active
-                    ? 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400'
-                    : 'bg-gray-200 text-gray-700 dark:bg-white/10 dark:text-gray-300'
-                  "
-                >
-                  {{ formatTime(slot.start_time) }} - {{ formatTime(slot.end_time) }}
-                </span>
-              </div>
+            <button
+              type="button"
+              role="tab"
+              :aria-selected="activeTab === 'hours'"
+              @click="activeTab = 'hours'"
+              class="flex-1 rounded-lg px-4 py-2 text-sm font-medium transition sm:flex-none"
+              :class="activeTab === 'hours'
+                ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-white/[0.06] dark:text-white'
+                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'"
+            >
+              {{ t('consultants.workingHours') || 'Working Hours' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 sm:px-6">
+        <span v-if="activeTab === 'info'">
+          {{ t('consultants.updateInfoHint') || 'View consultant details, specialization and location.' }}
+        </span>
+        <span v-else>
+          {{ t('consultants.updateHoursHint') || 'View weekly working hours schedule.' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- Tab: Info -->
+    <!-- ========================= -->
+    <div v-show="activeTab === 'info'" role="tabpanel" class="space-y-6">
+      <!-- General Information -->
+      <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+          <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+            {{ t('consultants.consultantInformation') }}
+          </h2>
+        </div>
+
+        <div class="p-4 sm:p-6">
+          <div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-2">
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('consultants.displayName') }}
+              </label>
+              <p class="text-base text-gray-800 dark:text-white/90">
+                {{ consultant?.display_name || 'N/A' }}
+              </p>
+            </div>
+
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('common.email') }}
+              </label>
+              <p class="text-base text-gray-800 dark:text-white/90">
+                {{ consultant?.email || 'N/A' }}
+              </p>
+            </div>
+
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('common.phoneNumber') }}
+              </label>
+              <p class="text-base text-gray-800 dark:text-white/90">
+                {{ consultant?.phone || 'N/A' }}
+              </p>
+            </div>
+
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('common.status') }}
+              </label>
+              <span
+                class="inline-flex items-center justify-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
+                :class="{
+                  'bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-500': consultant?.is_active,
+                  'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500': !consultant?.is_active,
+                }"
+              >
+                {{ consultant?.is_active ? t('common.active') : t('common.inactive') }}
+              </span>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('common.address') }}
+              </label>
+              <p class="text-base text-gray-800 dark:text-white/90">
+                {{ consultant?.address || 'N/A' }}
+              </p>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('consultants.bio') }}
+              </label>
+              <p class="whitespace-pre-line text-base text-gray-800 dark:text-white/90">
+                {{ consultant?.bio || 'N/A' }}
+              </p>
             </div>
           </div>
         </div>
+      </div>
 
-        <div v-else class="text-sm text-gray-500 dark:text-gray-400">
-          {{ t('consultants.noWorkingHours') }}
+      <!-- Experience & Specialization -->
+      <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+          <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+            {{ t('consultants.experienceAndSpecialization') }}
+          </h2>
+        </div>
+
+        <div class="p-4 sm:p-6">
+          <div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-2">
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('consultants.yearsOfExperience') }}
+              </label>
+              <p class="text-base text-gray-800 dark:text-white/90">
+                {{ consultant?.years_of_experience ?? 'N/A' }}
+              </p>
+            </div>
+
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('consultants.specializationSummary') }}
+              </label>
+              <p class="whitespace-pre-line text-base text-gray-800 dark:text-white/90">
+                {{ consultant?.specialization_summary || 'N/A' }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location Section -->
+      <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+          <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+            {{ t('common.location') }}
+          </h2>
+        </div>
+
+        <div class="p-4 sm:p-6">
+          <div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-3">
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('governorates.governorate') }}
+              </label>
+              <p class="text-base text-gray-800 dark:text-white/90">
+                {{ governorateName || 'N/A' }}
+              </p>
+            </div>
+
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('districts.district') }}
+              </label>
+              <p class="text-base text-gray-800 dark:text-white/90">
+                {{ districtName || 'N/A' }}
+              </p>
+            </div>
+
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{ t('areas.area') }}
+              </label>
+              <p class="text-base text-gray-800 dark:text-white/90">
+                {{ areaName || 'N/A' }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- Tab: Working Hours -->
+    <!-- ========================= -->
+    <div v-show="activeTab === 'hours'" role="tabpanel" class="space-y-6">
+      <!-- Working Hours -->
+      <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+          <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+            {{ t('consultants.workingHours') }}
+          </h2>
+        </div>
+
+        <div class="p-4 sm:p-6">
+          <div v-if="groupedWorkingHours.length" class="space-y-4">
+            <div
+              v-for="day in groupedWorkingHours"
+              :key="day.day_of_week"
+              class="rounded-xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900"
+            >
+              <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div class="text-sm font-semibold text-gray-800 dark:text-white/90">
+                  {{ dayLabel(day.day_of_week) }}
+                </div>
+
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    v-for="slot in day.slots"
+                    :key="slot.id"
+                    class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium"
+                    :class="slot.is_active
+                      ? 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400'
+                      : 'bg-gray-200 text-gray-700 dark:bg-white/10 dark:text-gray-300'
+                    "
+                  >
+                    {{ formatTime(slot.start_time) }} - {{ formatTime(slot.end_time) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div v-else class="text-sm text-gray-500 dark:text-gray-400">
+            {{ t('consultants.noWorkingHours') }}
+          </div>
         </div>
       </div>
     </div>
@@ -259,7 +319,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import { useI18n } from 'vue-i18n'
 import { route } from '@/route'
@@ -267,11 +327,14 @@ import { UserCircleIcon } from '@/icons'
 
 const { t, locale } = useI18n()
 
+// ✅ Tabs state (only addition)
+const activeTab = ref('info')
+
 const props = defineProps({
   consultant: Object,
 })
 
-
+const consultant = computed(() => props.consultant)
 
 const governorateName = computed(() => {
   const c = props.consultant
@@ -287,7 +350,6 @@ const areaName = computed(() => {
   const c = props.consultant
   return locale.value === 'ar' ? c?.area_name_ar : c?.area_name_en
 })
-
 
 const rawWorkingHours = computed(() => {
   const c = props.consultant || {}
@@ -335,7 +397,6 @@ const locationText = computed(() => {
 
 const ratingAvgText = computed(() => {
   const v = props.consultant?.rating_avg ?? 0
-  // يطبع رقمين عشرية لو كان رقم
   return typeof v === 'number' ? v.toFixed(2) : String(v)
 })
 </script>

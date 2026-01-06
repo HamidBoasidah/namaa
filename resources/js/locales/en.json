@@ -77,6 +77,7 @@
     "edit": "Edit",
     "delete": "Delete",
     "backToList": "Back to list"
+    ,"selectItems": "Select items..."
   },
   "user": {
     "name": "Code Brains",
@@ -247,7 +248,7 @@
     "timeSelectInput": "Time Select Input",
     "selectTime": "Select time",
     "email": "Email",
-    "emailPlaceholder": "info@gmail.com",
+    "emailPlaceholder": "Enter email address",
     "phone": "Phone",
     "phonePlaceholder": "+1 (555) 000-0000",
     "description": "Description",
@@ -312,7 +313,7 @@
       "withX": "Sign in with X",
       "or": "Or",
       "email": "Email",
-      "emailPlaceholder": "name@example.com",
+      "emailPlaceholder": "Enter email address",
       "password": "Password",
       "passwordPlaceholder": "Enter your password",
       "keepLoggedIn": "Keep me logged in",

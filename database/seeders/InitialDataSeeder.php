@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Kyc;
 use App\Models\Tag;
 use App\Models\Consultant;
+use App\Models\ConsultantService;
 
 
 class InitialDataSeeder extends Seeder
@@ -33,5 +34,13 @@ class InitialDataSeeder extends Seeder
 
         // Create some consultants
         Consultant::factory()->count(10)->create();
+
+        // Create consultant services for each consultant (1-3 services each)
+        $consultants = Consultant::all();
+        foreach ($consultants as $consultant) {
+            ConsultantService::factory()->count(rand(1, 3))->create([
+                'consultant_id' => $consultant->id,
+            ]);
+        }
     }
 }

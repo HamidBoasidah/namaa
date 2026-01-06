@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class UpdateConsultantServiceRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        $serviceId = optional($this->route('consultant_service'))->id ?? $this->route('consultant_service');
+        $consultantId = $this->input('consultant_id');
+
+        return [
+            'consultant_id' => ['required', 'integer', 'exists:consultants,id'],
+            'category_id' => ['nullable', 'integer', 'exists:categories,id'],
+
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('consultant_services', 'title')
+                    ->where(function ($q) use ($consultantId) {
+                        return $q->where('consultant_id', $consultantId)
+                                 ->whereNull('deleted_at');
+                    })
+                    ->ignore($serviceId),
+            ],
+
+            'description' => ['nullable', 'string'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['integer', 'exists:tags,id'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'duration_minutes' => ['nullable', 'integer', 'min:1', 'max:1440'],
+            'is_active' => ['nullable', 'boolean'],
+        ];
+    }
+
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('duration_minutes') && $this->input('duration_minutes') === '') {
+            $this->merge(['duration_minutes' => null]);
+        }
+    }
+}

@@ -9,8 +9,8 @@ import ErrorHexaIcon from "./ErrorHexaIcon.vue";
 import SuccessIcon from "./SuccessIcon.vue";
 import GlobalIcon from "./GlobalIcon.vue";
 import TagIcon from "./TagIcon.vue";
-import ConsultIcon from './ConsultIcon.vue';
-
+import ConsultantIcon from './ConsultantIcon.vue';
+import ConsultantServiceIcon from './ConsultantServiceIcon.vue';
 
 export {
   GridIcon,
@@ -24,6 +24,7 @@ export {
   SuccessIcon,
   GlobalIcon,
   TagIcon,
-  ConsultIcon,
+  ConsultantIcon,
+  ConsultantServiceIcon,
 };
  

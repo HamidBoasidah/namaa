@@ -66,20 +66,4 @@ class StoreConsultantWorkingHourRequest extends FormRequest
         ];
     }
 
-    public function messages(): array
-    {
-        return [
-            'consultant_id.required' => 'المستشار مطلوب.',
-            'consultant_id.exists'   => 'المستشار غير موجود.',
-            'day_of_week.required'   => 'اليوم مطلوب.',
-            'day_of_week.min'        => 'اليوم غير صحيح.',
-            'day_of_week.max'        => 'اليوم غير صحيح.',
-            'start_time.required'    => 'وقت البداية مطلوب.',
-            'start_time.date_format' => 'صيغة وقت البداية يجب أن تكون HH:MM.',
-            'start_time.unique'      => 'هذه الفترة موجودة مسبقًا بنفس البداية والنهاية.',
-            'end_time.required'      => 'وقت النهاية مطلوب.',
-            'end_time.date_format'   => 'صيغة وقت النهاية يجب أن تكون HH:MM.',
-            'end_time.after'         => 'وقت النهاية يجب أن يكون بعد وقت البداية.',
-        ];
-    }
 }

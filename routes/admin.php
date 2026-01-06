@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\Auth\ProfileController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ConsultantServiceController;
 use App\Support\RoutePermissions;
 use Illuminate\Support\Facades\Route;
 
@@ -168,6 +169,17 @@ Route::middleware('auth:admin')
         // ✅ Weekly schedule (replace)
         Route::put('consultants/{consultant}/working-hours/replace', [ConsultantController::class, 'replaceWeeklyWorkingHours'])
             ->name('consultants.working-hours.replace');
+
+
+        // Consultant Services
+        Route::resource('consultant-services', ConsultantServiceController::class);
+
+        Route::patch('consultant-services/{id}/activate', [ConsultantServiceController::class, 'activate'])
+            ->name('consultant-services.activate');
+
+        Route::patch('consultant-services/{id}/deactivate', [ConsultantServiceController::class, 'deactivate'])
+            ->name('consultant-services.deactivate');
+
 
         // Admins (managers of the system)
         Route::resource('admins', AdminController::class)

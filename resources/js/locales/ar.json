@@ -39,7 +39,8 @@
     "districts": "المديريات",
     "activityLogs": "سجل التغييرات",
     "tags": "الوسوم",
-    "categories": "الأقسام"
+    "categories": "الأقسام",
+    "consultant_services": "خدمات المستشارين"
 
   },
   "pages": {
@@ -64,6 +65,7 @@
     "deleteAreaConfirmation": "هل أنت متأكد أنك تريد حذف هذه المنطقة؟",
     "deleteRoleConfirmation": "هل أنت متأكد أنك تريد حذف هذا الدور؟",
     "notAuthorized": "غير مصرح لك",
+    "deleteConsultantServiceConfirmation": "هل أنت متأكد أنك تريد حذف هذه الخدمة؟",
     "deleteConsultantConfirmation": "هل أنت متأكد أنك تريد حذف هذا المستشار؟"
   },
   "charts": {
@@ -105,12 +107,14 @@
     "location": "الموقع",
     "rating": "التقييم",
     "items": "عناصر",
+    "selectItems": "اختر عناصر...",
     "startTime": "وقت البداية",
     "endTime": "وقت النهاية",
     "selectTime": "اختر الوقت",
     "startEndRequired": "يجب إدخال وقتي البداية والنهاية.",
     "endAfterStart": "يجب أن يكون وقت النهاية بعد وقت البداية.",
-    "validationErrors": "أخطاء التحقق"
+    "validationErrors": "أخطاء التحقق",
+    "minutes": "دقيقة"
   },
   "user": {
     "name": "كود براينس",
@@ -187,7 +191,10 @@
     "addressPlaceholder": "ادخل العنوان",
     "profileImage": "صورة الملف الشخصي",
     "workingHours": "أوقات العمل",
+    "updateInfoHint": "قم بتحديث بيانات المستشار وموقعه من هذا التبويب.",
+    "updateHoursHint": "قم بتحديث أوقات العمل وحفظها من هذا التبويب.",
     "noWorkingHoursForDay": "لم تتم إضافة أوقات عمل لهذا اليوم.",
+    "noWorkingHours": "لا توجد أوقات عمل",
     "workingHoursOverlap": "تداخل هذه الفترة مع فترة أخرى.",
     "workingHoursDuplicate": "هذه الفترة مكررة بالفعل.",
     "workingHoursSavedSuccessfully": "تم حفظ أوقات العمل بنجاح",
@@ -199,6 +206,25 @@
     "consultantDeletedSuccessfully": "تم حذف المستشار بنجاح",
     "consultantDeletionFailed": "فشل حذف المستشار",
     "noImage": "لا توجد صورة للمستشار"
+  },
+
+  "consultant_services": {
+    "addService": "إضافة خدمة",
+    "category": "القسم",
+    "selectCategory": "اختر القسم",
+    "tags": "الوسوم",
+    "selectTags": "اختر الوسوم",
+    "serviceDeletedSuccessfully": "تم حذف الخدمة بنجاح",
+    "serviceDeletionFailed": "فشل حذف الخدمة",
+    "serviceCreatedSuccessfully": "تم إنشاء الخدمة بنجاح",
+    "serviceCreationFailed": "فشل إنشاء الخدمة",
+    "serviceUpdatedSuccessfully": "تم تحديث الخدمة بنجاح",
+    "serviceUpdateFailed": "فشل تحديث الخدمة",
+    "serviceName": "اسم الخدمة",
+    "description": "الوصف",
+    "consultantName": "اسم المستشار",
+    "duration": "المدة (بالدقائق)",
+    "price": "السعر"
   },
 
   "admins": {
