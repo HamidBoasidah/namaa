@@ -71,6 +71,12 @@ class Consultant extends BaseModel
             ->orderBy('start_time');
     }
 
+    public function holidays()
+    {
+        return $this->hasMany(ConsultantHoliday::class)
+            ->orderBy('holiday_date');
+    }
+
     public function service()
     {
         return $this->hasOne(ConsultantService::class);

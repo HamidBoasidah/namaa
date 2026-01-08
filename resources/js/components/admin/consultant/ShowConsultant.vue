@@ -89,6 +89,19 @@
             >
               {{ t('consultants.workingHours') || 'Working Hours' }}
             </button>
+
+            <button
+              type="button"
+              role="tab"
+              :aria-selected="activeTab === 'holidays'"
+              @click="activeTab = 'holidays'"
+              class="flex-1 rounded-lg px-4 py-2 text-sm font-medium transition sm:flex-none"
+              :class="activeTab === 'holidays'
+                ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-white/[0.06] dark:text-white'
+                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'"
+            >
+              {{ t('consultants.holidays') || 'Holidays' }}
+            </button>
           </div>
         </div>
       </div>
@@ -97,8 +110,11 @@
         <span v-if="activeTab === 'info'">
           {{ t('consultants.updateInfoHint') || 'View consultant details, specialization and location.' }}
         </span>
-        <span v-else>
+        <span v-else-if="activeTab === 'hours'">
           {{ t('consultants.updateHoursHint') || 'View weekly working hours schedule.' }}
+        </span>
+        <span v-else>
+          {{ t('consultants.updateHolidaysHint') || 'View consultant holidays list.' }}
         </span>
       </div>
     </div>
@@ -300,6 +316,55 @@
       </div>
     </div>
 
+    <!-- ========================= -->
+    <!-- Tab: Holidays -->
+    <!-- ========================= -->
+    <div v-show="activeTab === 'holidays'" role="tabpanel" class="space-y-6">
+      <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+          <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+            {{ t('consultants.holidays') || 'Holidays' }}
+          </h2>
+        </div>
+
+        <div class="p-4 sm:p-6">
+          <div v-if="sortedHolidays.length" class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800">
+            <div class="custom-scrollbar overflow-x-auto">
+              <table class="min-w-full text-left text-sm text-gray-700 dark:border-gray-800">
+                <thead class="bg-gray-50 dark:bg-gray-900">
+                  <tr class="border-b border-gray-100 whitespace-nowrap dark:border-gray-800">
+                    <th class="px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-700 dark:text-gray-400">#</th>
+                    <th class="px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">
+                      {{ t('consultants.holidayDate') || 'Holiday Date' }}
+                    </th>
+                    <th class="px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">
+                      {{ t('consultants.holidayName') || 'Holiday Name' }}
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody class="divide-y divide-gray-100 bg-white dark:divide-gray-800 dark:bg-white/[0.03]">
+                  <tr v-for="(holiday, idx) in sortedHolidays" :key="holiday._key">
+                    <td class="px-5 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">{{ idx + 1 }}</td>
+                    <td class="px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">
+                      {{ holiday.holiday_date }}
+                    </td>
+                    <td class="px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">
+                      {{ holiday.name || '—' }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div v-else class="text-sm text-gray-500 dark:text-gray-400">
+            {{ t('consultants.noHolidays') || 'No holidays added.' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Buttons -->
     <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
       <Link
@@ -398,5 +463,15 @@ const locationText = computed(() => {
 const ratingAvgText = computed(() => {
   const v = props.consultant?.rating_avg ?? 0
   return typeof v === 'number' ? v.toFixed(2) : String(v)
+})
+
+const sortedHolidays = computed(() => {
+  const list = Array.isArray(props.consultant?.holidays) ? props.consultant.holidays : []
+  return list
+    .map(h => ({
+      ...h,
+      _key: `${h.id ?? 'holiday'}-${h.holiday_date ?? Math.random()}`,
+    }))
+    .sort((a, b) => String(a.holiday_date).localeCompare(String(b.holiday_date)))
 })
 </script>

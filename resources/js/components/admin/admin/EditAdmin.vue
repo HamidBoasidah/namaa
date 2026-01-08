@@ -543,7 +543,13 @@ onBeforeUnmount(() => {
 })
 
 const update = () => {
-	form.post(route('admin.admins.update', props.admin.id), {
+	form.transform((data) => {
+		const payload = { ...data }
+		if (!data.avatar) {
+			delete payload.avatar
+		}
+		return payload
+	}).post(route('admin.admins.update', props.admin.id), {
 		preserveScroll: true,
 		onSuccess: () => {
 			success(t('admins.userUpdatedSuccessfully'))

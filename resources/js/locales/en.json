@@ -324,4 +324,36 @@
       "tagline": "Code Brains — we don't just write code, we build solutions."
     }
   }
+  ,"consultants": {
+    "consultantInformation": "Consultant information",
+    "workingHours": "Working hours",
+    "updateInfoHint": "Update consultant details, location and profile image.",
+    "updateHoursHint": "Manage weekly working hours slots.",
+    "holidays": "Holidays",
+    "holidayName": "Holiday name",
+    "holidayDate": "Holiday date",
+    "addHoliday": "Add holiday",
+    "saveHolidays": "Save holidays",
+    "noHolidays": "No holidays added",
+    "updateHolidaysHint": "Manage consultant holiday dates from this tab.",
+    "holidaysSavedSuccessfully": "Holidays saved successfully",
+    "holidaysSaveFailed": "Failed to save holidays"
+  },
+  "consultationTypes": {
+    "title": "Consultation Types",
+    "add": "Add Consultation Type",
+    "create": "Create Consultation Type",
+    "edit": "Edit Consultation Type",
+    "show": "Show Consultation Type",
+    "information": "Consultation Type information",
+    "name": "Name",
+    "slug": "Slug",
+    "noItem": "No consultation types",
+    "created": "Consultation type created successfully",
+    "createFailed": "Failed to create consultation type",
+    "updated": "Consultation type updated successfully",
+    "updateFailed": "Failed to update consultation type",
+    "deleted": "Consultation type deleted successfully",
+    "deleteFailed": "Failed to delete consultation type"
+  }
 }

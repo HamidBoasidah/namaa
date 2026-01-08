@@ -77,6 +77,52 @@
               </div>
               <p v-if="form.errors.email" class="mt-1 text-sm text-error-500">{{ form.errors.email }}</p>
             </div>
+            <!-- Gender Select -->
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                {{ t('kyc.gender') || 'Gender' }}
+              </label>
+              <div class="relative z-20 bg-transparent">
+                <select
+                  v-model="form.gender"
+                  class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+                >
+                  <option value="" disabled class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                    --
+                  </option>
+                  <option value="male" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">{{ t('kyc.genders.male') || 'Male' }}</option>
+                  <option value="female" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">{{ t('kyc.genders.female') || 'Female' }}</option>
+                </select>
+
+                <span class="pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-700 dark:text-gray-400">
+                  <svg class="stroke-current" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </div>
+              <p v-if="form.errors.gender" class="mt-1 text-sm text-error-500">{{ form.errors.gender }}</p>
+            </div>
+            <!-- User Type Select -->
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                {{ t('users.userType') || 'User type' }}
+              </label>
+              <div class="relative z-20 bg-transparent">
+                <select
+                  v-model="form.user_type"
+                  class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+                >
+                  <option value="customer">{{ t('users.types.customer') || 'Customer' }}</option>
+                  <option value="consultant">{{ t('users.types.consultant') || 'Consultant' }}</option>
+                </select>
+                <span class="pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-700 dark:text-gray-400">
+                  <svg class="stroke-current" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </div>
+              <p v-if="form.errors.user_type" class="mt-1 text-sm text-error-500">{{ form.errors.user_type }}</p>
+            </div>
             <!-- Phone Input with Prepended Country Code -->
             <div>
               <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
@@ -124,73 +170,8 @@
               </div>
               <p v-if="form.errors.phone_number" class="mt-1 text-sm text-error-500">{{ form.errors.phone_number }}</p>
             </div>
-            <!-- Phone Input with Prepended Country Code -->
-            <div>
-              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                {{ t('common.whatsappNumber') }}
-              </label>
-              <div class="relative">
-                <div class="absolute">
-                  <select
-                    v-model="selectedCountry"
-                    @change="updatePhoneNumber"
-                    class="appearance-none rounded-l-lg border-0 border-r border-gray-200 bg-transparent bg-none py-3 pl-3.5 pr-8 leading-tight text-gray-700 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-800 dark:text-gray-400"
-                  >
-                    <option v-for="(code, country) in countryCodes" :key="country" :value="country">
-                      {{ country }}
-                    </option>
-                  </select>
-                  <div
-                    class="absolute inset-y-0 flex items-center text-gray-700 pointer-events-none right-3 dark:text-gray-400"
-                  >
-                    <svg
-                      class="stroke-current"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396"
-                        stroke=""
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <input
-                  v-model="form.whatsapp_number"
-                  :placeholder="t('users.whatsappPlaceholder')"
-                  type="tel"
-                  autocomplete="new-tel"
-                  class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-3 pl-[84px] pr-4 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-                />
-              </div>
-              <p v-if="form.errors.whatsapp_number" class="mt-1 text-sm text-error-500">{{ form.errors.whatsapp_number }}</p>
-            </div>
-            <!-- Social Links Inputs (moved to separate section) -->
-            <!-- UserName Input -->
-            <div>
-              <label
-                for="user-name"
-                class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
-                >{{ t('common.address') }}</label
-              >
-              <input
-                v-model="form.address"
-                type="text"
-                id="user-name"
-                autocomplete="address"
-                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                :placeholder="t('users.addressPlaceholder')"
-              />
-              <p v-if="form.errors.address" class="mt-1 text-sm text-error-500">{{ form.errors.address }}</p>
-            </div>
-            <!-- End User Name Input -->
-            <!-- Password Type Input -->
+
+           <!-- Password Type Input -->
             <div>
               <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                 {{ t('users.password') }}
@@ -273,80 +254,7 @@
       </div>
     </div>
 
-      <!-- Social Links Section -->
-      <div
-        class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
-      >
-        <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
-          <h2 class="text-lg font-medium text-gray-800 dark:text-white">{{ t('users.socialLinks') }}</h2>
-        </div>
-        <div class="p-4 sm:p-6">
-          <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <div>
-              <label
-                for="facebook"
-                class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
-              >{{ t('profile.labels.facebook') }}</label>
-              <input
-                v-model="form.facebook"
-                type="text"
-                id="facebook"
-                autocomplete="off"
-                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                :placeholder="t('profile.labels.facebook')"
-              />
-              <p v-if="form.errors.facebook" class="mt-1 text-sm text-error-500">{{ form.errors.facebook }}</p>
-            </div>
-            <div>
-              <label
-                for="x_url"
-                class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
-              >{{ t('profile.labels.x') }}</label>
-              <input
-                v-model="form.x_url"
-                type="text"
-                id="x_url"
-                autocomplete="off"
-                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                :placeholder="t('profile.labels.x')"
-              />
-              <p v-if="form.errors.x_url" class="mt-1 text-sm text-error-500">{{ form.errors.x_url }}</p>
-            </div>
-            <div>
-              <label
-                for="linkedin"
-                class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
-              >{{ t('profile.labels.linkedin') }}</label>
-              <input
-                v-model="form.linkedin"
-                type="text"
-                id="linkedin"
-                autocomplete="off"
-                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                :placeholder="t('profile.labels.linkedin')"
-              />
-              <p v-if="form.errors.linkedin" class="mt-1 text-sm text-error-500">{{ form.errors.linkedin }}</p>
-            </div>
-            <div>
-              <label
-                for="instagram"
-                class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
-              >{{ t('profile.labels.instagram') }}</label>
-              <input
-                v-model="form.instagram"
-                type="text"
-                id="instagram"
-                autocomplete="off"
-                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                :placeholder="t('profile.labels.instagram')"
-              />
-              <p v-if="form.errors.instagram" class="mt-1 text-sm text-error-500">{{ form.errors.instagram }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Status Section -->
+    <!-- Status Section -->
     <div
       class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
       <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
@@ -384,6 +292,7 @@
         </div>
       </div>
     </div>
+
     <!-- User Images Section -->
     <ImageUploadBox v-model="form.avatar" input-id="user-image" label="users.userImage" />
     <p v-if="form.errors.avatar" class="mt-1 text-sm text-error-500">{{ form.errors.avatar }}</p>
@@ -422,60 +331,28 @@ const props = defineProps({
 })
 
 const form = useForm({
-  name: '',
   email: '',
+  gender: '',
+  user_type: 'customer',
   phone_number: '',
-  whatsapp_number: '',
-  address: '',
   is_active: true,
   password: '',
   password_confirmation: '',
   avatar: null,
-  role_id: '',
   first_name: '',
   last_name: '',
-  facebook: '',
-  x_url: '',
-  linkedin: '',
-  instagram: ''
 
 })
 
 const showPassword = ref(false)
 const imagePreview = ref(null)
-const fileInput = ref(null)
 
-function handleFileUpload(event) {
-  const file = event.target.files?.[0] || null
-  form.avatar = file
-  // cleanup previous preview URL
-  if (imagePreview.value) {
-    URL.revokeObjectURL(imagePreview.value)
-  }
-  imagePreview.value = file ? URL.createObjectURL(file) : null
-}
-
-function removeImage() {
-  form.avatar = null
-  if (imagePreview.value) {
-    URL.revokeObjectURL(imagePreview.value)
-    imagePreview.value = null
-  }
-  if (fileInput.value) {
-    fileInput.value.value = ''
-  }
-}
 
 onBeforeUnmount(() => {
   if (imagePreview.value) {
     URL.revokeObjectURL(imagePreview.value)
   }
 })
-
-function saveDraft() {
-  console.log('Draft saved:', form.value)
-  // Implement draft saving logic here
-}
 
 function create() {
   form.post(route('admin.users.store'), {
@@ -490,21 +367,9 @@ function create() {
   });
 }
 
-const selectedCountry = ref('YE')
+const selectedCountry = ref('SA')
 const countryCodes = {
-  YE: '+967',
+  SA: '+966',
 }
-
-function facilityDisplayName(facility) {
-  if (!facility) return ''
-  const loc = locale.value
-
-  if (facility.display_name && typeof facility.display_name === 'object') {
-    return facility.display_name[loc] ?? facility.display_name.en ?? facility.display_name.ar ?? ''
-  }
-
-  return facility[`name_${loc}`] ?? facility.name_en ?? facility.name_ar ?? ''
-}
-
 
 </script>

@@ -12,12 +12,9 @@ class UserDTO extends BaseDTO
     public $email;
     public $address;
     public $phone_number;
-    public $whatsapp_number;
     public $user_type;
-    public $facebook;
-    public $x_url;
-    public $linkedin;
-    public $instagram;
+    public $gender;
+    public $consultation_type;
     public $is_active;
     public $locale;
     public $avatar;
@@ -27,20 +24,16 @@ class UserDTO extends BaseDTO
     public $created_at;
     public $deleted_at;
 
-    public function __construct($id, $first_name, $last_name, $email, $address, $phone_number, $whatsapp_number, $user_type, $facebook, $x_url, $linkedin, $instagram, $is_active, $locale, $avatar, $created_by, $updated_by, $created_at = null, $deleted_at = null)
+    public function __construct($id, $first_name, $last_name, $email, $phone_number, $user_type, $gender, $consultation_type, $is_active, $locale, $avatar, $created_by, $updated_by, $created_at = null, $deleted_at = null)
     {
         $this->id = $id;
         $this->first_name = $first_name;
         $this->last_name = $last_name;
         $this->email = $email;
-        $this->address = $address;
         $this->phone_number = $phone_number;
-        $this->whatsapp_number = $whatsapp_number;
         $this->user_type = $user_type;
-        $this->facebook = $facebook;
-        $this->x_url = $x_url;
-        $this->linkedin = $linkedin;
-        $this->instagram = $instagram;
+        $this->gender = $gender;
+        $this->consultation_type = $consultation_type;
         $this->is_active = $is_active;
         $this->locale = $locale;
         $this->avatar = $avatar;
@@ -57,14 +50,10 @@ class UserDTO extends BaseDTO
             $user->first_name ?? null,
             $user->last_name ?? null,
             $user->email ?? null,
-            $user->address ?? null,
             $user->phone_number ?? null,
-            $user->whatsapp_number ?? null,
             $user->user_type ?? 'customer',
-            $user->facebook ?? null,
-            $user->x_url ?? null,
-            $user->linkedin ?? null,
-            $user->instagram ?? null,
+            $user->gender ?? null,
+            $user->consultation_type ?? null,
             (bool) ($user->is_active ?? false),
             $user->locale ?? null,
             $user->avatar ?? null,
@@ -82,14 +71,10 @@ class UserDTO extends BaseDTO
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            'address' => $this->address,
             'phone_number' => $this->phone_number,
-            'whatsapp_number' => $this->whatsapp_number,
             'user_type' => $this->user_type,
-            'facebook' => $this->facebook,
-            'x_url' => $this->x_url,
-            'linkedin' => $this->linkedin,
-            'instagram' => $this->instagram,
+            'gender' => $this->gender,
+            'consultation_type' => $this->consultation_type,
             'is_active' => $this->is_active,
             'locale' => $this->locale,
             'avatar' => $this->avatar,
@@ -110,6 +95,8 @@ class UserDTO extends BaseDTO
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'user_type' => $this->user_type,
+            'gender' => $this->gender,
+            'consultation_type' => $this->consultation_type,
             'is_active' => $this->is_active,
             'avatar' => $this->avatar,
             

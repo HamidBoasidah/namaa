@@ -38,6 +38,19 @@
 						>
 							{{ t('consultants.workingHours') || 'Working Hours' }}
 						</button>
+
+						<button
+							type="button"
+							role="tab"
+							:aria-selected="activeTab === 'holidays'"
+							@click="activeTab = 'holidays'"
+							class="flex-1 rounded-lg px-4 py-2 text-sm font-medium transition sm:flex-none"
+							:class="activeTab === 'holidays'
+								? 'bg-white text-gray-900 shadow-theme-xs dark:bg-white/[0.06] dark:text-white'
+								: 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'"
+						>
+							{{ t('consultants.holidays') || 'Holidays' }}
+						</button>
 					</div>
 				</div>
 			</div>
@@ -46,8 +59,11 @@
 				<span v-if="activeTab === 'info'">
 					{{ t('consultants.updateInfoHint') || 'Update consultant details, location and profile image.' }}
 				</span>
-				<span v-else>
+				<span v-else-if="activeTab === 'hours'">
 					{{ t('consultants.updateHoursHint') || 'Manage weekly working hours slots.' }}
+				</span>
+				<span v-else>
+					{{ t('consultants.updateHolidaysHint') || 'Manage consultant holiday dates from this tab.' }}
 				</span>
 			</div>
 		</div>
@@ -620,6 +636,159 @@
 				</Link>
 			</div>
 		</div>
+
+		<!-- ========================= -->
+		<!-- Tab: Holidays -->
+		<!-- ========================= -->
+		<div v-show="activeTab === 'holidays'" role="tabpanel" class="space-y-6">
+			<div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+				<div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+					<h2 class="text-lg font-medium text-gray-800 dark:text-white">
+						{{ t('consultants.holidays') || 'Holidays' }}
+					</h2>
+				</div>
+
+				<div class="p-4 sm:p-6 space-y-6">
+					<p v-if="holidayError" class="text-sm text-error-500">{{ holidayError }}</p>
+
+					<!-- Existing holidays table -->
+					<div class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800">
+						<div class="custom-scrollbar overflow-x-auto">
+							<table class="min-w-full text-left text-sm text-gray-700 dark:border-gray-800">
+								<thead class="bg-gray-50 dark:bg-gray-900">
+									<tr class="border-b border-gray-100 whitespace-nowrap dark:border-gray-800">
+										<th class="px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-700 dark:text-gray-400">#</th>
+										<th class="px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">
+											{{ t('consultants.holidayDate') || 'Holiday Date' }}
+										</th>
+										<th class="px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">
+											{{ t('consultants.holidayName') || 'Holiday Name' }}
+										</th>
+										<th class="relative px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-700 dark:text-gray-400">
+											<span class="sr-only">Actions</span>
+										</th>
+									</tr>
+								</thead>
+
+								<tbody class="divide-y divide-gray-100 bg-white dark:divide-gray-800 dark:bg-white/[0.03]">
+									<tr v-for="(holiday, idx) in holidays" :key="holiday._key">
+										<td class="px-5 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">{{ idx + 1 }}</td>
+										<td class="px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">
+											{{ holiday.holiday_date }}
+										</td>
+										<td class="px-5 py-4 text-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">
+											{{ holiday.name || '—' }}
+										</td>
+										<td class="px-5 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
+											<div class="flex items-center justify-center">
+												<svg
+													class="hover:fill-error-500 dark:hover:fill-error-500 cursor-pointer fill-gray-700 dark:fill-gray-400"
+													width="20"
+													height="20"
+													viewBox="0 0 20 20"
+													fill="none"
+													xmlns="http://www.w3.org/2000/svg"
+													@click="removeHoliday(idx)"
+												>
+													<path
+														fill-rule="evenodd"
+														clip-rule="evenodd"
+														d="M6.54142 3.7915C6.54142 2.54886 7.54878 1.5415 8.79142 1.5415H11.2081C12.4507 1.5415 13.4581 2.54886 13.4581 3.7915V4.0415H15.6252H16.666C17.0802 4.0415 17.416 4.37729 17.416 4.7915C17.416 5.20572 17.0802 5.5415 16.666 5.5415H16.3752V8.24638V13.2464V16.2082C16.3752 17.4508 15.3678 18.4582 14.1252 18.4582H5.87516C4.63252 18.4582 3.62516 17.4508 3.62516 16.2082V13.2464V8.24638V5.5415H3.3335C2.91928 5.5415 2.5835 5.20572 2.5835 4.7915C2.5835 4.37729 2.91928 4.0415 3.3335 4.0415H4.37516H6.54142V3.7915ZM14.8752 13.2464V8.24638V5.5415H13.4581H12.7081H7.29142H6.54142H5.12516V8.24638V13.2464V16.2082C5.12516 16.6224 5.46095 16.9582 5.87516 16.9582H14.1252C14.5394 16.9582 14.8752 16.6224 14.8752 16.2082V13.2464ZM8.04142 4.0415H11.9581V3.7915C11.9581 3.37729 11.6223 3.0415 11.2081 3.0415H8.79142C8.37721 3.0415 8.04142 3.37729 8.04142 3.7915V4.0415ZM8.3335 7.99984C8.74771 7.99984 9.0835 8.33562 9.0835 8.74984V13.7498C9.0835 14.1641 8.74771 14.4998 8.3335 14.4998C7.91928 14.4998 7.5835 14.1641 7.5835 13.7498V8.74984C7.5835 8.33562 7.91928 7.99984 8.3335 7.99984ZM12.4168 8.74984C12.4168 8.33562 12.081 7.99984 11.6668 7.99984C11.2526 7.99984 10.9168 8.33562 10.9168 8.74984V13.7498C10.9168 14.1641 11.2526 14.4998 11.6668 14.4998C12.081 14.4998 12.4168 14.1641 12.4168 13.7498V8.74984Z"
+														fill=""
+													/>
+												</svg>
+											</div>
+										</td>
+									</tr>
+
+									<tr v-if="holidays.length === 0">
+										<td colspan="4" class="px-5 py-4 text-center text-gray-400">
+											{{ t('consultants.noHolidays') || 'No holidays added.' }}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- Add Holiday Form -->
+					<div class="rounded-xl border border-gray-100 bg-gray-50 p-4 sm:p-6 dark:border-gray-800 dark:bg-gray-900">
+						<form @submit.prevent="addHoliday">
+							<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+								<div class="w-full">
+									<label class="mb-1 inline-block text-sm font-semibold text-gray-700 dark:text-gray-400">
+										{{ t('consultants.holidayDate') || 'Holiday Date' }}
+									</label>
+									<input
+										v-model="holidayForm.holiday_date"
+										type="date"
+										class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+										:placeholder="t('consultants.holidayDate')"
+									/>
+								</div>
+
+								<div class="w-full">
+									<label class="mb-1 inline-block text-sm font-semibold text-gray-700 dark:text-gray-400">
+										{{ t('consultants.holidayName') || 'Holiday Name' }}
+									</label>
+									<input
+										v-model="holidayForm.name"
+										type="text"
+										autocomplete="off"
+										class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+										:placeholder="t('consultants.holidayName')"
+									/>
+								</div>
+
+								<div class="flex w-full items-end">
+									<button
+										type="submit"
+										class="hover:bg-brand-600 bg-brand-500 h-11 w-full rounded-lg px-4 py-3 text-sm font-medium text-white transition"
+									>
+										{{ t('buttons.add') || 'Add' }}
+									</button>
+								</div>
+							</div>
+
+							<p v-if="holidayFormError" class="mt-2 text-sm text-error-500">
+								{{ holidayFormError }}
+							</p>
+						</form>
+					</div>
+
+					<!-- Save holidays -->
+					<div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
+						<button
+							type="button"
+							@click="saveHolidays"
+							class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white transition"
+							:class="{ 'cursor-not-allowed opacity-70': holidaysForm.processing }"
+							:disabled="holidaysForm.processing"
+						>
+							{{ holidaysForm.processing ? (t('common.loading') || 'Loading...') : (t('consultants.saveHolidays') || 'Save Holidays') }}
+						</button>
+					</div>
+
+					<div v-if="Object.keys(holidaysForm.errors || {}).length" class="rounded-lg border border-error-200 bg-error-50 p-4 text-sm text-error-700 dark:border-error-500/30 dark:bg-error-500/10 dark:text-error-300">
+						<div class="font-semibold mb-1">{{ t('common.validationErrors') || 'Validation errors' }}</div>
+						<ul class="list-disc pl-5 space-y-1">
+							<li v-for="(msg, key) in holidaysForm.errors" :key="key">
+								<span class="font-medium">{{ key }}:</span> {{ msg }}
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
+				<Link
+					:href="route('admin.consultants.index')"
+					class="shadow-theme-xs inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 ring-1 ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
+				>
+					{{ t('buttons.backToList') }}
+				</Link>
+			</div>
+		</div>
 	</form>
 </template>
 
@@ -869,6 +1038,100 @@ function saveWorkingHours() {
 	workingHoursForm.put(route('admin.consultants.working-hours.replace', consultant.id), {
 		onSuccess: () => success(t('consultants.workingHoursSavedSuccessfully') || 'Working hours saved successfully'),
 		onError: () => error(t('consultants.workingHoursSaveFailed') || 'Failed to save working hours'),
+		preserveScroll: true,
+	})
+}
+
+/**
+ * =========================
+ * Holidays UI / Save
+ * =========================
+ */
+
+function buildHolidaysFromProps() {
+	const list = Array.isArray(consultant?.holidays) ? consultant.holidays : []
+	const mapped = list.map(h => ({
+		id: h.id ?? null,
+		holiday_date: h.holiday_date,
+		name: h.name || '',
+		_key: `${h.id ?? 'new'}-${Math.random().toString(16).slice(2)}`,
+	}))
+
+	return mapped.sort((a, b) => String(a.holiday_date).localeCompare(String(b.holiday_date)))
+}
+
+const holidays = ref(buildHolidaysFromProps())
+
+const holidayForm = reactive({
+	holiday_date: '',
+	name: '',
+})
+
+const holidayFormError = ref('')
+const holidayError = ref('')
+
+const holidaysForm = useForm({
+	holidays: [],
+})
+
+function resetHolidayForm() {
+	holidayForm.holiday_date = ''
+	holidayForm.name = ''
+}
+
+function addHoliday() {
+	holidayFormError.value = ''
+	holidayError.value = ''
+
+	const date = holidayForm.holiday_date ? String(holidayForm.holiday_date).trim() : ''
+	const name = holidayForm.name ? String(holidayForm.name).trim() : ''
+
+	if (!date) {
+		holidayFormError.value = t('consultants.holidayDateRequired') || 'Holiday date is required.'
+		return
+	}
+
+	const exists = holidays.value.some(h => String(h.holiday_date) === date)
+	if (exists) {
+		holidayFormError.value = t('consultants.holidayDateDuplicate') || 'Holiday date already added.'
+		return
+	}
+
+	holidays.value.push({
+		id: null,
+		holiday_date: date,
+		name,
+		_key: `new-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+	})
+
+	holidays.value.sort((a, b) => String(a.holiday_date).localeCompare(String(b.holiday_date)))
+
+	resetHolidayForm()
+}
+
+function removeHoliday(idx) {
+	holidayFormError.value = ''
+	holidayError.value = ''
+	holidays.value.splice(idx, 1)
+}
+
+function toHolidayPayload() {
+	return holidays.value.map(h => ({
+		holiday_date: h.holiday_date,
+		name: h.name || '',
+	}))
+}
+
+function saveHolidays() {
+	holidayError.value = ''
+	holidayFormError.value = ''
+	holidaysForm.clearErrors()
+
+	holidaysForm.holidays = toHolidayPayload()
+
+	holidaysForm.put(route('admin.consultants.holidays.replace', consultant.id), {
+		onSuccess: () => success(t('consultants.holidaysSavedSuccessfully') || 'Holidays saved successfully'),
+		onError: () => error(t('consultants.holidaysSaveFailed') || 'Failed to save holidays'),
 		preserveScroll: true,
 	})
 }

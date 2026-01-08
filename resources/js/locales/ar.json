@@ -40,7 +40,8 @@
     "activityLogs": "سجل التغييرات",
     "tags": "الوسوم",
     "categories": "الأقسام",
-    "consultant_services": "خدمات المستشارين"
+    "consultant_services": "خدمات المستشارين",
+    "consultationTypes": "أنواع الاستشارات"
 
   },
   "pages": {
@@ -193,6 +194,15 @@
     "workingHours": "أوقات العمل",
     "updateInfoHint": "قم بتحديث بيانات المستشار وموقعه من هذا التبويب.",
     "updateHoursHint": "قم بتحديث أوقات العمل وحفظها من هذا التبويب.",
+    "holidays": "الإجازات",
+    "holidayName": "اسم الإجازة",
+    "holidayDate": "تاريخ الإجازة",
+    "addHoliday": "إضافة إجازة",
+    "saveHolidays": "حفظ الإجازات",
+    "noHolidays": "لا توجد إجازات",
+    "updateHolidaysHint": "قم بإدارة تواريخ الإجازات الخاصة بالمستشار من هذا التبويب.",
+    "holidaysSavedSuccessfully": "تم حفظ الإجازات بنجاح",
+    "holidaysSaveFailed": "فشل حفظ الإجازات",
     "noWorkingHoursForDay": "لم تتم إضافة أوقات عمل لهذا اليوم.",
     "noWorkingHours": "لا توجد أوقات عمل",
     "workingHoursOverlap": "تداخل هذه الفترة مع فترة أخرى.",
@@ -394,6 +404,23 @@
     "tagDeleteFailed": "فشل حذف الوسم",
     "tagStatusUpdated": "تم تحديث حالة الوسم",
     "tagStatusUpdateFailed": "فشل تحديث حالة الوسم"
+  },
+  "consultationTypes": {
+    "title": "أنواع الاستشارات",
+    "add": "إضافة نوع استشارة",
+    "create": "إنشاء نوع استشارة",
+    "edit": "تعديل نوع استشارة",
+    "show": "عرض نوع الاستشارة",
+    "information": "معلومات نوع الاستشارة",
+    "name": "الاسم",
+    "slug": "الاسم التعريفي (slug)",
+    "noItem": "لا توجد أنواع استشارات",
+    "created": "تم إنشاء نوع الاستشارة بنجاح",
+    "createFailed": "فشل إنشاء نوع الاستشارة",
+    "updated": "تم تحديث نوع الاستشارة بنجاح",
+    "updateFailed": "فشل تحديث نوع الاستشارة",
+    "deleted": "تم حذف نوع الاستشارة بنجاح",
+    "deleteFailed": "فشل حذف نوع الاستشارة"
   },
   "activitylogs": {
     "add": "إضافة سجل نشاط",

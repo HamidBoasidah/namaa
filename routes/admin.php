@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\Auth\ProfileController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\ConsultationTypeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ConsultantServiceController;
 use App\Support\RoutePermissions;
@@ -128,6 +129,16 @@ Route::middleware('auth:admin')
         Route::patch('tags/{id}/deactivate', [TagController::class, 'deactivate'])
             ->name('tags.deactivate');
 
+        // Consultation Types
+        Route::resource('consultation-types', ConsultationTypeController::class)
+            ->names('consultation-types');
+
+        Route::patch('consultation-types/{id}/activate', [ConsultationTypeController::class, 'activate'])
+            ->name('consultation-types.activate');
+
+        Route::patch('consultation-types/{id}/deactivate', [ConsultationTypeController::class, 'deactivate'])
+            ->name('consultation-types.deactivate');
+
         // Categories
         Route::resource('categories', CategoryController::class)
             ->names('categories');
@@ -169,6 +180,9 @@ Route::middleware('auth:admin')
         // ✅ Weekly schedule (replace)
         Route::put('consultants/{consultant}/working-hours/replace', [ConsultantController::class, 'replaceWeeklyWorkingHours'])
             ->name('consultants.working-hours.replace');
+
+        Route::put('consultants/{consultant}/holidays/replace', [ConsultantController::class, 'replaceHolidays'])
+            ->name('consultants.holidays.replace');
 
 
         // Consultant Services

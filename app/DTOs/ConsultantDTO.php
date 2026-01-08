@@ -48,6 +48,9 @@ class ConsultantDTO extends BaseDTO
     public array $working_hours = [];
     public array $active_working_hours = [];
 
+    // ✅ Holidays
+    public array $holidays = [];
+
     public $created_at;
     public $deleted_at;
 
@@ -89,6 +92,8 @@ class ConsultantDTO extends BaseDTO
         array $working_hours = [],
         array $active_working_hours = [],
 
+        array $holidays = [],
+
         $created_at = null,
         $deleted_at = null
     ) {
@@ -128,6 +133,8 @@ class ConsultantDTO extends BaseDTO
 
         $this->working_hours = $working_hours;
         $this->active_working_hours = $active_working_hours;
+
+        $this->holidays = $holidays;
 
         $this->created_at = $created_at;
         $this->deleted_at = $deleted_at;
@@ -190,6 +197,13 @@ class ConsultantDTO extends BaseDTO
                 'is_active' => (bool) $wh->is_active,
             ])->values()->all() ?? [],
 
+            // ✅ Holidays
+            $consultant->holidays?->map(fn ($h) => [
+                'id' => $h->id,
+                'holiday_date' => optional($h->holiday_date)->toDateString(),
+                'name' => $h->name,
+            ])->values()->all() ?? [],
+
             $consultant->created_at?->toDateTimeString(),
             $consultant->deleted_at?->toDateTimeString()
         );
@@ -234,6 +248,9 @@ class ConsultantDTO extends BaseDTO
             // ✅ Working hours
             'working_hours' => $this->working_hours,
             'active_working_hours' => $this->active_working_hours,
+
+            // ✅ Holidays
+            'holidays' => $this->holidays,
 
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,

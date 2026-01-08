@@ -14,16 +14,11 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('avatar')->nullable();
             $table->string('phone_number')->nullable();
-            $table->string('whatsapp_number')->nullable();
-            $table->string('address')->nullable();
             $table->string('password');
             $table->enum('user_type', ['customer', 'consultant'])->default('customer');
-            $table->string('facebook')->nullable();
-            $table->string('x_url')->nullable();
-            $table->string('linkedin')->nullable();
-            $table->string('instagram')->nullable();
             $table->boolean('is_active')->default(true);
             $table->string('locale', 10)->default('ar');
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');

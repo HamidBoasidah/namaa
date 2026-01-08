@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
+// logging removed
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
@@ -14,17 +14,27 @@ class AuthService
     // تسجيل دخول API (token)
     public function loginApi(array $credentials)
     {
-        $user = User::where('email', $credentials['email'])->first();
+        $byEmail = !empty($credentials['email']);
+        $byPhone = !empty($credentials['phone_number']);
+
+        $user = null;
+        if ($byEmail) {
+            $user = User::where('email', $credentials['email'])->first();
+        } elseif ($byPhone) {
+            $user = User::where('phone_number', $credentials['phone_number'])->first();
+        }
+
+        $errorField = $byEmail ? 'email' : 'phone_number';
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['بيانات تسجيل الدخول غير صحيحة'],
+                $errorField => ['بيانات تسجيل الدخول غير صحيحة'],
             ]);
         }
 
         if (!$user->is_active) {
             throw ValidationException::withMessages([
-                'email' => ['الحساب معطل، يرجى التواصل مع الإدارة'],
+                $errorField => ['الحساب معطل، يرجى التواصل مع الإدارة'],
             ]);
         }
 
@@ -32,16 +42,11 @@ class AuthService
 
         $userData = [
             'id' => $user->id,
-            'name' => $user->name,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
             'email' => $user->email,
             'phone_number' => $user->phone_number,
-            'whatsapp_number' => $user->whatsapp_number,
-            'type' => $user->type,
-            'is_active' => $user->is_active,
-            'created_by' => $user->created_by,
-            'updated_by' => $user->updated_by,
-            'created_at' => $user->created_at,
-            'updated_at' => $user->updated_at,
+            'avatar' => $user->avatar,
         ];
 
         return [
@@ -72,12 +77,12 @@ class AuthService
 
     public function logout(Request $request)
     {
+        // تسجيل خروج المستخدم
         Auth::logout();
 
+        // إبطال الجلسة وحماية CSRF
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        return redirect()->route('dashboard');
     }
 
 

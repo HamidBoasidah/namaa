@@ -8,6 +8,7 @@ use Inertia\Inertia;
 
 use App\Services\ConsultantService;
 use App\Services\ConsultantWorkingHourService;
+use App\Services\ConsultantHolidayService;
 
 use App\DTOs\ConsultantDTO;
 
@@ -83,8 +84,8 @@ class ConsultantController extends Controller
 
     public function show(Consultant $consultant)
     {
-        // ✅ الخيار A: تحميل ساعات العمل فقط هنا
-        $consultant->load('workingHours');
+        // ✅ الخيار A: تحميل ساعات العمل والإجازات هنا
+        $consultant->load(['workingHours', 'holidays']);
 
         $consultantDTO = ConsultantDTO::fromModel($consultant)->toArray();
 
@@ -95,8 +96,8 @@ class ConsultantController extends Controller
 
     public function edit(Consultant $consultant)
     {
-        // ✅ الخيار A: تحميل ساعات العمل فقط هنا
-        $consultant->load('workingHours');
+        // ✅ الخيار A: تحميل ساعات العمل والإجازات هنا
+        $consultant->load(['workingHours', 'holidays']);
 
         $governorates = Governorate::select('id', 'name_ar', 'name_en')->get();
         $districts    = District::select('id', 'name_ar', 'name_en', 'governorate_id')->get();
@@ -177,5 +178,27 @@ class ConsultantController extends Controller
         $workingHourService->replaceWeeklySchedule($consultant->id, $data['week']);
 
         return back()->with('success', 'تم تحديث جدول أوقات العمل للأسبوع بنجاح');
+    }
+
+    /**
+     * ✅ Replace holidays list
+     */
+    public function replaceHolidays(
+        Request $request,
+        Consultant $consultant,
+        ConsultantHolidayService $holidayService
+    ) {
+        $data = $request->validate([
+            // allow clearing list by sending an empty array
+            'holidays' => ['present', 'array'],
+
+            // each holiday must be today or future, distinct dates
+            'holidays.*.holiday_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today', 'distinct'],
+            'holidays.*.name' => ['nullable', 'string', 'max:150'],
+        ]);
+
+        $holidayService->replaceHolidays($consultant->id, $data['holidays']);
+
+        return back()->with('success', 'تم تحديث قائمة الإجازات بنجاح');
     }
 }

@@ -321,6 +321,12 @@ const menuGroups = computed(() =>
           permission: 'tags.view',
         },
         {
+          icon: GridIcon,
+          name: t('menu.consultationTypes'),
+          path: route('admin.consultation-types.index'),
+          permission: 'consultation-types.view',
+        },
+        {
           icon: ConsultantIcon,
           name: t('menu.consultants'),
           path: route('admin.consultants.index'),
