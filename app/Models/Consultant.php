@@ -13,17 +13,8 @@ class Consultant extends BaseModel
 
     protected $fillable = [
         'user_id',
-        'display_name',
-        'bio',
-        'email',
-        'phone',
+        'consultation_type_id',
         'years_of_experience',
-        'specialization_summary',
-        'profile_image',
-        'address',
-        'governorate_id',
-        'district_id',
-        'area_id',
         'rating_avg',
         'ratings_count',
         'is_active',
@@ -43,19 +34,9 @@ class Consultant extends BaseModel
         return $this->belongsTo(User::class);
     }
 
-    public function governorate()
+    public function consultationType()
     {
-        return $this->belongsTo(Governorate::class);
-    }
-
-    public function district()
-    {
-        return $this->belongsTo(District::class);
-    }
-
-    public function area()
-    {
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(ConsultationType::class, 'consultation_type_id');
     }
 
     public function workingHours()

@@ -10,8 +10,12 @@ Route::get('/user', function (Request $request) {
 
 
 // Authentication Routes
+Route::post('/register', [App\Http\Controllers\Api\RegisteredUserController::class, 'store']);
 Route::post('/login', [App\Http\Controllers\Api\AuthController::class, 'login']);
 Route::post('/logout', [App\Http\Controllers\Api\AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/logout-all-devices', [App\Http\Controllers\Api\AuthController::class, 'logoutFromAllDevices'])->middleware('auth:sanctum');
 Route::get('/me', [App\Http\Controllers\Api\AuthController::class, 'me'])->middleware('auth:sanctum');
 //Route::post('/register', [App\Http\Controllers\Api\RegisteredUserController::class, 'store']);
+
+// Consultation Types (API)
+Route::get('/consultation-types', [App\Http\Controllers\Api\ConsultationTypeController::class, 'index']);

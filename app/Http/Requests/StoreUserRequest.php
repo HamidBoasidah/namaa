@@ -30,6 +30,8 @@ class StoreUserRequest extends FormRequest
             'gender' => 'nullable|in:male,female',
             'password' => 'required|string|min:8',
             'user_type' => 'required|in:customer,consultant',
+            // when user_type is consultant, consultation_type must be provided and exist
+            'consultation_type_id' => 'required_if:user_type,consultant|nullable|exists:consultation_types,id',
             'is_active' => 'nullable|boolean',
             'locale' => 'nullable|string|max:10',
             'created_by' => 'nullable|exists:users,id',

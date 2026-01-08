@@ -19,21 +19,12 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            $table->string('display_name')->nullable();
-            $table->text('bio')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
-
+            // Relation with consultation_types table
+            $table->foreignId('consultation_type_id')
+                ->constrained('consultation_types')
+                ->cascadeOnDelete();
 
             $table->unsignedSmallInteger('years_of_experience')->nullable();
-            $table->text('specialization_summary')->nullable();
-
-            $table->string('profile_image')->nullable();
-
-            $table->string('address')->nullable();
-            $table->foreignId('governorate_id')->constrained('governorates')->onDelete('cascade');
-            $table->foreignId('district_id')->constrained('districts')->onDelete('cascade');
-            $table->foreignId('area_id')->constrained('areas')->onDelete('cascade');
 
             // Ratings
             $table->decimal('rating_avg', 3, 2)->default(0);

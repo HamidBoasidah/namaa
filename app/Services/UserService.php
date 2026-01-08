@@ -3,13 +3,19 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
+use App\Services\ConsultantService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
     protected UserRepository $users;
+    protected ConsultantService $consultantService;
     public function __construct(UserRepository $users)
     {
         $this->users = $users;
+        // inject consultant service when resolved from container
+        $this->consultantService = app(ConsultantService::class);
     }
 
     public function all(array $with = [])
@@ -29,8 +35,28 @@ class UserService
 
     public function create(array $attributes)
     {
-        // منطق إضافي قبل الإنشاء (مثلاً: تحقق أو معالجة)
-        return $this->users->create($attributes);
+        // Wrap in DB transaction: create user, then create consultant record if needed
+        return DB::transaction(function () use ($attributes) {
+            // hash password if present
+            if (array_key_exists('password', $attributes) && !empty($attributes['password'])) {
+                $attributes['password'] = Hash::make($attributes['password']);
+            }
+
+            $user = $this->users->create($attributes);
+
+            // if user is a consultant, create a consultant row linked to the user
+            if (isset($attributes['user_type']) && $attributes['user_type'] === 'consultant') {
+                $consultantData = [
+                    'user_id' => $user->id,
+                    'consultation_type_id' => $attributes['consultation_type_id'] ?? null,
+                    'years_of_experience' => $attributes['years_of_experience'] ?? null,
+                ];
+
+                $this->consultantService->create($consultantData);
+            }
+
+            return $user;
+        });
     }
 
     public function update($id, array $attributes)

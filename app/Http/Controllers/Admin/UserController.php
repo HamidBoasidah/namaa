@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use App\Services\UserService;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\ConsultationType;
 use App\DTOs\UserDTO;
 use App\Http\Requests\StoreUserRequest;
 
@@ -39,10 +40,10 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::all();
+        $consultationTypes = ConsultationType::all();
 
         return Inertia::render('Admin/User/Create', [
-            'roles' => $roles,
+            'consultation_types' => $consultationTypes,
         ]);
     }
 
