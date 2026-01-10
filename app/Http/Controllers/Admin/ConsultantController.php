@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use App\Services\ConsultantService;
 use App\Services\ConsultantWorkingHourService;
 use App\Services\ConsultantHolidayService;
+use App\Services\ConsultantExperienceService;
 
 use App\DTOs\ConsultantDTO;
 
@@ -27,7 +28,7 @@ class ConsultantController extends Controller
     {
         $this->middleware('permission:consultants.view')->only(['index', 'show']);
         $this->middleware('permission:consultants.create')->only(['create', 'store']);
-        $this->middleware('permission:consultants.update')->only(['edit', 'update', 'replaceWeeklyWorkingHours', 'activate', 'deactivate']);
+        $this->middleware('permission:consultants.update')->only(['edit', 'update', 'replaceWeeklyWorkingHours', 'replaceExperiences', 'activate', 'deactivate']);
         $this->middleware('permission:consultants.delete')->only(['destroy']);
     }
 
@@ -85,7 +86,7 @@ class ConsultantController extends Controller
     public function show(Consultant $consultant)
     {
         // ✅ الخيار A: تحميل ساعات العمل والإجازات هنا
-        $consultant->load(['workingHours', 'holidays']);
+        $consultant->load(['workingHours', 'holidays', 'experiences']);
 
         $consultantDTO = ConsultantDTO::fromModel($consultant)->toArray();
 
@@ -97,7 +98,7 @@ class ConsultantController extends Controller
     public function edit(Consultant $consultant)
     {
         // ✅ الخيار A: تحميل ساعات العمل والإجازات هنا
-        $consultant->load(['workingHours', 'holidays']);
+        $consultant->load(['workingHours', 'holidays', 'experiences']);
 
         $governorates = Governorate::select('id', 'name_ar', 'name_en')->get();
         $districts    = District::select('id', 'name_ar', 'name_en', 'governorate_id')->get();
@@ -200,5 +201,26 @@ class ConsultantController extends Controller
         $holidayService->replaceHolidays($consultant->id, $data['holidays']);
 
         return back()->with('success', 'تم تحديث قائمة الإجازات بنجاح');
+    }
+
+    /**
+     * ✅ Replace experiences list
+     */
+    public function replaceExperiences(
+        Request $request,
+        Consultant $consultant,
+        ConsultantExperienceService $experienceService
+    ) {
+        $data = $request->validate([
+            // allow clearing list by sending an empty array
+            'experiences' => ['present', 'array'],
+
+            'experiences.*.name' => ['required', 'string', 'max:255', 'distinct'],
+            'experiences.*.is_active' => ['nullable', 'boolean'],
+        ]);
+
+        $experienceService->replaceForConsultant($consultant->id, $data['experiences']);
+
+        return back()->with('success', 'تم تحديث قائمة الخبرات بنجاح');
     }
 }

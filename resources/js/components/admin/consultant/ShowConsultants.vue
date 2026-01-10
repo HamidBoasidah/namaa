@@ -95,7 +95,7 @@
 
             <!-- Name -->
             <th class="px-4 py-3 text-start border border-gray-100 dark:border-gray-800">
-              <div class="flex items-center justify-between w-full cursor-pointer" @click="sortBy('display_name')">
+              <div class="flex items-center justify-between w-full cursor-pointer" @click="sortBy('user_name')">
                 <p class="font-medium text-gray-700 text-theme-xs dark:text-gray-400">{{ t('common.name') }}</p>
                 <span class="flex flex-col gap-0.5">
                   <svg class="fill-gray-300 dark:fill-gray-700" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -199,8 +199,8 @@
               <div class="flex items-center gap-3">
                 <div class="h-10 w-10">
                   <img
-                    v-if="consultant.profile_image"
-                    :src="`/storage/${consultant.profile_image}`"
+                    v-if="consultant.avatar"
+                    :src="`/storage/${consultant.avatar}`"
                     class="h-10 w-10 rounded-full object-cover"
                     alt=""
                   />
@@ -208,18 +208,18 @@
                 </div>
                 <div class="flex flex-col">
                   <span class="text-sm font-medium text-gray-700 dark:text-gray-400">
-                    {{ consultant.display_name || `#${consultant.id}` }}
+                    {{ consultant.user_name || `#${consultant.id}` }}
                   </span>
                 </div>
               </div>
             </td>
 
             <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
-              <p class="text-gray-700 text-theme-sm dark:text-gray-400">{{ consultant.email || '-' }}</p>
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">{{ consultant.user_email || '-' }}</p>
             </td>
 
             <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
-              <p class="text-gray-700 text-theme-sm dark:text-gray-400">{{ consultant.phone || '-' }}</p>
+              <p class="text-gray-700 text-theme-sm dark:text-gray-400">{{ consultant.user_phone || '-' }}</p>
             </td>
 
             
@@ -293,7 +293,7 @@
                 <Tooltip :text="t('messages.notAuthorized')" :show="!canEdit">
                   <button
                     :disabled="!canEdit"
-                    @click="handleEditClick(consultant.id)"
+                    @click="handleEditClick(consultant.user_id || consultant.id)"
                     class="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-300 disabled:text-gray-400 disabled:dark:text-gray-500"
                   >
                     <svg class="fill-current" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -424,7 +424,7 @@ const { success, error } = useNotifications()
 const props = defineProps({ consultants: Object })
 
 const search = ref('')
-const sortColumn = ref('display_name')
+const sortColumn = ref('user_name')
 const sortDirection = ref('asc')
 const currentPage = ref(props.consultants?.current_page ?? 1)
 const perPage = ref(props.consultants?.per_page ?? 10)
@@ -432,7 +432,7 @@ const selectAll = ref(false)
 
 // navigation
 function goToCreate() {
-  router.visit(route('admin.consultants.create'))
+  router.visit(route('admin.users.create'))
 }
 function goToView(id) {
   router.visit(route('admin.consultants.show', id))
@@ -503,24 +503,15 @@ function toggleConsultantStatus(consultant) {
   })
 }
 
-// location formatter by locale
-function formatLocation(c) {
-  const g = locale.value === 'ar' ? c.governorate_name_ar : c.governorate_name_en
-  const d = locale.value === 'ar' ? c.district_name_ar : c.district_name_en
-  const a = locale.value === 'ar' ? c.area_name_ar : c.area_name_en
-
-  const parts = [g, d, a].filter(Boolean)
-  return parts.length ? parts.join(' - ') : '-'
-}
 
 // filtering + sorting (client)
 const filteredData = computed(() => {
   const q = search.value.toLowerCase()
   return (props.consultants?.data || [])
     .filter((c) =>
-      (c.display_name || '').toLowerCase().includes(q) ||
-      (c.email || '').toLowerCase().includes(q) ||
-      (c.phone || '').toLowerCase().includes(q) ||
+      (c.user_name || '').toLowerCase().includes(q) ||
+      (c.user_email || '').toLowerCase().includes(q) ||
+      (c.user_phone || '').toLowerCase().includes(q) ||
       (formatLocation(c) || '').toLowerCase().includes(q)
     )
     .sort((a, b) => {

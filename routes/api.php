@@ -19,3 +19,25 @@ Route::get('/me', [App\Http\Controllers\Api\AuthController::class, 'me'])->middl
 
 // Consultation Types (API)
 Route::get('/consultation-types', [App\Http\Controllers\Api\ConsultationTypeController::class, 'index']);
+
+// Consultant Profile (API)
+Route::prefix('consultant/profile')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [App\Http\Controllers\Api\ConsultantProfileController::class, 'show']);
+    Route::put('/', [App\Http\Controllers\Api\ConsultantProfileController::class, 'update']);
+    Route::post('/', [App\Http\Controllers\Api\ConsultantProfileController::class, 'update']); // For multipart/form-data
+    Route::delete('/', [App\Http\Controllers\Api\ConsultantProfileController::class, 'destroy']);
+});
+
+// Consultant Credentials (Certificates & Experiences)
+Route::prefix('consultant/credentials')->middleware('auth:sanctum')->group(function () {
+    // Get all certificates and experiences
+    Route::get('/', [App\Http\Controllers\Api\ConsultantCredentialsController::class, 'index']);
+
+    // Certificates
+    Route::post('/certificates', [App\Http\Controllers\Api\ConsultantCredentialsController::class, 'storeCertificate']);
+    Route::delete('/certificates/{id}', [App\Http\Controllers\Api\ConsultantCredentialsController::class, 'destroyCertificate']);
+
+    // Experiences
+    Route::post('/experiences', [App\Http\Controllers\Api\ConsultantCredentialsController::class, 'storeExperience']);
+    Route::delete('/experiences/{id}', [App\Http\Controllers\Api\ConsultantCredentialsController::class, 'destroyExperience']);
+});

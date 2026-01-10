@@ -11,6 +11,8 @@ class ConsultantDTO extends BaseDTO
     public $user_name;
     public $user_email;
     public $user_phone;
+    public $avatar;
+    public $gender;
 
     public $years_of_experience;
 
@@ -27,6 +29,8 @@ class ConsultantDTO extends BaseDTO
 
     public array $holidays = [];
 
+    public array $experiences = [];
+
     public $created_at;
     public $deleted_at;
 
@@ -36,7 +40,9 @@ class ConsultantDTO extends BaseDTO
         $user_name,
         $user_email,
         $user_phone,
+        $avatar,
 
+        $gender,
         $years_of_experience,
 
         $consultation_type_id,
@@ -51,6 +57,8 @@ class ConsultantDTO extends BaseDTO
 
         array $holidays = [],
 
+        array $experiences = [],
+
         $created_at = null,
         $deleted_at = null
     ) {
@@ -59,6 +67,9 @@ class ConsultantDTO extends BaseDTO
         $this->user_name = $user_name;
         $this->user_email = $user_email;
         $this->user_phone = $user_phone;
+        $this->avatar = $avatar;
+
+        $this->gender = $gender;
 
         $this->years_of_experience = $years_of_experience;
 
@@ -74,6 +85,8 @@ class ConsultantDTO extends BaseDTO
 
         $this->holidays = $holidays;
 
+        $this->experiences = $experiences;
+
         $this->created_at = $created_at;
         $this->deleted_at = $deleted_at;
     }
@@ -87,6 +100,8 @@ class ConsultantDTO extends BaseDTO
             $consultant->user?->email,
             $consultant->user?->phone_number,
 
+            $consultant->user?->avatar ?? null,
+            $consultant->user?->gender ?? null,
             $consultant->years_of_experience,
 
             $consultant->consultation_type_id ?? null,
@@ -118,6 +133,12 @@ class ConsultantDTO extends BaseDTO
                 'name' => $h->name,
             ])->values()->all() ?? [],
 
+            $consultant->experiences?->map(fn ($exp) => [
+                'id' => $exp->id,
+                'name' => $exp->name,
+                'is_active' => (bool) ($exp->is_active ?? true),
+            ])->values()->all() ?? [],
+
             $consultant->created_at?->toDateTimeString(),
             $consultant->deleted_at?->toDateTimeString()
         );
@@ -131,6 +152,8 @@ class ConsultantDTO extends BaseDTO
             'user_name' => $this->user_name,
             'user_email' => $this->user_email,
             'user_phone' => $this->user_phone,
+            'avatar' => $this->avatar,
+            'gender' => $this->gender,
 
             'years_of_experience' => $this->years_of_experience,
 
@@ -146,6 +169,8 @@ class ConsultantDTO extends BaseDTO
 
             'holidays' => $this->holidays,
 
+            'experiences' => $this->experiences,
+
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,
         ];
@@ -158,8 +183,11 @@ class ConsultantDTO extends BaseDTO
             'user_name' => $this->user_name,
             'user_email' => $this->user_email,
             'user_phone' => $this->user_phone,
+            'avatar' => $this->avatar,
 
             'consultation_type_name' => $this->consultation_type_name,
+
+            'gender' => $this->gender,
 
             'rating_avg' => $this->rating_avg,
             'ratings_count' => $this->ratings_count,

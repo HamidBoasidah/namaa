@@ -12,7 +12,8 @@ class ConsultantFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => \App\Models\User::inRandomOrder()->first()?->id ?? \App\Models\User::factory()->create()->id,
+            'user_id' => \App\Models\User::where('user_type', 'consultant')->inRandomOrder()->value('id')
+                ?? \App\Models\User::factory()->create(['user_type' => 'consultant'])->id,
             'consultation_type_id' => \App\Models\ConsultationType::inRandomOrder()->first()?->id ?? \App\Models\ConsultationType::factory()->create()->id,
             'years_of_experience' => $this->faker->numberBetween(0, 40),
             'rating_avg' => $this->faker->randomFloat(2, 0, 5),

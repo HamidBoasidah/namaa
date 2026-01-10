@@ -304,16 +304,16 @@ const menuGroups = computed(() =>
         },
         {
           icon: UserCircleIcon,
-          name: t('menu.kycs'),
-          path: route('admin.kycs.index'),
-          permission: 'kycs.view',
+          name: t('menu.certificates'),
+          path: route('admin.certificates.index'),
+          permission: 'certificates.view',
         },
-        {
-          icon: GridIcon,
-          name: t('menu.categories'),
-          path: route('admin.categories.index'),
-          permission: 'categories.view',
-        },
+        // {
+        //   icon: GridIcon,
+        //   name: t('menu.categories'),
+        //   path: route('admin.categories.index'),
+        //   permission: 'categories.view',
+        // },
         {
           icon: TagIcon,
           name: t('menu.tags'),

@@ -19,12 +19,10 @@ class UserDTO extends BaseDTO
     public $locale;
     public $avatar;
     
-    public $created_by;
-    public $updated_by;
     public $created_at;
     public $deleted_at;
 
-    public function __construct($id, $first_name, $last_name, $email, $phone_number, $user_type, $gender, $consultation_type, $is_active, $locale, $avatar, $created_by, $updated_by, $created_at = null, $deleted_at = null)
+    public function __construct($id, $first_name, $last_name, $email, $phone_number, $user_type, $gender, $consultation_type, $is_active, $locale, $avatar, $created_at = null, $deleted_at = null)
     {
         $this->id = $id;
         $this->first_name = $first_name;
@@ -37,8 +35,6 @@ class UserDTO extends BaseDTO
         $this->is_active = $is_active;
         $this->locale = $locale;
         $this->avatar = $avatar;
-        $this->created_by = $created_by;
-        $this->updated_by = $updated_by;
         $this->created_at = $created_at;
         $this->deleted_at = $deleted_at;
     }
@@ -57,8 +53,6 @@ class UserDTO extends BaseDTO
             (bool) ($user->is_active ?? false),
             $user->locale ?? null,
             $user->avatar ?? null,
-            $user->created_by ?? null,
-            $user->updated_by ?? null,
             $user->created_at?->toDateTimeString() ?? null,
             $user->deleted_at?->toDateTimeString() ?? null
         );
@@ -79,8 +73,6 @@ class UserDTO extends BaseDTO
             'locale' => $this->locale,
             'avatar' => $this->avatar,
             
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,
         ];

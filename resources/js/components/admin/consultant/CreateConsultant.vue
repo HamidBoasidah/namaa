@@ -148,177 +148,18 @@
             </label>
           </div>
 
-          <!-- bio -->
-          <div class="md:col-span-2">
-            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              {{ t('consultants.bio') }}
-            </label>
-            <textarea
-              v-model="form.bio"
-              rows="4"
-              :placeholder="t('consultants.bioPlaceholder')"
-              class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
-            />
-            <p v-if="form.errors.bio" class="mt-1 text-sm text-error-500">{{ form.errors.bio }}</p>
-          </div>
+          <!-- bio removed -->
 
-          <!-- specialization_summary -->
-          <div class="md:col-span-2">
-            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              {{ t('consultants.specializationSummary') }}
-            </label>
-            <textarea
-              v-model="form.specialization_summary"
-              rows="4"
-              :placeholder="t('consultants.specializationSummaryPlaceholder')"
-              class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
-            />
-            <p v-if="form.errors.specialization_summary" class="mt-1 text-sm text-error-500">{{ form.errors.specialization_summary }}</p>
-          </div>
+          <!-- specialization_summary removed -->
         </div>
       </div>
     </div>
 
-    <!-- Location -->
-    <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-      <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
-        <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-          {{ t('consultants.locationInformation') }}
-        </h2>
-      </div>
-
-      <div class="p-4 sm:p-6">
-        <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
-          <!-- address -->
-          <div class="md:col-span-2">
-            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              {{ t('common.address') }}
-            </label>
-            <input
-              v-model="form.address"
-              type="text"
-              autocomplete="off"
-              :placeholder="t('consultants.addressPlaceholder')"
-              class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
-            />
-            <p v-if="form.errors.address" class="mt-1 text-sm text-error-500">{{ form.errors.address }}</p>
-          </div>
-
-          <!-- governorate -->
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              {{ t('districts.selectGovernorate') }}
-            </label>
-            <div class="relative z-20 bg-transparent">
-              <select
-                v-model="form.governorate_id"
-                @change="resetAfterGovernorate()"
-                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
-              >
-                <option value="" disabled class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                  {{ t('districts.selectGovernorate') }}
-                </option>
-                <option
-                  v-for="g in governorates"
-                  :key="g.id"
-                  :value="g.id"
-                  class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
-                >
-                  {{ locale === 'ar' ? g.name_ar : g.name_en }}
-                </option>
-              </select>
-              <span class="pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-700 dark:text-gray-400">
-                <svg class="stroke-current" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </div>
-            <p v-if="form.errors.governorate_id" class="mt-1 text-sm text-error-500">{{ form.errors.governorate_id }}</p>
-          </div>
-
-          <!-- district -->
-          <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              {{ t('areas.selectDistrict') }}
-            </label>
-            <div class="relative z-20 bg-transparent">
-              <select
-                v-model="form.district_id"
-                @change="resetAfterDistrict()"
-                :disabled="!form.governorate_id"
-                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm"
-                :class="[
-                  !form.governorate_id ? 'text-gray-400 dark:text-white/30' : 'text-gray-800 dark:text-white/90',
-                  'dark:border-gray-700 dark:bg-gray-900'
-                ]"
-              >
-                <option value="" disabled class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                  {{ t('areas.selectDistrict') }}
-                </option>
-
-                <option
-                  v-for="d in filteredDistricts"
-                  :key="d.id"
-                  :value="d.id"
-                  class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
-                >
-                  {{ locale === 'ar' ? d.name_ar : d.name_en }}
-                </option>
-              </select>
-
-              <span class="pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-700 dark:text-gray-400">
-                <svg class="stroke-current" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </div>
-            <p v-if="form.errors.district_id" class="mt-1 text-sm text-error-500">{{ form.errors.district_id }}</p>
-          </div>
-
-          <!-- area -->
-          <div class="md:col-span-2">
-            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              {{ t('areas.selectArea') }}
-            </label>
-            <div class="relative z-20 bg-transparent">
-              <select
-                v-model="form.area_id"
-                :disabled="!form.district_id"
-                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm"
-                :class="[
-                  !form.district_id ? 'text-gray-400 dark:text-white/30' : 'text-gray-800 dark:text-white/90',
-                  'dark:border-gray-700 dark:bg-gray-900'
-                ]"
-              >
-                <option value="" disabled class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                  {{ t('areas.selectArea') }}
-                </option>
-
-                <option
-                  v-for="a in filteredAreas"
-                  :key="a.id"
-                  :value="a.id"
-                  class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
-                >
-                  {{ locale === 'ar' ? a.name_ar : a.name_en }}
-                </option>
-              </select>
-
-              <span class="pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-700 dark:text-gray-400">
-                <svg class="stroke-current" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </div>
-            <p v-if="form.errors.area_id" class="mt-1 text-sm text-error-500">{{ form.errors.area_id }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Location removed -->
 
     <!-- Profile Image -->
-    <ImageUploadBox v-model="form.profile_image" input-id="consultant-profile-image" label="consultants.profileImage" />
-    <p v-if="form.errors.profile_image" class="mt-1 text-sm text-error-500">{{ form.errors.profile_image }}</p>
+    <ImageUploadBox v-model="form.avatar" input-id="consultant-profile-image" label="consultants.profileImage" />
+    <p v-if="form.errors.avatar" class="mt-1 text-sm text-error-500">{{ form.errors.avatar }}</p>
 
     <!-- Buttons -->
     <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
@@ -354,48 +195,21 @@ const { success, error } = useNotifications()
 
 const props = defineProps({
   users: { type: Array, required: true },         // [{id, first_name, last_name, name, email}]
-  governorates: { type: Array, required: true },  // [{id, name_ar, name_en}]
-  districts: { type: Array, required: true },     // [{id, name_ar, name_en, governorate_id}]
-  areas: { type: Array, required: true },         // [{id, name_ar, name_en, district_id}]
 })
 
 const users = computed(() => props.users || [])
-const governorates = computed(() => props.governorates || [])
 
 const form = useForm({
   user_id: '',
   display_name: '',
-  bio: '',
   email: '',
   phone: '',
   years_of_experience: '',
-  specialization_summary: '',
-  profile_image: null,
-  address: '',
-  governorate_id: '',
-  district_id: '',
-  area_id: '',
+  avatar: null,
   is_active: true,
 })
 
-const filteredDistricts = computed(() => {
-  if (!form.governorate_id) return []
-  return (props.districts || []).filter(d => String(d.governorate_id) === String(form.governorate_id))
-})
-
-const filteredAreas = computed(() => {
-  if (!form.district_id) return []
-  return (props.areas || []).filter(a => String(a.district_id) === String(form.district_id))
-})
-
-function resetAfterGovernorate() {
-  form.district_id = ''
-  form.area_id = ''
-}
-
-function resetAfterDistrict() {
-  form.area_id = ''
-}
+// Location-related props/computeds removed
 
 function userLabel(u) {
   const name = u?.name || [u?.first_name, u?.last_name].filter(Boolean).join(' ')

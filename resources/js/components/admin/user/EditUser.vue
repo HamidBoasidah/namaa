@@ -76,7 +76,7 @@
             <!-- Gender Select (added to match CreateUser.vue) -->
             <div>
               <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                {{ t('kyc.gender') || 'Gender' }}
+                {{ t('certificate.gender') || 'Gender' }}
               </label>
               <div class="relative z-20 bg-transparent">
                 <select
@@ -84,8 +84,8 @@
                   class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
                 >
                   <option value="" disabled class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">--</option>
-                  <option value="male" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">{{ t('kyc.genders.male') || 'Male' }}</option>
-                  <option value="female" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">{{ t('kyc.genders.female') || 'Female' }}</option>
+                  <option value="male" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">{{ t('certificate.genders.male') || 'Male' }}</option>
+                  <option value="female" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">{{ t('certificate.genders.female') || 'Female' }}</option>
                 </select>
                 <span class="pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-700 dark:text-gray-400">
                   <svg class="stroke-current" width="20" height="20" viewBox="0 0 20 20" fill="none">

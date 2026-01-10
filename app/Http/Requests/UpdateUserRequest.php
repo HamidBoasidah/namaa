@@ -28,7 +28,7 @@ class UpdateUserRequest extends FormRequest
             'last_name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|email|unique:users,email,' . $userId,
             'avatar' => 'nullable|file|image|max:2048',
-            'phone_number' => ['nullable', 'regex:/^\\d{9,15}$/'],
+            'phone_number' => ['sometimes', 'regex:/^\\d{9,15}$/', 'unique:users,phone_number,' . $userId],
             'password' => 'nullable|string|min:8',
             'gender' => 'nullable|in:male,female',
             'user_type' => 'sometimes|in:customer,consultant',

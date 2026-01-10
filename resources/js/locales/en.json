@@ -327,8 +327,9 @@
   ,"consultants": {
     "consultantInformation": "Consultant information",
     "workingHours": "Working hours",
-    "updateInfoHint": "Update consultant details, location and profile image.",
+    "updateInfoHint": "Update consultant details from this tab.",
     "updateHoursHint": "Manage weekly working hours slots.",
+    "updateExperiencesHint": "Manage consultant experiences from this tab.",
     "holidays": "Holidays",
     "holidayName": "Holiday name",
     "holidayDate": "Holiday date",
@@ -337,7 +338,17 @@
     "noHolidays": "No holidays added",
     "updateHolidaysHint": "Manage consultant holiday dates from this tab.",
     "holidaysSavedSuccessfully": "Holidays saved successfully",
-    "holidaysSaveFailed": "Failed to save holidays"
+    "holidaysSaveFailed": "Failed to save holidays",
+    "experiences": "Experiences",
+    "experienceName": "Experience name",
+    "experienceNamePlaceholder": "e.g. Senior advisor at ...",
+    "addExperience": "Add experience",
+    "saveExperiences": "Save experiences",
+    "noExperiences": "No experiences added",
+    "experienceNameRequired": "Experience name is required.",
+    "experienceDuplicate": "Experience already added.",
+    "experiencesSavedSuccessfully": "Experiences saved successfully",
+    "experiencesSaveFailed": "Failed to save experiences"
   },
   "consultationTypes": {
     "title": "Consultation Types",

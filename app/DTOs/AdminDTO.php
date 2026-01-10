@@ -22,12 +22,11 @@ class AdminDTO extends BaseDTO
     public $avatar;
     public $role;
     public $role_id;
-    public $created_by;
-    public $updated_by;
+    
     public $created_at;
     public $deleted_at;
 
-    public function __construct($id, $first_name, $last_name, $email, $address, $phone_number, $whatsapp_number, $facebook, $x_url, $linkedin, $instagram, $is_active, $locale, $avatar, $role, $role_id, $created_by, $updated_by, $created_at = null, $deleted_at = null)
+    public function __construct($id, $first_name, $last_name, $email, $address, $phone_number, $whatsapp_number, $facebook, $x_url, $linkedin, $instagram, $is_active, $locale, $avatar, $role, $role_id, $created_at = null, $deleted_at = null)
     {
         $this->id = $id;
         $this->first_name = $first_name;
@@ -45,8 +44,6 @@ class AdminDTO extends BaseDTO
         $this->avatar = $avatar;
         $this->role = $role;
         $this->role_id = $role_id;
-        $this->created_by = $created_by;
-        $this->updated_by = $updated_by;
         $this->created_at = $created_at;
         $this->deleted_at = $deleted_at;
     }
@@ -77,8 +74,6 @@ class AdminDTO extends BaseDTO
                 'display_name' => $role->getTranslations('display_name'),
             ] : null,
             $role?->id,
-            $admin->created_by ?? null,
-            $admin->updated_by ?? null,
             $admin->created_at?->toDateTimeString() ?? null,
             $admin->deleted_at?->toDateTimeString() ?? null
         );
@@ -103,8 +98,6 @@ class AdminDTO extends BaseDTO
             'avatar' => $this->avatar,
             'role' => $this->role,
             'role_id' => $this->role_id,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,
         ];

@@ -1,0 +1,74 @@
+{
+  "info": {
+    "_postman_id": "d7c3c4f4-1c8c-4dc0-9a3b-9a27ae65b6f8",
+    "name": "Consultant Profile (Update & Delete)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Minimal collection to test consultant profile update and delete endpoints. No login request included. Use an existing Sanctum bearer token in the `token` variable."
+  },
+  "item": [
+    {
+      "name": "Update consultant profile",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/consultant/profile",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "consultant",
+            "profile"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Updated\",\n  \"last_name\": \"Consultant\",\n  \"email\": \"consultant@example.com\",\n  \"phone_number\": \"512345678\",\n  \"years_of_experience\": 5,\n  \"consultation_type_id\": 1\n}"
+        }
+      }
+    },
+    {
+      "name": "Delete consultant profile",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/consultant/profile",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "consultant",
+            "profile"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

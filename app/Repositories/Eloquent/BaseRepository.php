@@ -3,9 +3,11 @@
 namespace App\Repositories\Eloquent;
 
 use App\Repositories\Contracts\BaseRepositoryInterface;
+use App\Support\FilenameHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -173,6 +175,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
     /**
      * يعالج رفع الملفات ويستبدل كائن الملف بالمسار.
+     * يحفظ أيضاً اسم الملف الأصلي في عمود منفصل إذا كان موجوداً.
      */
     protected function handleFileUploads(array $attributes, ?Model $record = null): array
     {
@@ -188,6 +191,11 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
                 // capture previous path (if any) for cross-disk cleanup
                 $oldPath = $record && $record->{$key} ? $record->{$key} : null;
+
+                // Capture and sanitize original filename for display
+                $originalName = $value->getClientOriginalName();
+                $displayName = FilenameHelper::sanitizeForDisplay($originalName);
+                $displayName = FilenameHelper::ensureValidName($displayName);
 
                 if ($strategy === 'private') {
                     // If previous file existed on the public disk (previous strategy was public),
@@ -217,10 +225,33 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
                     $value = $path;
                 }
+
+                // Store original filename if model supports it (has the column)
+                $originalNameColumn = $key . '_original_name';
+                if ($this->modelHasColumn($originalNameColumn)) {
+                    $attributes[$originalNameColumn] = $displayName;
+                }
             }
         }
 
         return $attributes;
+    }
+
+    /**
+     * Check if model's table has a specific column
+     */
+    protected function modelHasColumn(string $column): bool
+    {
+        static $columnCache = [];
+
+        $table = $this->model->getTable();
+        $cacheKey = $table . '.' . $column;
+
+        if (!isset($columnCache[$cacheKey])) {
+            $columnCache[$cacheKey] = Schema::hasColumn($table, $column);
+        }
+
+        return $columnCache[$cacheKey];
     }
 
     /**

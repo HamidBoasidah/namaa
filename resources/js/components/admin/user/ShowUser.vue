@@ -37,9 +37,9 @@
 
           <!-- Gender -->
           <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('kyc.gender') || 'Gender' }}</label>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('certificate.gender') || 'Gender' }}</label>
             <p class="text-base text-gray-800 dark:text-white/90">
-              <span>{{ user.gender ? (t('kyc.genders.' + user.gender) || user.gender) : 'N/A' }}</span>
+              <span>{{ user.gender ? (t('certificate.genders.' + user.gender) || user.gender) : 'N/A' }}</span>
             </p>
           </div>
 

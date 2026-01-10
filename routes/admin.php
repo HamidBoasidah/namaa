@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\AreaController;
 use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\GovernorateController;
-use App\Http\Controllers\Admin\KycController;
+use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\RoleController;
@@ -111,13 +111,13 @@ Route::middleware('auth:admin')
         Route::patch('areas/{id}/deactivate', [AreaController::class, 'deactivate'])
             ->name('areas.deactivate');
 
-        // KYCs
-        Route::get('kycs/{kyc}/document/view', [KycController::class, 'viewDocument'])
-            ->name('kycs.document.view');
-        Route::get('kycs/{kyc}/document/download', [KycController::class, 'downloadDocument'])
-            ->name('kycs.document.download');
-        Route::resource('kycs', KycController::class)
-            ->names('kycs');
+        // Certificates
+        Route::get('certificates/{certificate}/document/view', [CertificateController::class, 'viewDocument'])
+            ->name('certificates.document.view');
+        Route::get('certificates/{certificate}/document/download', [CertificateController::class, 'downloadDocument'])
+            ->name('certificates.document.download');
+        Route::resource('certificates', CertificateController::class)
+            ->names('certificates');
 
         // Tags
         Route::resource('tags', TagController::class)
@@ -183,6 +183,9 @@ Route::middleware('auth:admin')
 
         Route::put('consultants/{consultant}/holidays/replace', [ConsultantController::class, 'replaceHolidays'])
             ->name('consultants.holidays.replace');
+
+        Route::put('consultants/{consultant}/experiences/replace', [ConsultantController::class, 'replaceExperiences'])
+            ->name('consultants.experiences.replace');
 
 
         // Consultant Services

@@ -63,4 +63,15 @@ class Consultant extends BaseModel
         return $this->hasOne(ConsultantService::class);
     }
 
+    public function experiences()
+    {
+        return $this->hasMany(ConsultantExperience::class)
+            ->orderBy('name');
+    }
+
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class)
+            ->orderBy('created_at', 'desc');
+    }
 }

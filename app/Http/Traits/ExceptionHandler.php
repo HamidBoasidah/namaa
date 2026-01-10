@@ -159,7 +159,7 @@ trait ExceptionHandler
             'ChefWithdrawalRequest' => 'طلب سحب الطاهي',
             'District' => 'المديرية',
             'Governorate' => 'المحافظة',
-            'Kyc' => 'التحقق من الهوية',
+            'Certificate' => 'الشهادة',
             'Permission' => 'الصلاحية',
             'Role' => 'الدور',
             'Tag' => 'الوسم',

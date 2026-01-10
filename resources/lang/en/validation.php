@@ -138,11 +138,6 @@ return [
     'url' => 'The :attribute must be a valid URL.',
     'ulid' => 'The :attribute must be a valid ULID.',
     'uuid' => 'The :attribute must be a valid UUID.',
-    'kyc' => [
-        'errors' => [
-            'already_has_pending_or_approved' => 'You already have a pending or approved KYC request. You cannot create a new one until the previous request is rejected.',
-        ],
-    ],
 
     /*
     |--------------------------------------------------------------------------

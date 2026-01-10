@@ -80,7 +80,7 @@
             <!-- Gender Select -->
             <div>
               <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                {{ t('kyc.gender') || 'Gender' }}
+                {{ t('certificate.gender') || 'Gender' }}
               </label>
               <div class="relative z-20 bg-transparent">
                 <select
@@ -90,8 +90,8 @@
                   <option value="" disabled class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
                     --
                   </option>
-                  <option value="male" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">{{ t('kyc.genders.male') || 'Male' }}</option>
-                  <option value="female" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">{{ t('kyc.genders.female') || 'Female' }}</option>
+                  <option value="male" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">{{ t('certificate.genders.male') || 'Male' }}</option>
+                  <option value="female" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">{{ t('certificate.genders.female') || 'Female' }}</option>
                 </select>
 
                 <span class="pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-700 dark:text-gray-400">

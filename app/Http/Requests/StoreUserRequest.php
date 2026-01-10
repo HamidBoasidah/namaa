@@ -26,7 +26,7 @@ class StoreUserRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'avatar' => 'nullable|file|image|max:2048',
-            'phone_number' => ['nullable', 'regex:/^\\d{9,15}$/'],
+            'phone_number' => ['required', 'regex:/^\\d{9,15}$/', 'unique:users,phone_number'],
             'gender' => 'nullable|in:male,female',
             'password' => 'required|string|min:8',
             'user_type' => 'required|in:customer,consultant',
