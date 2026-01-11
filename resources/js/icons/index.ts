@@ -11,6 +11,9 @@ import GlobalIcon from "./GlobalIcon.vue";
 import TagIcon from "./TagIcon.vue";
 import ConsultantIcon from './ConsultantIcon.vue';
 import ConsultantServiceIcon from './ConsultantServiceIcon.vue';
+import VideoIcon from './VideoIcon.vue';
+import AudioIcon from './AudioIcon.vue';
+import TextIcon from './TextIcon.vue';
 
 export {
   GridIcon,
@@ -26,5 +29,8 @@ export {
   TagIcon,
   ConsultantIcon,
   ConsultantServiceIcon,
+  VideoIcon,
+  AudioIcon,
+  TextIcon,
 };
  

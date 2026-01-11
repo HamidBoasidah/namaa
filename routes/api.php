@@ -40,6 +40,7 @@ Route::prefix('consultant/credentials')->middleware('auth:sanctum')->group(funct
 
     // Experiences
     Route::post('/experiences', [App\Http\Controllers\Api\ConsultantCredentialsController::class, 'storeExperience']);
+    Route::put('/experiences/{id}', [App\Http\Controllers\Api\ConsultantCredentialsController::class, 'updateExperience']);
     Route::delete('/experiences/{id}', [App\Http\Controllers\Api\ConsultantCredentialsController::class, 'destroyExperience']);
 });
 
@@ -61,4 +62,15 @@ Route::prefix('consultant/holidays')->middleware('auth:sanctum')->group(function
     Route::get('/{id}', [App\Http\Controllers\Api\ConsultantHolidayController::class, 'show']);
     Route::put('/{id}', [App\Http\Controllers\Api\ConsultantHolidayController::class, 'update']);
     Route::delete('/{id}', [App\Http\Controllers\Api\ConsultantHolidayController::class, 'destroy']);
+});
+
+// Mobile App APIs
+Route::prefix('mobile')->group(function () {
+    // Categories
+    Route::get('/categories', [App\Http\Controllers\Api\Mobile\CategoryController::class, 'index']);
+    Route::get('/categories/by-consultation-type/{consultationTypeId}', [App\Http\Controllers\Api\Mobile\CategoryController::class, 'byConsultationType']);
+    
+    // Consultants
+    Route::get('/consultants', [App\Http\Controllers\Api\Mobile\ConsultantController::class, 'index']);
+    Route::get('/consultants/by-category/{categoryId}', [App\Http\Controllers\Api\Mobile\ConsultantController::class, 'byCategory']);
 });

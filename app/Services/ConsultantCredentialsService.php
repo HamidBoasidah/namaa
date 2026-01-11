@@ -104,6 +104,17 @@ class ConsultantCredentialsService
     }
 
     /**
+     * Update an existing experience
+     */
+    public function updateExperience(ConsultantExperience $experience, array $data): ConsultantExperience
+    {
+        $experience->fill($data);
+        $experience->save();
+
+        return $experience;
+    }
+
+    /**
      * Get consultant by user
      */
     public function getConsultantByUser(User $user): ?Consultant

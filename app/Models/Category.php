@@ -26,6 +26,14 @@ class Category extends BaseModel
     }
 
     /**
+     * علاقة الفئة بخدمات المستشارين
+     */
+    public function consultantServices()
+    {
+        return $this->hasMany(ConsultantService::class, 'category_id');
+    }
+
+    /**
      * Get the icon URL attribute.
      */
     public function getIconUrlAttribute(): ?string

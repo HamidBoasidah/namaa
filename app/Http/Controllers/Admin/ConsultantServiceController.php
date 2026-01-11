@@ -29,7 +29,7 @@ class ConsultantServiceController extends Controller
 
     public function index(Request $request, ConsultantServicesService $service)
     {
-        $perPage = (int) $request->input('per_page', 10);
+        $perPage = (int) $request->input('per_page', 9);
 
         $services = $service->paginate($perPage);
 

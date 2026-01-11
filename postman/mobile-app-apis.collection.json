@@ -1,0 +1,375 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-5e6f-7g8h-9i0j-k1l2m3n4o5p6",
+    "name": "Mobile App APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "مجموعة اختبارات APIs تطبيق الجوال للفئات والمستشارين"
+  },
+  "item": [
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "categories"
+              ]
+            },
+            "description": "جلب جميع الفئات النشطة - يرجع id, name, icon_url"
+          }
+        },
+        {
+          "name": "Get Categories by Consultation Type",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/categories/by-consultation-type/{{consultation_type_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "categories",
+                "by-consultation-type",
+                "{{consultation_type_id}}"
+              ]
+            },
+            "description": "جلب الفئات حسب نوع الاستشارة مع عدد المستشارين النشطين في كل فئة"
+          }
+        },
+        {
+          "name": "Get Categories by Consultation Type (Invalid ID)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/categories/by-consultation-type/99999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "categories",
+                "by-consultation-type",
+                "99999"
+              ]
+            },
+            "description": "اختبار حالة نوع استشارة غير موجود - يجب أن يرجع 404"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Consultants",
+      "item": [
+        {
+          "name": "Get All Consultants (Default)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultants",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultants"
+              ]
+            },
+            "description": "جلب جميع المستشارين النشطين بالترتيب الافتراضي (الأحدث أولاً)"
+          }
+        },
+        {
+          "name": "Get Consultants - Sort by Experience",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultants?sort_by=experience",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultants"
+              ],
+              "query": [
+                {
+                  "key": "sort_by",
+                  "value": "experience"
+                }
+              ]
+            },
+            "description": "جلب المستشارين مرتبين حسب سنوات الخبرة (الأكثر خبرة أولاً)"
+          }
+        },
+        {
+          "name": "Get Consultants - Sort by Rating",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultants?sort_by=rating",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultants"
+              ],
+              "query": [
+                {
+                  "key": "sort_by",
+                  "value": "rating"
+                }
+              ]
+            },
+            "description": "جلب المستشارين مرتبين حسب التقييم (الأعلى تقييماً أولاً)"
+          }
+        },
+        {
+          "name": "Get Consultants - Sort by Reviews Count",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultants?sort_by=reviews",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultants"
+              ],
+              "query": [
+                {
+                  "key": "sort_by",
+                  "value": "reviews"
+                }
+              ]
+            },
+            "description": "جلب المستشارين مرتبين حسب عدد التقييمات (الأكثر تقييمات أولاً)"
+          }
+        },
+        {
+          "name": "Get Consultants - With Pagination",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultants?per_page=5&sort_by=rating",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultants"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "5"
+                },
+                {
+                  "key": "sort_by",
+                  "value": "rating"
+                }
+              ]
+            },
+            "description": "جلب المستشارين مع تحديد عدد العناصر في الصفحة"
+          }
+        },
+        {
+          "name": "Get Consultants - Invalid Sort Value",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultants?sort_by=invalid",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultants"
+              ],
+              "query": [
+                {
+                  "key": "sort_by",
+                  "value": "invalid"
+                }
+              ]
+            },
+            "description": "اختبار قيمة ترتيب غير صالحة - يجب أن يرجع 422"
+          }
+        },
+        {
+          "name": "Get Consultants by Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultants/by-category/{{category_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultants",
+                "by-category",
+                "{{category_id}}"
+              ]
+            },
+            "description": "جلب المستشارين الذين لديهم خدمات في فئة معينة"
+          }
+        },
+        {
+          "name": "Get Consultants by Category - With Pagination",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultants/by-category/{{category_id}}?per_page=5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultants",
+                "by-category",
+                "{{category_id}}"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "جلب المستشارين حسب الفئة مع تحديد عدد العناصر في الصفحة"
+          }
+        },
+        {
+          "name": "Get Consultants by Category (Invalid ID)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultants/by-category/99999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultants",
+                "by-category",
+                "99999"
+              ]
+            },
+            "description": "اختبار حالة فئة غير موجودة - يجب أن يرجع 404"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost",
+      "description": "عنوان الخادم الأساسي"
+    },
+    {
+      "key": "consultation_type_id",
+      "value": "1",
+      "description": "معرف نوع الاستشارة للاختبار"
+    },
+    {
+      "key": "category_id",
+      "value": "1",
+      "description": "معرف الفئة للاختبار"
+    }
+  ]
+}

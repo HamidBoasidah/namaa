@@ -8,6 +8,7 @@ use App\DTOs\ConsultantCertificateDTO;
 use App\DTOs\ConsultantExperienceDTO;
 use App\Http\Requests\StoreConsultantCertificateRequest;
 use App\Http\Requests\StoreConsultantExperienceRequest;
+use App\Http\Requests\UpdateConsultantExperienceRequest;
 use App\Http\Traits\ExceptionHandler;
 use App\Http\Traits\SuccessResponse;
 use App\Models\Certificate;
@@ -168,6 +169,45 @@ class ConsultantCredentialsController extends Controller
             return $this->deletedResponse('تم حذف الخبرة بنجاح');
         } catch (ModelNotFoundException) {
             $this->throwNotFoundException('الخبرة غير موجودة');
+        }
+    }
+
+    /**
+     * تعديل خبرة
+     */
+    public function updateExperience(UpdateConsultantExperienceRequest $request, ConsultantCredentialsService $service, $id)
+    {
+        try {
+            $user = $request->user();
+
+            if ($user->user_type !== 'consultant') {
+                $this->throwForbiddenException('هذه الخدمة متاحة للمستشارين فقط');
+            }
+
+            $consultant = $service->getConsultantByUser($user);
+
+            if (!$consultant) {
+                $this->throwNotFoundException('لم يتم العثور على بيانات المستشار');
+            }
+
+            $experience = ConsultantExperience::where('id', $id)
+                ->where('consultant_id', $consultant->id)
+                ->firstOrFail();
+
+            $this->authorize('update', $experience);
+
+            $data = $request->validated();
+
+            $experience = $service->updateExperience($experience, $data);
+
+            return $this->resourceResponse(
+                ConsultantExperienceDTO::fromModel($experience)->toArray(),
+                'تم تعديل الخبرة بنجاح'
+            );
+        } catch (ModelNotFoundException) {
+            $this->throwNotFoundException('الخبرة غير موجودة');
+        } catch (AppValidationException $e) {
+            return $e->render($request);
         }
     }
 }

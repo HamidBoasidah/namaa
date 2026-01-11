@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Repositories\CategoryRepository;
 use App\Models\Category;
+use App\Models\ConsultationType;
 use App\DTOs\CategoryDTO;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 
@@ -154,5 +156,48 @@ class CategoryService
         }
         
         return $this->categories->delete($id);
+    }
+
+    /**
+     * جلب جميع الفئات النشطة للجوال
+     */
+    public function getActiveForMobile(): Collection
+    {
+        return Category::where('is_active', true)
+            ->select(['id', 'name', 'icon_path'])
+            ->get();
+    }
+
+    /**
+     * جلب الفئات حسب نوع الاستشارة مع عدد المستشارين النشطين
+     */
+    public function getByConsultationTypeWithConsultantsCount(int $consultationTypeId): Collection
+    {
+        // التحقق من وجود نوع الاستشارة
+        ConsultationType::findOrFail($consultationTypeId);
+
+        return Category::where('consultation_type_id', $consultationTypeId)
+            ->where('is_active', true)
+            ->withCount([
+                'consultantServices as consultants_count' => function ($query) {
+                    $query->whereHas('consultant', function ($q) {
+                        $q->where('is_active', true);
+                    });
+                }
+            ])
+            ->select(['id', 'name', 'icon_path', 'consultation_type_id'])
+            ->get()
+            ->map(function ($category) {
+                // حساب عدد المستشارين الفريدين
+                $uniqueConsultantsCount = $category->consultantServices()
+                    ->whereHas('consultant', function ($q) {
+                        $q->where('is_active', true);
+                    })
+                    ->distinct('consultant_id')
+                    ->count('consultant_id');
+                
+                $category->consultants_count = $uniqueConsultantsCount;
+                return $category;
+            });
     }
 }

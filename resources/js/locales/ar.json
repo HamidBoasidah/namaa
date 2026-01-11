@@ -267,7 +267,8 @@
     },
     "deliveryTime": "وقت التسليم",
     "deliveryTimePlaceholder": "مثال: 7 أيام",
-    "autoAccept": "قبول تلقائي للطلبات"
+    "autoAccept": "قبول تلقائي للطلبات",
+    "noServicesFound": "لا توجد خدمات"
   },
 
   "admins": {
