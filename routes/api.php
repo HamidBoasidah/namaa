@@ -41,3 +41,23 @@ Route::prefix('consultant/credentials')->middleware('auth:sanctum')->group(funct
     Route::post('/experiences', [App\Http\Controllers\Api\ConsultantCredentialsController::class, 'storeExperience']);
     Route::delete('/experiences/{id}', [App\Http\Controllers\Api\ConsultantCredentialsController::class, 'destroyExperience']);
 });
+
+// Consultant Working Hours (API)
+Route::prefix('consultant/working-hours')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [App\Http\Controllers\Api\ConsultantWorkingHourController::class, 'index']);
+    Route::post('/', [App\Http\Controllers\Api\ConsultantWorkingHourController::class, 'store']);
+    Route::get('/{id}', [App\Http\Controllers\Api\ConsultantWorkingHourController::class, 'show']);
+    Route::put('/{id}', [App\Http\Controllers\Api\ConsultantWorkingHourController::class, 'update']);
+    Route::delete('/{id}', [App\Http\Controllers\Api\ConsultantWorkingHourController::class, 'destroy']);
+    Route::post('/{id}/activate', [App\Http\Controllers\Api\ConsultantWorkingHourController::class, 'activate']);
+    Route::post('/{id}/deactivate', [App\Http\Controllers\Api\ConsultantWorkingHourController::class, 'deactivate']);
+});
+
+// Consultant Holidays (API)
+Route::prefix('consultant/holidays')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [App\Http\Controllers\Api\ConsultantHolidayController::class, 'index']);
+    Route::post('/', [App\Http\Controllers\Api\ConsultantHolidayController::class, 'store']);
+    Route::get('/{id}', [App\Http\Controllers\Api\ConsultantHolidayController::class, 'show']);
+    Route::put('/{id}', [App\Http\Controllers\Api\ConsultantHolidayController::class, 'update']);
+    Route::delete('/{id}', [App\Http\Controllers\Api\ConsultantHolidayController::class, 'destroy']);
+});

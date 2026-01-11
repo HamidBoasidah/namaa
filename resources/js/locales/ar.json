@@ -56,6 +56,7 @@
     "viewAllNotifications": "عرض جميع الإشعارات",
     "daysLeft": "متبقي من الأيام",
     "areYouSure": "هل أنت متأكد؟",
+    "deleteConsultationTypeConfirmation": "هل أنت متأكد أنك تريد حذف نوع الاستشارة هذا؟",
     "deleteCertificateConfirmation": "هل أنت متأكد أنك تريد حذف سجل الشهادة هذا؟",
     "deleteTagConfirmation": "هل أنت متأكد أنك تريد حذف هذا الوسم؟",
     "deleteCategoryConfirmation": "هل أنت متأكد أنك تريد حذف هذا القسم",
@@ -115,7 +116,9 @@
     "startEndRequired": "يجب إدخال وقتي البداية والنهاية.",
     "endAfterStart": "يجب أن يكون وقت النهاية بعد وقت البداية.",
     "validationErrors": "أخطاء التحقق",
-    "minutes": "دقيقة"
+    "minutes": "دقيقة",
+    "yes": "نعم",
+    "no": "لا"
   },
   "user": {
     "name": "كود براينس",
@@ -231,6 +234,8 @@
 
   "consultant_services": {
     "addService": "إضافة خدمة",
+    "editService": "تعديل خدمة",
+    "showService": "عرض خدمة",
     "category": "القسم",
     "selectCategory": "اختر القسم",
     "tags": "الوسوم",
@@ -245,7 +250,24 @@
     "description": "الوصف",
     "consultantName": "اسم المستشار",
     "duration": "المدة (بالدقائق)",
-    "price": "السعر"
+    "price": "السعر",
+    "basicInfo": "المعلومات الأساسية",
+    "serviceDetails": "تفاصيل الخدمة",
+    "includes": "ماذا تشمل الخدمة",
+    "includesPlaceholder": "أدخل ما تشمله الخدمة",
+    "targetAudience": "لمن هذه الخدمة",
+    "targetAudiencePlaceholder": "أدخل الفئة المستهدفة",
+    "deliverables": "ما الذي يستلمه العميل",
+    "deliverablesPlaceholder": "أدخل ما يستلمه العميل",
+    "consultationMethod": "طريقة الاستشارة",
+    "methods": {
+      "video": "فيديو",
+      "audio": "صوتي",
+      "text": "نصي"
+    },
+    "deliveryTime": "وقت التسليم",
+    "deliveryTimePlaceholder": "مثال: 7 أيام",
+    "autoAccept": "قبول تلقائي للطلبات"
   },
 
   "admins": {
@@ -270,6 +292,7 @@
     "userDeletionFailed": "فشل حذف المشرف",
     "userCreatedSuccessfully": "تم إنشاء المشرف بنجاح",
     "userCreationFailed": "فشل إنشاء المشرف",
+    "adminCreationFailed": "فشل إنشاء المشرف",
     "userUpdatedSuccessfully": "تم تحديث المشرف بنجاح",
     "userUpdateFailed": "فشل تحديث المشرف",
     "editAdmin": "تعديل المشرف",

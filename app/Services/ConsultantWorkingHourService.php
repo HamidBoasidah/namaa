@@ -32,6 +32,39 @@ class ConsultantWorkingHourService
         return $this->workingHours->groupedByDay($consultantId, $onlyActive);
     }
 
+    /**
+     * Get query builder for consultant's working hours
+     */
+    public function getQueryForConsultant(int $consultantId)
+    {
+        return $this->workingHours->forConsultant($consultantId, []);
+    }
+
+    /**
+     * Find working hour for specific consultant
+     */
+    public function findForConsultant(int $id, int $consultantId): ConsultantWorkingHour
+    {
+        /** @var ConsultantWorkingHour $workingHour */
+        $workingHour = $this->workingHours->findOrFail($id, []);
+        
+        if ($workingHour->consultant_id !== $consultantId) {
+            throw new \Illuminate\Database\Eloquent\ModelNotFoundException();
+        }
+        
+        return $workingHour;
+    }
+
+    /**
+     * Find working hour by ID
+     */
+    public function find(int $id): ConsultantWorkingHour
+    {
+        /** @var ConsultantWorkingHour $workingHour */
+        $workingHour = $this->workingHours->findOrFail($id, []);
+        return $workingHour;
+    }
+
     public function create(array $attributes): ConsultantWorkingHour
     {
         $this->assertNoOverlap(
@@ -67,32 +100,6 @@ class ConsultantWorkingHourService
     public function delete(int $id): bool
     {
         return $this->workingHours->delete($id);
-    }
-
-    public function activate(int $id): ConsultantWorkingHour
-    {
-        /** @var ConsultantWorkingHour $record */
-        $record = $this->workingHours->findOrFail($id, []);
-
-        // ✅ حتى عند التفعيل: نفحص التداخل ضد الكل (مفعّل وغير مفعّل)
-        $this->assertNoOverlap(
-            (int) $record->consultant_id,
-            (int) $record->day_of_week,
-            (string) $record->start_time,
-            (string) $record->end_time,
-            $record->id
-        );
-
-        $record->update(['is_active' => true]);
-        return $record;
-    }
-
-    public function deactivate(int $id): ConsultantWorkingHour
-    {
-        /** @var ConsultantWorkingHour $record */
-        $record = $this->workingHours->findOrFail($id, []);
-        $record->update(['is_active' => false]);
-        return $record;
     }
 
     /**

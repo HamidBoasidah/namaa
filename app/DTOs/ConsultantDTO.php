@@ -8,6 +8,8 @@ class ConsultantDTO extends BaseDTO
 {
     public $id;
     public $user_id;
+    public $first_name;
+    public $last_name;
     public $user_name;
     public $user_email;
     public $user_phone;
@@ -37,6 +39,8 @@ class ConsultantDTO extends BaseDTO
     public function __construct(
         $id,
         $user_id,
+        $first_name,
+        $last_name,
         $user_name,
         $user_email,
         $user_phone,
@@ -64,6 +68,8 @@ class ConsultantDTO extends BaseDTO
     ) {
         $this->id = $id;
         $this->user_id = $user_id;
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
         $this->user_name = $user_name;
         $this->user_email = $user_email;
         $this->user_phone = $user_phone;
@@ -96,6 +102,8 @@ class ConsultantDTO extends BaseDTO
         return new self(
             $consultant->id,
             $consultant->user_id,
+            $consultant->user?->first_name,
+            $consultant->user?->last_name,
             $consultant->user?->name,
             $consultant->user?->email,
             $consultant->user?->phone_number,
@@ -149,6 +157,8 @@ class ConsultantDTO extends BaseDTO
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
             'user_name' => $this->user_name,
             'user_email' => $this->user_email,
             'user_phone' => $this->user_phone,

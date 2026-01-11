@@ -18,6 +18,7 @@
                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
                 :placeholder="t('profile.labels.firstName')"
               />
+              <p v-if="form.errors.first_name" class="mt-1 text-sm text-error-500">{{ form.errors.first_name }}</p>
             </div>
             <div>
               <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('profile.labels.lastName') }}</label>
@@ -28,6 +29,7 @@
                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
                 :placeholder="t('profile.labels.lastName')"
               />
+              <p v-if="form.errors.last_name" class="mt-1 text-sm text-error-500">{{ form.errors.last_name }}</p>
             </div>
             <!-- Email Input -->
             <div>
@@ -60,6 +62,7 @@
                   :placeholder="t('users.emailPlaceholder')"
                   class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pl-[62px] text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                 />
+              <p v-if="form.errors.email" class="mt-1 text-sm text-error-500">{{ form.errors.email }}</p>
               </div>
             </div>
             <!-- Phone Input with Prepended Country Code -->
@@ -106,6 +109,7 @@
                   autocomplete="new-tel"
                   class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-3 pl-[84px] pr-4 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                 />
+              <p v-if="form.errors.phone_number" class="mt-1 text-sm text-error-500">{{ form.errors.phone_number }}</p>
               </div>
             </div>
             <!-- Phone Input with Prepended Country Code -->
@@ -152,6 +156,7 @@
                   autocomplete="new-tel"
                   class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-3 pl-[84px] pr-4 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                 />
+              <p v-if="form.errors.whatsapp_number" class="mt-1 text-sm text-error-500">{{ form.errors.whatsapp_number }}</p>
               </div>
             </div>
             <!-- Address -->
@@ -163,6 +168,7 @@
                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
                 :placeholder="t('users.addressPlaceholder')"
               />
+              <p v-if="form.errors.address" class="mt-1 text-sm text-error-500">{{ form.errors.address }}</p>
             </div>
             <!-- Password Type Input -->
             <div>
@@ -177,6 +183,7 @@
                   :placeholder="t('users.passwordPlaceholder')"
                   class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pl-4 pr-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                 />
+                <p v-if="form.errors.password" class="mt-1 text-sm text-error-500">{{ form.errors.password }}</p>
                 <span
                   @click="showPassword = !showPassword"
                   class="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
@@ -238,7 +245,7 @@
                   </svg>
                 </span>
               </div>
-              <p v-if="form.errors.password_confirmation" class="text-sm text-red-600">{{ form.errors.password_confirmation }}</p>
+              <p v-if="form.errors.password_confirmation" class="mt-1 text-sm text-error-500">{{ form.errors.password_confirmation }}</p>
             </div>
             <!-- End Password Type Input -->
             <!-- Role Select -->
@@ -274,18 +281,22 @@
             <div>
               <label for="facebook" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('profile.labels.facebook') }}</label>
               <input v-model="form.facebook" type="text" id="facebook" autocomplete="off" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" :placeholder="t('profile.labels.facebook')" />
+              <p v-if="form.errors.facebook" class="mt-1 text-sm text-error-500">{{ form.errors.facebook }}</p>
             </div>
             <div>
               <label for="x_url" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('profile.labels.x') }}</label>
               <input v-model="form.x_url" type="text" id="x_url" autocomplete="off" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" :placeholder="t('profile.labels.x')" />
+              <p v-if="form.errors.x_url" class="mt-1 text-sm text-error-500">{{ form.errors.x_url }}</p>
             </div>
             <div>
               <label for="linkedin" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('profile.labels.linkedin') }}</label>
               <input v-model="form.linkedin" type="text" id="linkedin" autocomplete="off" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" :placeholder="t('profile.labels.linkedin')" />
+              <p v-if="form.errors.linkedin" class="mt-1 text-sm text-error-500">{{ form.errors.linkedin }}</p>
             </div>
             <div>
               <label for="instagram" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('profile.labels.instagram') }}</label>
               <input v-model="form.instagram" type="text" id="instagram" autocomplete="off" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" :placeholder="t('profile.labels.instagram')" />
+              <p v-if="form.errors.instagram" class="mt-1 text-sm text-error-500">{{ form.errors.instagram }}</p>
             </div>
           </div>
         </div>
@@ -329,6 +340,7 @@
           </div>
           <input ref="fileInput" type="file" id="admin-avatar" class="hidden" accept="image/*" @change="handleFileUpload" />
         </label>
+        <p v-if="form.errors.avatar" class="mt-1 text-sm text-error-500">{{ form.errors.avatar }}</p>
       </div>
     </div>
 

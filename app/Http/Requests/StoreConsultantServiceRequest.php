@@ -24,7 +24,6 @@ class StoreConsultantServiceRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                // ✅ منع تكرار العنوان لنفس المستشار (مع تجاهل المحذوفات Soft Deleted)
                 Rule::unique('consultant_services', 'title')
                     ->where(function ($q) use ($consultantId) {
                         return $q->where('consultant_id', $consultantId)
@@ -38,19 +37,26 @@ class StoreConsultantServiceRequest extends FormRequest
             'tags.*' => ['integer', 'exists:tags,id'],
 
             'price' => ['required', 'numeric', 'min:0'],
-
-            // بما أنك حاط default=60 في DB:
-            // - نقدر نخليه nullable، ولو انرسل نتأكد أنه رقم
-            // - أو نجبره يكون 60 دائمًا (اختياري)
             'duration_minutes' => ['nullable', 'integer', 'min:1', 'max:1440'],
-
+            'consultation_method' => ['nullable', 'in:video,audio,text'],
+            'delivery_time' => ['nullable', 'string', 'max:255'],
+            'auto_accept_requests' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
+
+            // تفاصيل الخدمة
+            'includes' => ['nullable', 'array'],
+            'includes.*' => ['string', 'max:500'],
+            
+            'target_audience' => ['nullable', 'array'],
+            'target_audience.*' => ['string', 'max:500'],
+            
+            'deliverables' => ['nullable', 'array'],
+            'deliverables.*' => ['string', 'max:500'],
         ];
     }
 
     protected function prepareForValidation(): void
     {
-        // تحسين بسيط: لو أرسل duration_minutes فاضي، نخليه null حتى ياخذ default من DB
         if ($this->has('duration_minutes') && $this->input('duration_minutes') === '') {
             $this->merge(['duration_minutes' => null]);
         }

@@ -31,6 +31,14 @@ return new class extends Migration
 
                 $table->unsignedSmallInteger('duration_minutes')->default(60);
 
+                // consultation method: one of ['video','audio','text']
+                $table->enum('consultation_method', ['video', 'audio', 'text'])->default('video');
+
+                $table->text('delivery_time')->nullable();
+
+                // whether requests for this service are auto-accepted
+                $table->boolean('auto_accept_requests')->default(false);
+
                 $table->boolean('is_active')->default(true);
 
                 $table->softDeletes();

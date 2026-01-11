@@ -384,7 +384,7 @@
     <DangerAlert
         :isOpen="isDeleteModalOpen"
         :title="t('messages.areYouSure')"
-        :message="t('messages.deleteConfirmation')"
+        :message="t('messages.deleteConsultationTypeConfirmation')"
         @close="closeDeleteModal"
         @confirm="confirmDelete"
     />
@@ -395,8 +395,8 @@ import { ref, computed, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { route } from '@/route'
 import { useI18n } from 'vue-i18n'
-import Tooltip from '@/Components/ui/Tooltip.vue'
-import DangerAlert from '@/Components/modals/DangerAlert.vue'
+import Tooltip from '@/components/ui/Tooltip.vue'
+import DangerAlert from '@/components/modals/DangerAlert.vue'
 import { usePermissions } from '@/composables/usePermissions'
 import { useNotifications } from '@/composables/useNotifications'
 

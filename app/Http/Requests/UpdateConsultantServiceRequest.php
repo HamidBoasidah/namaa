@@ -38,10 +38,22 @@ class UpdateConsultantServiceRequest extends FormRequest
             'tags.*' => ['integer', 'exists:tags,id'],
             'price' => ['required', 'numeric', 'min:0'],
             'duration_minutes' => ['nullable', 'integer', 'min:1', 'max:1440'],
+            'consultation_method' => ['nullable', 'in:video,audio,text'],
+            'delivery_time' => ['nullable', 'string', 'max:255'],
+            'auto_accept_requests' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
+
+            // تفاصيل الخدمة
+            'includes' => ['nullable', 'array'],
+            'includes.*' => ['string', 'max:500'],
+            
+            'target_audience' => ['nullable', 'array'],
+            'target_audience.*' => ['string', 'max:500'],
+            
+            'deliverables' => ['nullable', 'array'],
+            'deliverables.*' => ['string', 'max:500'],
         ];
     }
-
 
     protected function prepareForValidation(): void
     {

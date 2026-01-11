@@ -375,7 +375,7 @@
         {{ t('buttons.backToList') }}
       </Link>
       <Link
-        :href="route('admin.users.edit', consultant.id)"
+        :href="route('admin.consultants.edit', consultant.id)"
         class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white transition"
       >
         {{ t('buttons.edit') }}

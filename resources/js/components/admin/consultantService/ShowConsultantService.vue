@@ -4,150 +4,116 @@
 		<div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
 			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div class="space-y-1">
-					<h2 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-						{{ service.title || t('consultant_services.serviceName') }}
-					</h2>
-					<p class="text-sm text-gray-500 dark:text-gray-400">
-						{{ consultantName }}
-					</p>
+					<h2 class="text-lg font-semibold text-gray-800 dark:text-white/90">{{ service.title || t('consultant_services.serviceName') }}</h2>
+					<p class="text-sm text-gray-500 dark:text-gray-400">{{ service.consultant_display_name || '-' }}</p>
 				</div>
-
 				<div class="flex flex-wrap items-center gap-3">
-					<span
-						class="inline-flex items-center justify-center gap-1 rounded-full px-3 py-1 text-xs font-medium"
-						:class="{
-							'bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-500': service.is_active,
-							'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500': !service.is_active,
-						}"
-					>
+					<span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium" :class="service.is_active ? 'bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-500' : 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500'">
 						{{ service.is_active ? t('common.active') : t('common.inactive') }}
 					</span>
-
 					<span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 dark:bg-white/10 dark:text-gray-300">
-						{{ t('consultant_services.price') }}: {{ formattedPrice }}
+						{{ t('consultant_services.price') }}: {{ formatPrice(service.price) }}
 					</span>
-
 					<span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 dark:bg-white/10 dark:text-gray-300">
-						{{ t('consultant_services.duration') }}: {{ formattedDuration }}
+						{{ t('consultant_services.duration') }}: {{ service.duration_minutes }} {{ t('common.minutes') }}
 					</span>
 				</div>
 			</div>
 		</div>
 
-		<!-- Details Section -->
+		<!-- Basic Info -->
 		<div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
 			<div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
-				<h3 class="text-lg font-medium text-gray-800 dark:text-white">
-					{{ t('consultant_services.showService') }}
-				</h3>
+				<h3 class="text-lg font-medium text-gray-800 dark:text-white">{{ t('consultant_services.basicInfo') }}</h3>
 			</div>
-
 			<div class="p-4 sm:p-6">
 				<div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-2">
 					<div>
-						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-							{{ t('consultant_services.serviceName') }}
-						</label>
-						<p class="text-base text-gray-800 dark:text-white/90">
-							{{ service.title || '—' }}
-						</p>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.serviceName') }}</label>
+						<p class="text-base text-gray-800 dark:text-white/90">{{ service.title || '—' }}</p>
 					</div>
-
 					<div>
-						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-							{{ t('consultant_services.consultantName') }}
-						</label>
-						<p class="text-base text-gray-800 dark:text-white/90">
-							{{ consultantName }}
-						</p>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.consultantName') }}</label>
+						<p class="text-base text-gray-800 dark:text-white/90">{{ service.consultant_display_name || '—' }}</p>
 					</div>
-
 					<div>
-						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-							{{ t('consultant_services.category') }}
-						</label>
-						<p class="text-base text-gray-800 dark:text-white/90">
-							{{ categoryName }}
-						</p>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.category') }}</label>
+						<p class="text-base text-gray-800 dark:text-white/90">{{ service.category_name || '—' }}</p>
 					</div>
-
 					<div>
-						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-							{{ t('consultant_services.price') }}
-						</label>
-						<p class="text-base text-gray-800 dark:text-white/90">
-							{{ formattedPrice }}
-						</p>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.price') }}</label>
+						<p class="text-base text-gray-800 dark:text-white/90">{{ formatPrice(service.price) }}</p>
 					</div>
-
 					<div>
-						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-							{{ t('consultant_services.duration') }}
-						</label>
-						<p class="text-base text-gray-800 dark:text-white/90">
-							{{ formattedDuration }}
-						</p>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.duration') }}</label>
+						<p class="text-base text-gray-800 dark:text-white/90">{{ service.duration_minutes }} {{ t('common.minutes') }}</p>
 					</div>
-
 					<div>
-						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-							{{ t('common.status') }}
-						</label>
-						<span
-							class="inline-flex items-center justify-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
-							:class="{
-								'bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-500': service.is_active,
-								'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500': !service.is_active,
-							}"
-						>
-							{{ service.is_active ? t('common.active') : t('common.inactive') }}
-						</span>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.consultationMethod') }}</label>
+						<p class="text-base text-gray-800 dark:text-white/90">{{ t(`consultant_services.methods.${service.consultation_method}`) }}</p>
 					</div>
-
+					<div>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.deliveryTime') }}</label>
+						<p class="text-base text-gray-800 dark:text-white/90">{{ service.delivery_time || '—' }}</p>
+					</div>
+					<div>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.autoAccept') }}</label>
+						<p class="text-base text-gray-800 dark:text-white/90">{{ service.auto_accept_requests ? t('common.yes') : t('common.no') }}</p>
+					</div>
 					<div class="md:col-span-2">
-						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-							{{ t('consultant_services.description') || t('consultant_services.serviceName') }}
-						</label>
-						<p class="whitespace-pre-line text-base text-gray-800 dark:text-white/90">
-							{{ service.description || '—' }}
-						</p>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.description') }}</label>
+						<p class="whitespace-pre-line text-base text-gray-800 dark:text-white/90">{{ service.description || '—' }}</p>
 					</div>
-
 					<div class="md:col-span-2">
-						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">
-							{{ t('consultant_services.tags') }}
-						</label>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.tags') }}</label>
 						<div v-if="tagList.length" class="flex flex-wrap gap-2">
-							<Badge
-								v-for="tag in tagList"
-								:key="tag.id || tag"
-								variant="light"
-								color="info"
-								size="sm"
-							>
-								{{ displayTagLabel(tag) }}
-							</Badge>
+							<Badge v-for="tag in tagList" :key="tag.id || tag" variant="light" color="info" size="sm">{{ displayTagLabel(tag) }}</Badge>
 						</div>
-							<p v-else class="text-sm text-gray-500 dark:text-gray-400">{{ noTagsLabel }}</p>
+						<p v-else class="text-sm text-gray-500 dark:text-gray-400">—</p>
 					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Service Details -->
+		<div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+			<div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+				<h3 class="text-lg font-medium text-gray-800 dark:text-white">{{ t('consultant_services.serviceDetails') }}</h3>
+			</div>
+			<div class="p-4 sm:p-6 space-y-6">
+				<!-- ماذا تشمل الخدمة -->
+				<div>
+					<label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('consultant_services.includes') }}</label>
+					<ul v-if="service.includes?.length" class="list-disc list-inside space-y-1 text-gray-800 dark:text-white/90">
+						<li v-for="(item, i) in service.includes" :key="i">{{ item }}</li>
+					</ul>
+					<p v-else class="text-sm text-gray-500 dark:text-gray-400">—</p>
+				</div>
+
+				<!-- لمن هذه الخدمة -->
+				<div>
+					<label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('consultant_services.targetAudience') }}</label>
+					<ul v-if="service.target_audience?.length" class="list-disc list-inside space-y-1 text-gray-800 dark:text-white/90">
+						<li v-for="(item, i) in service.target_audience" :key="i">{{ item }}</li>
+					</ul>
+					<p v-else class="text-sm text-gray-500 dark:text-gray-400">—</p>
+				</div>
+
+				<!-- ما الذي يستلمه العميل -->
+				<div>
+					<label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('consultant_services.deliverables') }}</label>
+					<ul v-if="service.deliverables?.length" class="list-disc list-inside space-y-1 text-gray-800 dark:text-white/90">
+						<li v-for="(item, i) in service.deliverables" :key="i">{{ item }}</li>
+					</ul>
+					<p v-else class="text-sm text-gray-500 dark:text-gray-400">—</p>
 				</div>
 			</div>
 		</div>
 
 		<!-- Actions -->
 		<div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
-			<Link
-				:href="route('admin.consultant-services.index')"
-				class="shadow-theme-xs inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 ring-1 ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
-			>
-				{{ t('buttons.backToList') }}
-			</Link>
-			<Link
-				:href="route('admin.consultant-services.edit', service.id)"
-				class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white transition"
-			>
-				{{ t('buttons.edit') }}
-			</Link>
+			<Link :href="route('admin.consultant-services.index')" class="shadow-theme-xs inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700">{{ t('buttons.backToList') }}</Link>
+			<Link :href="route('admin.consultant-services.edit', service.id)" class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white">{{ t('buttons.edit') }}</Link>
 		</div>
 	</div>
 </template>
@@ -166,41 +132,16 @@ const props = defineProps({
 })
 
 const service = computed(() => props.service || {})
+const tagList = computed(() => service.value?.tags ?? [])
 
-const consultantName = computed(() => service.value?.consultant_display_name || service.value?.consultant_name || '—')
-const categoryName = computed(() => {
-	if (service.value?.category_name) return service.value.category_name
-	const category = service.value?.category
-	if (!category) return '—'
-	return locale.value === 'ar' ? category.name_ar ?? category.name ?? '—' : category.name ?? category.name_ar ?? '—'
-})
-
-const tagList = computed(() => {
-	const raw = service.value?.tags ?? service.value?.tag_list ?? []
-	if (!Array.isArray(raw)) return []
-	return raw
-})
-
-const noTagsLabel = computed(() => {
-	const translation = t('tags.noTags')
-	return translation === 'tags.noTags' ? '—' : translation
-})
-
-const formattedPrice = computed(() => {
-	const price = service.value?.price
-	if (price === null || price === undefined || price === '') return '—'
-	const numericPrice = Number(price)
-	if (Number.isNaN(numericPrice)) return price
-	return numericPrice.toLocaleString(locale.value === 'ar' ? 'ar' : 'en', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-})
-
-const formattedDuration = computed(() => {
-	if (!service.value?.duration_minutes) return '—'
-	return service.value.duration_minutes
-})
+function formatPrice(price) {
+	if (price == null) return '—'
+	const num = Number(price)
+	return Number.isNaN(num) ? price : num.toLocaleString(locale.value === 'ar' ? 'ar' : 'en', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
 
 function displayTagLabel(tag) {
 	if (typeof tag === 'string' || typeof tag === 'number') return `#${tag}`
-	return locale.value === 'ar' ? tag.name_ar ?? tag.name ?? `#${tag.id}` : tag.name ?? tag.name_ar ?? `#${tag.id}`
+	return tag.name ?? `#${tag.id}`
 }
 </script>

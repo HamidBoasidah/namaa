@@ -4,8 +4,12 @@ namespace App\Providers;
 
 use App\Models\Certificate;
 use App\Models\ConsultantExperience;
+use App\Models\ConsultantHoliday;
+use App\Models\ConsultantWorkingHour;
 use App\Policies\CertificatePolicy;
 use App\Policies\ConsultantExperiencePolicy;
+use App\Policies\ConsultantHolidayPolicy;
+use App\Policies\ConsultantWorkingHourPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,5 +31,7 @@ class AppServiceProvider extends ServiceProvider
         // Register Policies
         Gate::policy(Certificate::class, CertificatePolicy::class);
         Gate::policy(ConsultantExperience::class, ConsultantExperiencePolicy::class);
+        Gate::policy(ConsultantWorkingHour::class, ConsultantWorkingHourPolicy::class);
+        Gate::policy(ConsultantHoliday::class, ConsultantHolidayPolicy::class);
     }
 }

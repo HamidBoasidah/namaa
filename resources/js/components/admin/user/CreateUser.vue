@@ -130,7 +130,7 @@
               </label>
               <div class="relative z-20 bg-transparent">
                 <select
-                  v-model="form.consultation_type"
+                  v-model="form.consultation_type_id"
                   class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
                 >
                   <option value="" disabled>--</option>
@@ -142,7 +142,7 @@
                   </svg>
                 </span>
               </div>
-              <p v-if="form.errors.consultation_type" class="mt-1 text-sm text-error-500">{{ form.errors.consultation_type }}</p>
+              <p v-if="form.errors.consultation_type_id" class="mt-1 text-sm text-error-500">{{ form.errors.consultation_type_id }}</p>
             </div>
 
             <!-- Years of Experience (visible for consultants) -->
@@ -282,7 +282,7 @@
                   </svg>
                 </span>
               </div>
-              <p v-if="form.errors.password_confirmation" class="text-sm text-red-600">{{ form.errors.password_confirmation }}</p>
+              <p v-if="form.errors.password_confirmation" class="mt-1 text-sm text-error-500">{{ form.errors.password_confirmation }}</p>
             </div>
             <!-- End Password Type Input -->
           </div>
@@ -370,7 +370,7 @@ const form = useForm({
   email: '',
   gender: '',
   user_type: 'customer',
-  consultation_type: null,
+  consultation_type_id: null,
   years_of_experience: null,
   phone_number: '',
   is_active: true,

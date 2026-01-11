@@ -31,7 +31,6 @@ class ConsultantServiceController extends Controller
     {
         $perPage = (int) $request->input('per_page', 10);
 
-        // إن احتجت علاقات: مررها هنا (أو اتركها null ليستخدم defaultWith)
         $services = $service->paginate($perPage);
 
         $services->getCollection()->transform(function ($item) {
@@ -45,10 +44,15 @@ class ConsultantServiceController extends Controller
 
     public function create()
     {
-        // للواجهة: قائمة المستشارين لاختيار consultant_id
-        $consultants = Consultant::select('id', 'display_name')
-            ->orderBy('display_name')
-            ->get();
+        $consultants = Consultant::with('user:id,first_name,last_name')
+            ->select('id', 'user_id')
+            ->get()
+            ->map(fn($c) => [
+                'id' => $c->id,
+                'name' => $c->user ? trim("{$c->user->first_name} {$c->user->last_name}") : "#{$c->id}",
+            ])
+            ->sortBy('name')
+            ->values();
 
         $categories = Category::select('id', 'name')->where('is_active', true)->orderBy('name')->get();
         $tags = Tag::select('id', 'name')->where('is_active', true)->orderBy('name')->get();
@@ -57,6 +61,11 @@ class ConsultantServiceController extends Controller
             'consultants' => $consultants,
             'categories' => $categories,
             'tags' => $tags,
+            'consultationMethods' => [
+                ['value' => 'video', 'label' => __('consultant_services.methods.video')],
+                ['value' => 'audio', 'label' => __('consultant_services.methods.audio')],
+                ['value' => 'text', 'label' => __('consultant_services.methods.text')],
+            ],
         ]);
     }
 
@@ -69,8 +78,17 @@ class ConsultantServiceController extends Controller
         return redirect()->route('admin.consultant-services.index');
     }
 
-    public function show(ConsultantService $consultant_service)
+    public function show(ConsultantService $consultant_service, ConsultantServicesService $service)
     {
+        $consultant_service->load([
+            'consultant.user:id,first_name,last_name,email,phone_number',
+            'category:id,name',
+            'tags:id,name',
+            'includes',
+            'targetAudience',
+            'deliverables',
+        ]);
+        
         $dto = ConsultantServiceDTO::fromModel($consultant_service)->toArray();
 
         return Inertia::render('Admin/ConsultantService/Show', [
@@ -80,9 +98,24 @@ class ConsultantServiceController extends Controller
 
     public function edit(ConsultantService $consultant_service)
     {
-        $consultants = Consultant::select('id', 'display_name')
-            ->orderBy('display_name')
-            ->get();
+        $consultant_service->load([
+            'consultant.user:id,first_name,last_name,email,phone_number',
+            'category:id,name',
+            'tags:id,name',
+            'includes',
+            'targetAudience',
+            'deliverables',
+        ]);
+
+        $consultants = Consultant::with('user:id,first_name,last_name')
+            ->select('id', 'user_id')
+            ->get()
+            ->map(fn($c) => [
+                'id' => $c->id,
+                'name' => $c->user ? trim("{$c->user->first_name} {$c->user->last_name}") : "#{$c->id}",
+            ])
+            ->sortBy('name')
+            ->values();
 
         $categories = Category::select('id', 'name')->where('is_active', true)->orderBy('name')->get();
         $tags = Tag::select('id', 'name')->where('is_active', true)->orderBy('name')->get();
@@ -94,6 +127,11 @@ class ConsultantServiceController extends Controller
             'consultants' => $consultants,
             'categories' => $categories,
             'tags' => $tags,
+            'consultationMethods' => [
+                ['value' => 'video', 'label' => __('consultant_services.methods.video')],
+                ['value' => 'audio', 'label' => __('consultant_services.methods.audio')],
+                ['value' => 'text', 'label' => __('consultant_services.methods.text')],
+            ],
         ]);
     }
 

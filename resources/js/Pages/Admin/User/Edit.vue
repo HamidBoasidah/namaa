@@ -4,7 +4,7 @@
 
     <EditUserForm
     :user="user"
-    :roles="roles"
+    :consultation_types="consultation_types"
     />
   </admin-layout>
 </template>
@@ -23,7 +23,7 @@ const currentPageTitle = computed(() => t('users.editUser'))
 
 // استلام البيانات من Inertia
 const user = computed(() => usePage().props.user)
-const roles = computed(() => usePage().props.roles)
+const consultation_types = computed(() => usePage().props.consultation_types)
 
 
 </script>

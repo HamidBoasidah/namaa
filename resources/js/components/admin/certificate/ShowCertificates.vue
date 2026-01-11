@@ -205,8 +205,8 @@
               <div class="flex items-center gap-3">
                 <div class="h-10 w-10">
                   <img
-                    v-if="certificate.user?.avatar"
-                    :src="`/storage/${certificate.user.avatar}`"
+                    v-if="certificate.consultant?.avatar"
+                    :src="`/storage/${certificate.consultant.avatar}`"
                     class="object-cover w-10 h-10 rounded-full"
                     alt=""
                   />
@@ -214,7 +214,7 @@
                 </div>
                 <div class="flex flex-col">
                   <span class="text-sm font-medium text-gray-700 dark:text-gray-200">{{ applicantName(certificate) }}</span>
-                  <span class="text-xs text-gray-500 dark:text-gray-400">{{ certificate.user?.email }}</span>
+                  <span class="text-xs text-gray-500 dark:text-gray-400">{{ certificate.consultant?.email }}</span>
                 </div>
               </div>
             </td>
@@ -439,10 +439,10 @@ const verificationBadgeClass = (isVerified) => (isVerified ? verificationStyles.
 
 const applicantName = (certificate) => {
   if (certificate.full_name) return certificate.full_name
-  const first = certificate.user?.first_name ?? ''
-  const last = certificate.user?.last_name ?? ''
+  const first = certificate.consultant?.first_name ?? ''
+  const last = certificate.consultant?.last_name ?? ''
   const combined = `${first} ${last}`.trim()
-  return combined || certificate.user?.name || t('certificate.unknownApplicant')
+  return combined || t('certificate.unknownApplicant')
 }
 
 const filteredData = computed(() => {
@@ -452,7 +452,7 @@ const filteredData = computed(() => {
       if (!searchLower) return true
       const values = [
         applicantName(certificate),
-        certificate.user?.email ?? '',
+        certificate.consultant?.email ?? '',
         certificate.status ?? '',
       ]
       return values.some((value) => value?.toLowerCase?.().includes(searchLower))

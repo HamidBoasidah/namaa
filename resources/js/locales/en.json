@@ -6,6 +6,8 @@
     "daysLeft": "days left",
     "areYouSure": "Are you sure?",
     "deleteConfirmation": "Are you sure you want to delete this user?",
+    "deleteAdminConfirmation": "Are you sure you want to delete this admin?",
+    "deleteConsultationTypeConfirmation": "Are you sure you want to delete this consultation type?",
     "notAuthorizedDelete": "You are not authorized to perform delete operation."
   },
   "menu": {

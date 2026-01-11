@@ -9,7 +9,6 @@ use App\Http\Requests\UpdateUserRequest;
 use Inertia\Inertia;
 use App\Services\UserService;
 use App\Models\User;
-use App\Models\Role;
 use App\Models\ConsultationType;
 use App\DTOs\UserDTO;
 use App\Http\Requests\StoreUserRequest;
@@ -71,13 +70,11 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $roles = Role::all();
-
         $userDTO = UserDTO::fromModel($user)->toArray();
 
         return Inertia::render('Admin/User/Edit', [
             'user' => $userDTO,
-            'roles' => $roles,
+            'consultation_types' => ConsultationType::all(),
         ]);
     }
 

@@ -588,7 +588,7 @@
   <DangerAlert
     :isOpen="isDeleteModalOpen"
     :title="t('messages.areYouSure')"
-    :message="t('messages.deleteUserConfirmation')"
+    :message="t('messages.deleteAdminConfirmation')"
     @close="closeDeleteModal"
     @confirm="confirmDelete"
   />

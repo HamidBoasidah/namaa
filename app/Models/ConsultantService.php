@@ -18,12 +18,16 @@ class ConsultantService extends BaseModel
         'description',
         'price',
         'duration_minutes',
+        'consultation_method',
+        'delivery_time',
+        'auto_accept_requests',
         'is_active',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'duration_minutes' => 'integer',
+        'auto_accept_requests' => 'boolean',
         'is_active' => 'boolean',
     ];
 
@@ -40,5 +44,35 @@ class ConsultantService extends BaseModel
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'consultant_services_tags')->withTimestamps();
+    }
+
+    // تفاصيل الخدمة
+    public function details()
+    {
+        return $this->hasMany(ConsultantServiceDetail::class)->orderBy('sort_order');
+    }
+
+    // ماذا تشمل الخدمة
+    public function includes()
+    {
+        return $this->hasMany(ConsultantServiceDetail::class)
+            ->where('type', ConsultantServiceDetail::TYPE_INCLUDES)
+            ->orderBy('sort_order');
+    }
+
+    // لمن هذه الخدمة
+    public function targetAudience()
+    {
+        return $this->hasMany(ConsultantServiceDetail::class)
+            ->where('type', ConsultantServiceDetail::TYPE_TARGET_AUDIENCE)
+            ->orderBy('sort_order');
+    }
+
+    // ما الذي يستلمه العميل
+    public function deliverables()
+    {
+        return $this->hasMany(ConsultantServiceDetail::class)
+            ->where('type', ConsultantServiceDetail::TYPE_DELIVERABLES)
+            ->orderBy('sort_order');
     }
 }

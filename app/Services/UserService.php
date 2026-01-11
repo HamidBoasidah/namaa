@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Repositories\UserRepository;
 use App\Services\ConsultantService;
+use App\Services\ConsultantCredentialsService;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,11 +13,13 @@ class UserService
 {
     protected UserRepository $users;
     protected ConsultantService $consultantService;
-    public function __construct(UserRepository $users)
+    protected ConsultantCredentialsService $credentialsService;
+
+    public function __construct(UserRepository $users, ConsultantService $consultantService, ConsultantCredentialsService $credentialsService)
     {
         $this->users = $users;
-        // inject consultant service when resolved from container
-        $this->consultantService = app(ConsultantService::class);
+        $this->consultantService = $consultantService;
+        $this->credentialsService = $credentialsService;
     }
 
     public function all(array $with = [])
@@ -37,10 +41,15 @@ class UserService
     {
         // Wrap in DB transaction: create user, then create consultant record if needed
         return DB::transaction(function () use ($attributes) {
+            $certificateFile = $attributes['certificate'] ?? null;
+
             // hash password if present
             if (array_key_exists('password', $attributes) && !empty($attributes['password'])) {
                 $attributes['password'] = Hash::make($attributes['password']);
             }
+
+            // certificate isn't a user column; remove to avoid mass-assignment issues
+            unset($attributes['certificate']);
 
             $user = $this->users->create($attributes);
 
@@ -52,7 +61,14 @@ class UserService
                     'years_of_experience' => $attributes['years_of_experience'] ?? null,
                 ];
 
-                $this->consultantService->create($consultantData);
+                $consultant = $this->consultantService->create($consultantData);
+
+                // if a certificate file was provided, store it and link to consultant
+                if ($certificateFile instanceof UploadedFile) {
+                    $this->credentialsService->addCertificate($user, [
+                        'document_scan_copy' => $certificateFile,
+                    ]);
+                }
             }
 
             return $user;

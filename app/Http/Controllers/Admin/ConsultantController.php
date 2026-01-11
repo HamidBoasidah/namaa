@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 use App\Services\ConsultantService;
@@ -14,6 +16,7 @@ use App\Services\ConsultantExperienceService;
 use App\DTOs\ConsultantDTO;
 
 use App\Models\Consultant;
+use App\Models\ConsultationType;
 use App\Models\Governorate;
 use App\Models\District;
 use App\Models\Area;
@@ -34,7 +37,7 @@ class ConsultantController extends Controller
 
     public function index(Request $request, ConsultantService $consultantService)
     {
-        $perPage = $request->input('per_page', 10);
+        $perPage = $request->input('per_page', 9);
         $consultants = $consultantService->paginate($perPage);
 
         $consultants->getCollection()->transform(function ($consultant) {
@@ -98,30 +101,16 @@ class ConsultantController extends Controller
     public function edit(Consultant $consultant)
     {
         // ✅ الخيار A: تحميل ساعات العمل والإجازات هنا
-        $consultant->load(['workingHours', 'holidays', 'experiences']);
-
-        $governorates = Governorate::select('id', 'name_ar', 'name_en')->get();
-        $districts    = District::select('id', 'name_ar', 'name_en', 'governorate_id')->get();
-        $areas        = Area::select('id', 'name_ar', 'name_en', 'district_id')->get();
+        $consultant->load(['workingHours', 'holidays', 'experiences', 'user']);
 
         $consultantDTO = ConsultantDTO::fromModel($consultant)->toArray();
 
-        $users = User::select('id', 'first_name', 'last_name', 'email')
-            ->where('user_type', 'consultant')
-            ->get()
-            ->map(function ($u) {
-                return [
-                    'id' => $u->id,
-                    'name' => $u->name,
-                ];
-            });
+        // أنواع الاستشارات
+        $consultationTypes = ConsultationType::select('id', 'name')->get();
 
         return Inertia::render('Admin/Consultant/Edit', [
             'consultant' => $consultantDTO,
-            'governorates' => $governorates,
-            'districts' => $districts,
-            'areas' => $areas,
-            'users' => $users,
+            'consultation_types' => $consultationTypes,
         ]);
     }
 
@@ -129,11 +118,40 @@ class ConsultantController extends Controller
     {
         $data = $request->validated();
 
-        if ($request->hasFile('profile_image')) {
-            $data['profile_image'] = $request->file('profile_image');
-        }
+        DB::transaction(function () use ($data, $consultant, $request) {
+            // تحديث بيانات المستخدم
+            $userData = array_filter([
+                'first_name' => $data['first_name'] ?? null,
+                'last_name' => $data['last_name'] ?? null,
+                'email' => $data['email'] ?? null,
+                'phone_number' => $data['phone_number'] ?? null,
+                'gender' => $data['gender'] ?? null,
+            ], fn($v) => $v !== null);
 
-        $consultantService->update($consultant->id, $data);
+            // معالجة الصورة
+            if ($request->hasFile('avatar')) {
+                // حذف الصورة القديمة إن وجدت
+                if ($consultant->user->avatar) {
+                    Storage::disk('public')->delete($consultant->user->avatar);
+                }
+                $userData['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            }
+
+            if (!empty($userData)) {
+                $consultant->user->update($userData);
+            }
+
+            // تحديث بيانات المستشار
+            $consultantData = array_filter([
+                'consultation_type_id' => $data['consultation_type_id'] ?? null,
+                'years_of_experience' => $data['years_of_experience'] ?? null,
+                'is_active' => $data['is_active'] ?? null,
+            ], fn($v) => $v !== null);
+
+            if (!empty($consultantData)) {
+                $consultant->update($consultantData);
+            }
+        });
 
         return redirect()->route('admin.consultants.index');
     }

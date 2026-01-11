@@ -281,39 +281,39 @@ const menuGroups = computed(() =>
             },
           ],
         },
-        {
-          icon: BuildingIcon,
-          name: t('menu.locations'),
-          subItems: [
-            {
-              name: t('menu.governorates'),
-              path: route('admin.governorates.index'),
-              permission: 'governorates.view',
-            },
-            {
-              name: t('menu.districts'),
-              path: route('admin.districts.index'),
-              permission: 'districts.view',
-            },
-            {
-              name: t('menu.areas'),
-              path: route('admin.areas.index'),
-              permission: 'areas.view',
-            }
-          ],
-        },
+        // {
+        //   icon: BuildingIcon,
+        //   name: t('menu.locations'),
+        //   subItems: [
+        //     {
+        //       name: t('menu.governorates'),
+        //       path: route('admin.governorates.index'),
+        //       permission: 'governorates.view',
+        //     },
+        //     {
+        //       name: t('menu.districts'),
+        //       path: route('admin.districts.index'),
+        //       permission: 'districts.view',
+        //     },
+        //     {
+        //       name: t('menu.areas'),
+        //       path: route('admin.areas.index'),
+        //       permission: 'areas.view',
+        //     }
+        //   ],
+        // },
         {
           icon: UserCircleIcon,
           name: t('menu.certificates'),
           path: route('admin.certificates.index'),
           permission: 'certificates.view',
         },
-        // {
-        //   icon: GridIcon,
-        //   name: t('menu.categories'),
-        //   path: route('admin.categories.index'),
-        //   permission: 'categories.view',
-        // },
+        {
+          icon: GridIcon,
+          name: t('menu.categories'),
+          path: route('admin.categories.index'),
+          permission: 'categories.view',
+        },
         {
           icon: TagIcon,
           name: t('menu.tags'),

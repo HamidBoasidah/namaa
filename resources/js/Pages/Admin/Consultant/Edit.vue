@@ -4,10 +4,7 @@
 
     <EditConsultantForm
       :consultant="consultant"
-      :governorates="governorates"
-      :districts="districts"
-      :areas="areas"
-      :users="users"
+      :consultation_types="consultation_types"
     />
   </admin-layout>
 </template>
@@ -26,10 +23,7 @@ const currentPageTitle = computed(() => t('consultants.editConsultant'))
 
 // استلام البيانات من Inertia
 const consultant = computed(() => usePage().props.consultant)
-const governorates = computed(() => usePage().props.governorates)
-const districts = computed(() => usePage().props.districts)
-const areas = computed(() => usePage().props.areas)
-const users = computed(() => usePage().props.users)
+const consultation_types = computed(() => usePage().props.consultation_types)
 
 
 </script>

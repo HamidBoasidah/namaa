@@ -34,11 +34,11 @@ return [
     */
     'resources' => [
         'dashboard'    => ['view'],
-        'areas'        => ['view', 'create', 'update', 'delete'],
-        'districts'    => ['view', 'create', 'update', 'delete'],
-        'governorates' => ['view', 'create', 'update', 'delete'],
+        //'areas'        => ['view', 'create', 'update', 'delete'],
+        //'districts'    => ['view', 'create', 'update', 'delete'],
+        //'governorates' => ['view', 'create', 'update', 'delete'],
         'tags'         => ['view', 'create', 'update', 'delete'],
-        'categories'   => ['view', 'create', 'update', 'delete'],
+        //'categories'   => ['view', 'create', 'update', 'delete'],
         'certificates'         => ['view', 'create', 'update', 'delete'],
         'consultants' => ['view', 'create', 'update', 'delete'],
         'consultant-services' => ['view', 'create', 'update', 'delete'],
@@ -59,12 +59,12 @@ return [
     */
     'resource_labels' => [
         'dashboard'    => ['en' => 'Dashboard',          'ar' => 'لوحة التحكم'],
-        'areas'        => ['en' => 'Areas',         'ar' => 'المناطق'],
-        'districts'    => ['en' => 'Districts',     'ar' => 'المديريات'],
-        'governorates' => ['en' => 'Governorates',  'ar' => 'المحافظات'],
+        //'areas'        => ['en' => 'Areas',         'ar' => 'المناطق'],
+        //'districts'    => ['en' => 'Districts',     'ar' => 'المديريات'],
+        //'governorates' => ['en' => 'Governorates',  'ar' => 'المحافظات'],
         'certificates'         => ['en' => 'Certificates',  'ar' => 'الشهادات'],
         'tags'         => ['en' => 'Tags',          'ar' => 'الوسوم'],
-        'categories'   => ['en' => 'Categories',    'ar' => 'الأقسام'],
+        //'categories'   => ['en' => 'Categories',    'ar' => 'الأقسام'],
         'consultants' => ['en' => 'Consultants',   'ar' => 'المستشارون'],
         'consultant-services' => ['en' => 'Consultant Services', 'ar' => 'خدمات المستشارين'],
         'consultation-types' => ['en' => 'Consultation Types', 'ar' => 'أنواع الاستشارات'],

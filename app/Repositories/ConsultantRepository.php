@@ -8,10 +8,6 @@ use App\Repositories\Eloquent\BaseRepository;
 class ConsultantRepository extends BaseRepository
 {
     protected array $defaultWith = [
-        'governorate:id,name_ar,name_en',
-        'district:id,name_ar,name_en',
-        'area:id,name_ar,name_en',
-
         // ✅ ساعات العمل الفعّالة مرتبة
         //'activeWorkingHours:id,consultant_id,day_of_week,start_time,end_time,is_active',
 
