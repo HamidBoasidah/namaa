@@ -8,6 +8,7 @@ use App\Http\Requests\StoreConsultationTypeRequest;
 use App\Http\Requests\UpdateConsultationTypeRequest;
 use App\Services\ConsultationTypeService;
 use App\Models\ConsultationType;
+use App\DTOs\ConsultationTypeDTO;
 use Inertia\Inertia;
 
 class ConsultationTypeController extends Controller
@@ -24,6 +25,9 @@ class ConsultationTypeController extends Controller
     {
         $perPage = $request->input('per_page', 10);
         $items = $service->paginate($perPage);
+        $items->getCollection()->transform(function ($consultationType) {
+            return ConsultationTypeDTO::fromModel($consultationType)->toIndexArray();
+        });
         return Inertia::render('Admin/ConsultationType/Index', [
             'consultation_types' => $items,
         ]);
@@ -36,27 +40,49 @@ class ConsultationTypeController extends Controller
 
     public function store(StoreConsultationTypeRequest $request, ConsultationTypeService $service)
     {
-        $service->create($request->validated());
+        $data = $request->validated();
+        $icon = $request->file('icon');
+        unset($data['icon']);
+
+        $consultationType = $service->create($data);
+
+        if ($icon) {
+            $service->uploadIcon($consultationType->id, $icon);
+        }
         return redirect()->route('admin.consultation-types.index');
     }
 
     public function show(ConsultationType $consultation_type)
     {
+        $dto = ConsultationTypeDTO::fromModel($consultation_type)->toArray();
         return Inertia::render('Admin/ConsultationType/Show', [
-            'consultation_type' => $consultation_type,
+            'consultation_type' => $dto,
         ]);
     }
 
     public function edit(ConsultationType $consultation_type)
     {
+        $dto = ConsultationTypeDTO::fromModel($consultation_type)->toArray();
         return Inertia::render('Admin/ConsultationType/Edit', [
-            'consultation_type' => $consultation_type,
+            'consultation_type' => $dto,
         ]);
     }
 
     public function update(UpdateConsultationTypeRequest $request, ConsultationTypeService $service, ConsultationType $consultation_type)
     {
-        $service->update($consultation_type->id, $request->validated());
+        $data = $request->validated();
+        $icon = $request->file('icon');
+        $removeIcon = $request->boolean('remove_icon');
+
+        unset($data['icon'], $data['remove_icon']);
+
+        $service->update($consultation_type->id, $data);
+
+        if ($removeIcon) {
+            $service->removeIcon($consultation_type->id);
+        } elseif ($icon) {
+            $service->uploadIcon($consultation_type->id, $icon);
+        }
         return redirect()->route('admin.consultation-types.index');
     }
 

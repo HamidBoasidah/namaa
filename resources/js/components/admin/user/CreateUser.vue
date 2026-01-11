@@ -126,7 +126,7 @@
             <!-- Consultation Type (visible for consultants) -->
             <div v-if="form.user_type === 'consultant'">
               <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                {{ t('consultationTypes.title') || 'Consultation type' }}
+                {{ t('consultationTypes.consultationType') || 'Consultation type' }}
               </label>
               <div class="relative z-20 bg-transparent">
                 <select

@@ -17,6 +17,18 @@
           </div>
 
           <div>
+            <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultationTypes.icon') }}</label>
+            <div v-if="consultation_type.icon_url" class="mt-2">
+              <img
+                :src="consultation_type.icon_url"
+                :alt="consultation_type.name"
+                class="h-16 w-16 object-contain rounded-lg border border-gray-200 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-800/50"
+              />
+            </div>
+            <p v-else class="text-sm text-gray-500 dark:text-gray-400">{{ t('consultationTypes.noIcon') }}</p>
+          </div>
+
+          <div>
             <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('common.status') }}</label>
             <span
               class="inline-flex items-center justify-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium"

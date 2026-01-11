@@ -184,7 +184,7 @@
 						<!-- Consultation Type -->
 						<div>
 							<label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-								{{ t('consultationTypes.title') || 'نوع الاستشارة' }}
+								{{ t('consultationTypes.consultationType') || 'نوع الاستشارة' }}
 							</label>
 							<div class="relative z-20 bg-transparent">
 								<select

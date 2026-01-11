@@ -37,6 +37,36 @@ class ConsultationTypeController extends Controller
         return $this->collectionResponse($consultationTypes, 'تم جلب قائمة أنواع الاستشارات بنجاح');
     }
 
+    /**
+     * إرجاع أنواع الاستشارات مع عدد المستشارين النشطين لكل نوع
+     */
+    public function withConsultantsCount(Request $request, ConsultationTypeService $consultationTypeService)
+    {
+        $perPage = (int) $request->get('per_page', 10);
+
+        $query = $consultationTypeService->query();
+        $query = $this->applyFilters(
+            $query,
+            $request,
+            $this->getSearchableFields(),
+            $this->getForeignKeyFilters()
+        );
+
+        $query = $query->withCount([
+            'consultants as consultants_count' => function ($q) {
+                $q->where('is_active', true);
+            },
+        ]);
+
+        $consultationTypes = $query->latest()->paginate($perPage);
+
+        $consultationTypes->getCollection()->transform(function ($consultationType) {
+            return ConsultationTypeDTO::fromModel($consultationType)->toIndexArray();
+        });
+
+        return $this->collectionResponse($consultationTypes, 'تم جلب أنواع الاستشارات مع عدد المستشارين بنجاح');
+    }
+
     protected function getSearchableFields(): array
     {
         return [

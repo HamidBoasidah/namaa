@@ -6,15 +6,20 @@ use App\Repositories\ConsultationTypeRepository;
 use App\Models\ConsultationType;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\UploadedFile;
+use App\Services\SVGIconService;
 
 
 class ConsultationTypeService
 {
     protected ConsultationTypeRepository $items;
+    protected SVGIconService $svgIconService;
+    protected string $iconStoragePath = 'consultation-type-icons';
 
-    public function __construct(ConsultationTypeRepository $items)
+    public function __construct(ConsultationTypeRepository $items, SVGIconService $svgIconService)
     {
         $this->items = $items;
+        $this->svgIconService = $svgIconService;
     }
 
     public function all(array $with = [])
@@ -72,6 +77,12 @@ class ConsultationTypeService
 
     public function delete($id)
     {
+        $item = $this->items->findOrFail($id);
+
+        if ($item->icon_path) {
+            $this->svgIconService->deleteIcon($item->icon_path);
+        }
+
         return $this->items->delete($id);
     }
 
@@ -83,5 +94,41 @@ class ConsultationTypeService
     public function deactivate($id)
     {
         return $this->items->deactivate($id);
+    }
+
+    /**
+     * Upload an icon for a consultation type
+     */
+    public function uploadIcon(int $consultationTypeId, UploadedFile $iconFile): ConsultationType
+    {
+        $consultationType = $this->items->findOrFail($consultationTypeId);
+
+        if ($consultationType->icon_path) {
+            $this->svgIconService->deleteIcon($consultationType->icon_path);
+        }
+
+        $iconPath = $this->svgIconService->uploadIcon($iconFile, $consultationTypeId, 'consultation_type', $this->iconStoragePath);
+
+        return $this->items->update($consultationTypeId, [
+            'icon_path' => $iconPath,
+        ]);
+    }
+
+    /**
+     * Remove icon for a consultation type
+     */
+    public function removeIcon(int $consultationTypeId): ConsultationType
+    {
+        $consultationType = $this->items->findOrFail($consultationTypeId);
+
+        if ($consultationType->icon_path) {
+            $this->svgIconService->deleteIcon($consultationType->icon_path);
+
+            return $this->items->update($consultationTypeId, [
+                'icon_path' => null,
+            ]);
+        }
+
+        return $consultationType;
     }
 }

@@ -3,7 +3,8 @@
     <PageBreadcrumb :pageTitle="currentPageTitle" />
     <div class="space-y-5 sm:space-y-6">
       <ComponentCard :title="currentPageTitle">
-        <EditCategory :category="category" />
+        <EditCategory :category="category"
+        :consultation_types="consultation_types"  />
       </ComponentCard>
     </div>
   </AdminLayout>
@@ -21,4 +22,6 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const currentPageTitle = computed(() => t('categories.editCategory'))
 const category = computed(() => usePage().props.category)
+
+const consultation_types = computed(() => usePage().props.consultation_types)
 </script>

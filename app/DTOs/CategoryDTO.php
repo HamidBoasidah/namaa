@@ -12,10 +12,12 @@ class CategoryDTO extends BaseDTO
     public $is_active;
     public $icon_path;
     public $icon_url;
+    public $consultation_type_id;
+    public $consultation_type_name;
     public $created_at;
     public $deleted_at;
 
-    public function __construct($id, $name, $slug, $is_active, $icon_path, $icon_url, $created_at = null, $deleted_at = null)
+    public function __construct($id, $name, $slug, $is_active, $icon_path, $icon_url, $consultation_type_id = null, $consultation_type_name = null, $created_at = null, $deleted_at = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -23,6 +25,8 @@ class CategoryDTO extends BaseDTO
         $this->is_active = (bool) $is_active;
         $this->icon_path = $icon_path;
         $this->icon_url = $icon_url;
+        $this->consultation_type_id = $consultation_type_id;
+        $this->consultation_type_name = $consultation_type_name;
         $this->created_at = $created_at;
         $this->deleted_at = $deleted_at;
     }
@@ -36,6 +40,8 @@ class CategoryDTO extends BaseDTO
             $category->is_active ?? false,
             $category->icon_path ?? null,
             $category->icon_url ?? null,
+            $category->consultation_type_id ?? null,
+            $category->consultationType?->name ?? null,
             $category->created_at?->toDateTimeString() ?? null,
             $category->deleted_at?->toDateTimeString() ?? null,
         );
@@ -50,6 +56,8 @@ class CategoryDTO extends BaseDTO
             'is_active' => $this->is_active,
             'icon_path' => $this->icon_path,
             'icon_url' => $this->icon_url,
+            'consultation_type_id' => $this->consultation_type_id,
+            'consultation_type_name' => $this->consultation_type_name,
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,
         ];
@@ -63,6 +71,7 @@ class CategoryDTO extends BaseDTO
             'slug' => $this->slug,
             'is_active' => $this->is_active,
             'icon_url' => $this->icon_url,
+            'consultation_type_name' => $this->consultation_type_name,
         ];
     }
 }

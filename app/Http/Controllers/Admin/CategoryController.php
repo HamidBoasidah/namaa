@@ -10,6 +10,7 @@ use App\Http\Requests\UploadIconRequest;
 use App\Services\CategoryService;
 use App\DTOs\CategoryDTO;
 use App\Models\Category;
+use App\Models\ConsultationType;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
@@ -36,7 +37,10 @@ class CategoryController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/Category/Create');
+        
+        return Inertia::render('Admin/Category/Create', [
+            'consultation_types' => ConsultationType::select('id', 'name')->get(),
+        ]);
     }
 
     public function store(StoreCategoryRequest $request, CategoryService $categoryService)
@@ -67,6 +71,7 @@ class CategoryController extends Controller
         $dto = CategoryDTO::fromModel($category)->toArray();
         return Inertia::render('Admin/Category/Edit', [
             'category' => $dto,
+            'consultation_types' => ConsultationType::select('id', 'name')->get(),
         ]);
     }
 
@@ -125,7 +130,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * حذف أيقونة القسم
+     * حذف أيقونة الفئة
      */
     public function removeIcon(CategoryService $categoryService, $id)
     {

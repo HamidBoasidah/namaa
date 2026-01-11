@@ -10,6 +10,7 @@ class Category extends BaseModel
     use HasFactory;
 
     protected $fillable = [
+        'consultation_type_id',
         'name',
         'slug',
         'is_active',
@@ -18,6 +19,11 @@ class Category extends BaseModel
         'updated_by',
     ];
 
+
+    public function consultationType()
+    {
+        return $this->belongsTo(ConsultationType::class, 'consultation_type_id');
+    }
 
     /**
      * Get the icon URL attribute.

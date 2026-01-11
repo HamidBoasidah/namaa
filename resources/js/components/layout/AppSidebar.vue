@@ -310,6 +310,12 @@ const menuGroups = computed(() =>
         },
         {
           icon: GridIcon,
+          name: t('menu.consultationTypes'),
+          path: route('admin.consultation-types.index'),
+          permission: 'consultation-types.view',
+        },
+        {
+          icon: GridIcon,
           name: t('menu.categories'),
           path: route('admin.categories.index'),
           permission: 'categories.view',
@@ -319,12 +325,6 @@ const menuGroups = computed(() =>
           name: t('menu.tags'),
           path: route('admin.tags.index'),
           permission: 'tags.view',
-        },
-        {
-          icon: GridIcon,
-          name: t('menu.consultationTypes'),
-          path: route('admin.consultation-types.index'),
-          permission: 'consultation-types.view',
         },
         {
           icon: ConsultantIcon,

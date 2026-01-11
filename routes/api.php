@@ -19,6 +19,7 @@ Route::get('/me', [App\Http\Controllers\Api\AuthController::class, 'me'])->middl
 
 // Consultation Types (API)
 Route::get('/consultation-types', [App\Http\Controllers\Api\ConsultationTypeController::class, 'index']);
+Route::get('/consultation-types/with-count', [App\Http\Controllers\Api\ConsultationTypeController::class, 'withConsultantsCount']);
 
 // Consultant Profile (API)
 Route::prefix('consultant/profile')->middleware('auth:sanctum')->group(function () {

@@ -39,7 +39,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $consultationTypes = ConsultationType::all();
+        $consultationTypes = ConsultationType::select('id', 'name')->get();
 
         return Inertia::render('Admin/User/Create', [
             'consultation_types' => $consultationTypes,
@@ -74,7 +74,7 @@ class UserController extends Controller
 
         return Inertia::render('Admin/User/Edit', [
             'user' => $userDTO,
-            'consultation_types' => ConsultationType::all(),
+            'consultation_types' => ConsultationType::select('id', 'name')->get(),
         ]);
     }
 

@@ -113,7 +113,7 @@ class CategoryService
         // رفع الأيقونة الجديدة
         $iconPath = $this->svgIconService->uploadIcon($iconFile, $categoryId);
         
-        // تحديث القسم
+        // تحديث الفئة
         $updatedCategory = $this->categories->update($categoryId, [
             'icon_path' => $iconPath
         ]);

@@ -44,15 +44,6 @@ class UpdateConsultantProfileRequest extends FormRequest
         ];
     }
 
-    public function messages(): array
-    {
-        return [
-            'email.unique' => 'البريد الإلكتروني مستخدم مسبقاً',
-            'phone_number.unique' => 'رقم الهاتف مستخدم مسبقاً',
-            'consultation_type_id.exists' => 'نوع الاستشارة غير موجود',
-        ];
-    }
-
     protected function failedValidation(Validator $validator)
     {
         throw AppValidationException::withMessages($validator->errors()->toArray());

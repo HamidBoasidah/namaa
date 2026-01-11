@@ -16,17 +16,17 @@ class SVGIconService
     /**
      * Upload an SVG icon file
      */
-    public function uploadIcon(UploadedFile $file, int $categoryId): string
+    public function uploadIcon(UploadedFile $file, int $entityId, string $type = 'category', ?string $storagePath = null): string
     {
         try {
             // التحقق من صحة الملف
             $this->validateSVGFile($file);
             
             // إنشاء اسم ملف فريد
-            $filename = $this->generateUniqueFilename($categoryId, $file);
+            $filename = $this->generateUniqueFilename($entityId, $file, $type);
             
             // حفظ الملف
-            $path = $file->storeAs(self::STORAGE_PATH, $filename, 'public');
+            $path = $file->storeAs($storagePath ?? self::STORAGE_PATH, $filename, 'public');
             
             // تسجيل العملية الناجحة
             // SVG icon uploaded successfully (logging removed)
@@ -149,13 +149,13 @@ class SVGIconService
     /**
      * Generate unique filename for the icon
      */
-    private function generateUniqueFilename(int $categoryId, UploadedFile $file): string
+    private function generateUniqueFilename(int $entityId, UploadedFile $file, string $type = 'category'): string
     {
         $extension = $file->getClientOriginalExtension();
         $timestamp = time();
         $random = substr(md5(uniqid()), 0, 8);
         
-        return "category_{$categoryId}_{$timestamp}_{$random}.{$extension}";
+        return "{$type}_{$entityId}_{$timestamp}_{$random}.{$extension}";
     }
 
     /**

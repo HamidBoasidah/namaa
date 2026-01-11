@@ -25,6 +25,7 @@ class UpdateCategoryRequest extends FormRequest
         return [
             'name' => 'sometimes|required|string|max:255|unique:categories,name,' . $categoryId,
             'slug' => 'sometimes|nullable|string|max:255|unique:categories,slug,' . $categoryId,
+            'consultation_type_id' => 'sometimes|required|exists:consultation_types,id',
             'is_active' => 'nullable|boolean',
             'icon' => 'nullable|file|mimes:svg|max:100',
             'remove_icon' => 'nullable|boolean',

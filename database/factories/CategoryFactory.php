@@ -12,6 +12,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
+            'consultation_type_id' => \App\Models\ConsultationType::inRandomOrder()->first()?->id ?? \App\Models\ConsultationType::factory()->create()->id,
             'name' => $this->faker->unique()->word,
             'slug' => $this->faker->unique()->slug,
             'is_active' => $this->faker->boolean(),

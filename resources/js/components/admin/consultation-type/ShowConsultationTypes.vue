@@ -138,6 +138,9 @@
                             </label>
                         </th>
                         <th class="px-4 py-3 text-start border border-gray-100 dark:border-gray-800">
+                            <p class="font-medium text-gray-700 text-theme-xs dark:text-gray-400">{{ t('consultationTypes.icon') }}</p>
+                        </th>
+                        <th class="px-4 py-3 text-start border border-gray-100 dark:border-gray-800">
                             <div
                                 class="flex items-center justify-between w-full cursor-pointer"
                                 @click="sortBy('name')"
@@ -228,6 +231,18 @@
                             </label>
                         </td>
                         <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
+                            <div class="flex items-center justify-center">
+                                <div v-if="item.icon_url" class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                                    <img :src="item.icon_url" :alt="item.name" class="h-6 w-6 object-contain" />
+                                </div>
+                                <div v-else class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
                             <p class="text-gray-700 text-theme-sm dark:text-gray-400">{{ item.name }}</p>
                         </td>
                         <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
@@ -298,7 +313,7 @@
                         </td>
                     </tr>
                     <tr v-if="paginatedData.length === 0">
-                        <td colspan="6" class="px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                        <td colspan="7" class="px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
                             {{ t('consultationTypes.noItem') }}
                         </td>
                     </tr>
