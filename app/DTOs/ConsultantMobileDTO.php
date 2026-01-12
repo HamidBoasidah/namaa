@@ -12,6 +12,7 @@ class ConsultantMobileDTO extends BaseDTO
     public ?string $avatar;
     public float $rating_avg;
     public int $ratings_count;
+    public float $price_per_hour;
     public array $service_categories;
 
     public function __construct(
@@ -21,6 +22,7 @@ class ConsultantMobileDTO extends BaseDTO
         ?string $avatar,
         float $rating_avg,
         int $ratings_count,
+        float $price_per_hour = 0,
         array $service_categories = []
     ) {
         $this->id = $id;
@@ -29,6 +31,7 @@ class ConsultantMobileDTO extends BaseDTO
         $this->avatar = $avatar;
         $this->rating_avg = $rating_avg;
         $this->ratings_count = $ratings_count;
+        $this->price_per_hour = $price_per_hour;
         $this->service_categories = $service_categories;
     }
 
@@ -41,6 +44,7 @@ class ConsultantMobileDTO extends BaseDTO
             $consultant->user?->avatar ? asset('storage/' . $consultant->user->avatar) : null,
             (float) ($consultant->rating_avg ?? 0),
             (int) ($consultant->ratings_count ?? 0),
+            (float) ($consultant->price_per_hour ?? 0),
             $serviceCategories
         );
     }
@@ -54,6 +58,7 @@ class ConsultantMobileDTO extends BaseDTO
             'avatar' => $this->avatar,
             'rating_avg' => $this->rating_avg,
             'ratings_count' => $this->ratings_count,
+            'price_per_hour' => $this->price_per_hour,
             'service_categories' => $this->service_categories,
         ];
     }

@@ -33,6 +33,7 @@ class UpdateUserRequest extends FormRequest
             'password' => 'nullable|string|min:8',
             'gender' => 'nullable|in:male,female',
             'user_type' => 'sometimes|in:customer,consultant',
+            'price_per_hour' => 'sometimes|nullable|numeric|min:0',
             'is_active' => 'nullable|boolean',
             'locale' => 'nullable|string|max:10',
             'created_by' => 'nullable|exists:users,id',

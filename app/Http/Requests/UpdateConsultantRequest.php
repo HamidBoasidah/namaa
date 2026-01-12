@@ -16,6 +16,7 @@ class UpdateConsultantRequest extends FormRequest
         return [
             'consultation_type_id' => 'sometimes|required|exists:consultation_types,id',
             'years_of_experience' => 'sometimes|nullable|integer|min:0|max:80',
+            'price_per_hour' => 'sometimes|nullable|numeric|min:0',
             'is_active' => 'sometimes|nullable|boolean',
         ];
     }

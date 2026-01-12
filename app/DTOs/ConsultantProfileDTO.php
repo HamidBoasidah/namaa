@@ -16,6 +16,7 @@ class ConsultantProfileDTO extends BaseDTO
     public $gender;
     public $years_of_experience;
     public $consultation_type;
+    public $price_per_hour;
 
     public function __construct(
         $id,
@@ -26,7 +27,8 @@ class ConsultantProfileDTO extends BaseDTO
         $avatar,
         $gender,
         $years_of_experience,
-        $consultation_type
+        $consultation_type,
+        $price_per_hour = 0
     ) {
         $this->id = $id;
         $this->first_name = $first_name;
@@ -37,6 +39,7 @@ class ConsultantProfileDTO extends BaseDTO
         $this->gender = $gender;
         $this->years_of_experience = $years_of_experience;
         $this->consultation_type = $consultation_type;
+        $this->price_per_hour = $price_per_hour;
     }
 
     public static function fromUser(User $user, ?Consultant $consultant = null): self
@@ -59,6 +62,7 @@ class ConsultantProfileDTO extends BaseDTO
             $user->gender,
             $consultant?->years_of_experience,
             $consultationType
+            , $consultant?->price_per_hour ?? 0
         );
     }
 
@@ -74,6 +78,7 @@ class ConsultantProfileDTO extends BaseDTO
             'gender' => $this->gender,
             'years_of_experience' => $this->years_of_experience,
             'consultation_type' => $this->consultation_type,
+            'price_per_hour' => $this->price_per_hour,
         ];
     }
 }

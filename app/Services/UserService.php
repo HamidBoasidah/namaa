@@ -59,6 +59,7 @@ class UserService
                     'user_id' => $user->id,
                     'consultation_type_id' => $attributes['consultation_type_id'] ?? null,
                     'years_of_experience' => $attributes['years_of_experience'] ?? null,
+                    'price_per_hour' => $attributes['price_per_hour'] ?? 0,
                 ];
 
                 $consultant = $this->consultantService->create($consultantData);

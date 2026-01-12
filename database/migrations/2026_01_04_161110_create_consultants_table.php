@@ -30,6 +30,9 @@ return new class extends Migration
             $table->decimal('rating_avg', 3, 2)->default(0);
             $table->unsignedInteger('ratings_count')->default(0);
 
+            // Hourly price
+            $table->decimal('price_per_hour', 10, 2)->nullable()->default(0);
+
             $table->boolean('is_active')->default(true);
 
             $table->softDeletes();

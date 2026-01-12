@@ -17,6 +17,7 @@ class Consultant extends BaseModel
         'years_of_experience',
         'rating_avg',
         'ratings_count',
+        'price_per_hour',
         'is_active',
     ];
 
@@ -24,6 +25,7 @@ class Consultant extends BaseModel
         'years_of_experience' => 'integer',
         'rating_avg'          => 'decimal:2',
         'ratings_count'       => 'integer',
+        'price_per_hour'      => 'decimal:2',
         'is_active'           => 'boolean',
         'deleted_at'          => 'datetime',
     ];
