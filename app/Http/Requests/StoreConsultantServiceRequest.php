@@ -38,6 +38,7 @@ class StoreConsultantServiceRequest extends FormRequest
 
             'price' => ['required', 'numeric', 'min:0'],
             'duration_minutes' => ['nullable', 'integer', 'min:1', 'max:1440'],
+            'buffer' => ['nullable', 'integer', 'min:0', 'max:1440'],
             'consultation_method' => ['nullable', 'in:video,audio,text'],
             'delivery_time' => ['nullable', 'string', 'max:255'],
             'auto_accept_requests' => ['nullable', 'boolean'],
@@ -59,6 +60,9 @@ class StoreConsultantServiceRequest extends FormRequest
     {
         if ($this->has('duration_minutes') && $this->input('duration_minutes') === '') {
             $this->merge(['duration_minutes' => null]);
+        }
+        if ($this->has('buffer') && $this->input('buffer') === '') {
+            $this->merge(['buffer' => null]);
         }
     }
 }

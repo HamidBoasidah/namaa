@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Mobile;
 use App\Http\Controllers\Controller;
 use App\Services\ConsultantService;
 use App\DTOs\ConsultantMobileDTO;
+use App\DTOs\ConsultantPublicProfileDTO;
 use App\Http\Traits\SuccessResponse;
 use App\Http\Traits\ExceptionHandler;
 use App\Http\Traits\CanFilter;
@@ -65,5 +66,23 @@ class ConsultantController extends Controller
         });
 
         return $this->collectionResponse($consultants, 'تم جلب قائمة المستشارين بنجاح');
+    }
+
+    /**
+     * جلب الملف الشخصي العام للمستشار
+     * GET /api/mobile/consultants/{consultantId}/profile
+     */
+    public function profile(int $consultantId, ConsultantService $consultantService)
+    {
+        try {
+            $consultant = $consultantService->getPublicProfile($consultantId);
+
+            return $this->resourceResponse(
+                ConsultantPublicProfileDTO::fromModel($consultant)->toArray(),
+                'تم جلب الملف الشخصي بنجاح'
+            );
+        } catch (ModelNotFoundException) {
+            $this->throwNotFoundException('المستشار غير موجود أو غير متاح');
+        }
     }
 }

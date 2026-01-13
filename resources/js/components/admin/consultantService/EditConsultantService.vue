@@ -64,6 +64,13 @@
 						<input v-model.number="form.duration_minutes" type="number" min="1" class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
 					</div>
 
+					<!-- Buffer (minutes) -->
+					<div class="md:col-span-1">
+						<label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('consultant_services.buffer') }}</label>
+						<input v-model.number="form.buffer" type="number" min="0" class="dark:bg-dark-900 shadow-theme-xs h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+						<p v-if="form.errors.buffer" class="mt-1 text-sm text-error-500">{{ form.errors.buffer }}</p>
+					</div>
+
 					<!-- Consultation Method -->
 					<div class="md:col-span-1">
 						<label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('consultant_services.consultationMethod') }}</label>
@@ -174,6 +181,7 @@ const form = useForm({
 	price: props.service?.price ?? '',
 	tags: initialTagIds.value,
 	duration_minutes: props.service?.duration_minutes ?? 60,
+	buffer: props.service?.buffer ?? 0,
 	consultation_method: props.service?.consultation_method ?? 'video',
 	delivery_time: props.service?.delivery_time ?? '',
 	auto_accept_requests: props.service?.auto_accept_requests ?? false,

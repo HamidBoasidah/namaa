@@ -73,4 +73,5 @@ Route::prefix('mobile')->group(function () {
     // Consultants
     Route::get('/consultants', [App\Http\Controllers\Api\Mobile\ConsultantController::class, 'index']);
     Route::get('/consultants/by-category/{categoryId}', [App\Http\Controllers\Api\Mobile\ConsultantController::class, 'byCategory']);
+    Route::get('/consultants/{consultantId}/profile', [App\Http\Controllers\Api\Mobile\ConsultantController::class, 'profile']);
 });

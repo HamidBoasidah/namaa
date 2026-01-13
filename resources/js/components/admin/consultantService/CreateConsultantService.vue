@@ -110,6 +110,23 @@
 						<p v-if="form.errors.duration_minutes" class="mt-1 text-sm text-error-500">{{ form.errors.duration_minutes }}</p>
 					</div>
 
+					<!-- Buffer (minutes) -->
+					<div class="md:col-span-1">
+						<label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+							{{ t('consultant_services.buffer') }}
+						</label>
+						<input
+							v-model.number="form.buffer"
+							type="number"
+							min="0"
+							step="1"
+							autocomplete="off"
+							:placeholder="t('consultant_services.bufferPlaceholder')"
+							class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+						/>
+						<p v-if="form.errors.buffer" class="mt-1 text-sm text-error-500">{{ form.errors.buffer }}</p>
+					</div>
+
 					<!-- Consultation Method -->
 					<div class="md:col-span-1">
 						<label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
@@ -286,6 +303,7 @@ const form = useForm({
 	price: '',
 	tags: [],
 	duration_minutes: 60,
+	buffer: 0,
 	consultation_method: 'video',
 	delivery_time: '',
 	auto_accept_requests: false,

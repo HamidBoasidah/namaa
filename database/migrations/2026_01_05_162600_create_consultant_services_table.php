@@ -31,6 +31,9 @@ return new class extends Migration
 
                 $table->unsignedSmallInteger('duration_minutes')->default(60);
 
+                // buffer time in minutes (e.g., preparation time before/after session)
+                $table->unsignedSmallInteger('buffer')->default(0);
+
                 // consultation method: one of ['video','audio','text']
                 $table->enum('consultation_method', ['video', 'audio', 'text'])->default('video');
 

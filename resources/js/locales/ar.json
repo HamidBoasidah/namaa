@@ -270,7 +270,9 @@
     "deliveryTime": "وقت التسليم",
     "deliveryTimePlaceholder": "مثال: 7 أيام",
     "autoAccept": "قبول تلقائي للطلبات",
-    "noServicesFound": "لا توجد خدمات"
+    "noServicesFound": "لا توجد خدمات",
+    "buffer": "زمن التحضير (بالدقائق)",
+    "bufferPlaceholder": "ادخل الزمن الاحتياطي بالدقائق"
   },
 
   "admins": {

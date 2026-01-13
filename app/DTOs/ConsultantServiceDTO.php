@@ -18,6 +18,7 @@ class ConsultantServiceDTO extends BaseDTO
     public $title;
     public $description;
     public $price;
+    public $buffer;
     public $duration_minutes;
     public $consultation_method;
     public $delivery_time;
@@ -45,6 +46,7 @@ class ConsultantServiceDTO extends BaseDTO
         $title,
         $description,
         $price,
+        $buffer,
         $duration_minutes,
         $consultation_method,
         $delivery_time,
@@ -67,6 +69,7 @@ class ConsultantServiceDTO extends BaseDTO
         $this->title = $title;
         $this->description = $description;
         $this->price = $price;
+        $this->buffer = $buffer;
         $this->duration_minutes = $duration_minutes;
         $this->consultation_method = $consultation_method;
         $this->delivery_time = $delivery_time;
@@ -96,6 +99,7 @@ class ConsultantServiceDTO extends BaseDTO
             $service->title,
             $service->description,
             (string) ($service->price ?? '0.00'),
+            (int) ($service->buffer ?? 0),
             (int) ($service->duration_minutes ?? 60),
             $service->consultation_method ?? 'video',
             $service->delivery_time,
@@ -123,6 +127,7 @@ class ConsultantServiceDTO extends BaseDTO
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
+            'buffer' => $this->buffer,
             'duration_minutes' => $this->duration_minutes,
             'consultation_method' => $this->consultation_method,
             'delivery_time' => $this->delivery_time,
@@ -146,6 +151,7 @@ class ConsultantServiceDTO extends BaseDTO
             'category_name' => $this->category_name,
             'title' => $this->title,
             'price' => $this->price,
+            'buffer' => $this->buffer,
             'duration_minutes' => $this->duration_minutes,
             'consultation_method' => $this->consultation_method,
             'is_active' => $this->is_active,

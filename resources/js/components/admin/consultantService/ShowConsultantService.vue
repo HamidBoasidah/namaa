@@ -17,6 +17,9 @@
 					<span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 dark:bg-white/10 dark:text-gray-300">
 						{{ t('consultant_services.duration') }}: {{ service.duration_minutes }} {{ t('common.minutes') }}
 					</span>
+					<span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 dark:bg-white/10 dark:text-gray-300">
+						{{ t('consultant_services.buffer') }}: {{ service.buffer }} {{ t('common.minutes') }}
+					</span>
 				</div>
 			</div>
 		</div>
@@ -47,6 +50,10 @@
 					<div>
 						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.duration') }}</label>
 						<p class="text-base text-gray-800 dark:text-white/90">{{ service.duration_minutes }} {{ t('common.minutes') }}</p>
+					</div>
+					<div>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.buffer') }}</label>
+						<p class="text-base text-gray-800 dark:text-white/90">{{ service.buffer }} {{ t('common.minutes') }}</p>
 					</div>
 					<div>
 						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.consultationMethod') }}</label>

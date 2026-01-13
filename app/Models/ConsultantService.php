@@ -17,6 +17,7 @@ class ConsultantService extends BaseModel
         'title',
         'description',
         'price',
+        'buffer',
         'duration_minutes',
         'consultation_method',
         'delivery_time',
@@ -27,6 +28,7 @@ class ConsultantService extends BaseModel
     protected $casts = [
         'price' => 'decimal:2',
         'duration_minutes' => 'integer',
+        'buffer' => 'integer',
         'auto_accept_requests' => 'boolean',
         'is_active' => 'boolean',
     ];

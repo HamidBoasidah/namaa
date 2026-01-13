@@ -127,4 +127,30 @@ class ConsultantService
     {
         return $this->consultants->query($with);
     }
+
+    /**
+     * جلب الملف الشخصي العام للمستشار
+     * يتضمن الشهادات والخبرات والخدمات
+     */
+    public function getPublicProfile(int $consultantId): Consultant
+    {
+        $consultant = Consultant::where('id', $consultantId)
+            ->where('is_active', true)
+            ->with([
+                'certificates' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                },
+                'experiences' => function ($query) {
+                    $query->where('is_active', true)->orderBy('name');
+                },
+                'service.category:id,name'
+            ])
+            ->first();
+
+        if (!$consultant) {
+            throw new \Illuminate\Database\Eloquent\ModelNotFoundException('المستشار غير موجود أو غير متاح');
+        }
+
+        return $consultant;
+    }
 }
