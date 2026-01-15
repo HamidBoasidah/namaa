@@ -211,8 +211,8 @@ class BookingRepository extends BaseRepository
     {
         return $this->model->newQuery()
             ->with([
-                'client:id,first_name,last_name,name,avatar',
-                'consultant.user:id,first_name,last_name,name,avatar',
+                'client:id,first_name,last_name,avatar',
+                'consultant.user:id,first_name,last_name,avatar',
                 'bookable',
                 'cancelledBy',
             ])
