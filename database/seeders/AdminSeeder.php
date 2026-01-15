@@ -22,7 +22,19 @@ class AdminSeeder extends Seeder
                 'email' => $mainEmail,
                 'is_active' => true,
             ]);
-            $main->assignRole($adminRole->name);
+            // Preferentially assign super-admin if available, otherwise fall back to admin
+            $superRole = Role::where('name', 'super-admin')->first();
+            if ($superRole) {
+                $main->assignRole($superRole->name);
+            } else {
+                $main->assignRole($adminRole->name);
+            }
+        }
+
+        // Ensure the record with ID = 1 (if exists) has the super-admin role
+        $firstAdmin = Admin::find(1);
+        if ($firstAdmin) {
+            $firstAdmin->assignRole('super-admin');
         }
 
         // Create a few random admins

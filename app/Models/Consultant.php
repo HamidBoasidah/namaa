@@ -18,6 +18,7 @@ class Consultant extends BaseModel
         'rating_avg',
         'ratings_count',
         'price_per_hour',
+        'buffer',
         'is_active',
     ];
 
@@ -26,6 +27,7 @@ class Consultant extends BaseModel
         'rating_avg'          => 'decimal:2',
         'ratings_count'       => 'integer',
         'price_per_hour'      => 'decimal:2',
+        'buffer'              => 'integer',
         'is_active'           => 'boolean',
         'deleted_at'          => 'datetime',
     ];

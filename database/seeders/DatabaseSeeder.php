@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             DistrictSeeder::class,
             AreaSeeder::class,
             InitialDataSeeder::class,
+            BookingSeeder::class,
+            ConsultantWorkingHourSeeder::class,
         ]);
     }
 }

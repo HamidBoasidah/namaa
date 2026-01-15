@@ -18,6 +18,7 @@ class StoreConsultantRequest extends FormRequest
             'consultation_type_id' => 'required|exists:consultation_types,id',
             'years_of_experience' => 'nullable|integer|min:0|max:80',
             'price_per_hour' => 'nullable|numeric|min:0',
+            'buffer' => 'nullable|integer|min:0|max:1440',
             'is_active' => 'nullable|boolean',
         ];
     }

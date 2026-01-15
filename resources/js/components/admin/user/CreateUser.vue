@@ -174,6 +174,21 @@
               />
               <p v-if="form.errors.price_per_hour" class="mt-1 text-sm text-error-500">{{ form.errors.price_per_hour }}</p>
             </div>
+            <!-- Buffer (visible for consultants) -->
+            <div v-if="form.user_type === 'consultant'">
+              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                {{ t('consultant_services.buffer') || 'Buffer (minutes)' }}
+              </label>
+              <input
+                v-model.number="form.buffer"
+                type="number"
+                min="0"
+                step="1"
+                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+                :placeholder="t('consultant_services.bufferPlaceholder') || 'Buffer in minutes'"
+              />
+              <p v-if="form.errors.buffer" class="mt-1 text-sm text-error-500">{{ form.errors.buffer }}</p>
+            </div>
             <!-- Phone Input with Prepended Country Code -->
             <div>
               <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
@@ -388,6 +403,7 @@ const form = useForm({
   consultation_type_id: null,
   years_of_experience: null,
     price_per_hour: null,
+  buffer: null,
   phone_number: '',
   is_active: true,
   password: '',

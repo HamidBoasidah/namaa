@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Booking;
 use App\Models\Certificate;
 use App\Models\ConsultantExperience;
 use App\Models\ConsultantHoliday;
 use App\Models\ConsultantWorkingHour;
+use App\Policies\BookingPolicy;
 use App\Policies\CertificatePolicy;
 use App\Policies\ConsultantExperiencePolicy;
 use App\Policies\ConsultantHolidayPolicy;
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Register Policies
+        Gate::policy(Booking::class, BookingPolicy::class);
         Gate::policy(Certificate::class, CertificatePolicy::class);
         Gate::policy(ConsultantExperience::class, ConsultantExperiencePolicy::class);
         Gate::policy(ConsultantWorkingHour::class, ConsultantWorkingHourPolicy::class);

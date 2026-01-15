@@ -75,3 +75,15 @@ Route::prefix('mobile')->group(function () {
     Route::get('/consultants/by-category/{categoryId}', [App\Http\Controllers\Api\Mobile\ConsultantController::class, 'byCategory']);
     Route::get('/consultants/{consultantId}/profile', [App\Http\Controllers\Api\Mobile\ConsultantController::class, 'profile']);
 });
+
+// Bookings API
+Route::prefix('bookings')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [App\Http\Controllers\Api\BookingController::class, 'index']);
+    Route::get('/{id}', [App\Http\Controllers\Api\BookingController::class, 'show']);
+    Route::post('/pending', [App\Http\Controllers\Api\BookingController::class, 'storePending']);
+    Route::post('/{id}/confirm', [App\Http\Controllers\Api\BookingController::class, 'confirm']);
+    Route::post('/{id}/cancel', [App\Http\Controllers\Api\BookingController::class, 'cancel']);
+});
+
+// Consultant Available Slots (public endpoint for viewing availability)
+Route::get('/consultants/{id}/available-slots', [App\Http\Controllers\Api\ConsultantAvailabilityController::class, 'availableSlots']);

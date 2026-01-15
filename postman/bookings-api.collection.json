@@ -1,0 +1,616 @@
+{
+	"info": {
+		"_postman_id": "bookings-api",
+		"name": "Bookings API",
+		"description": "API لإدارة الحجوزات - إنشاء حجز معلق، تأكيد، إلغاء، وجلب المواعيد المتاحة",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "booking_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "consultant_id",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login (Client)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('token', jsonData.data.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"client@example.com\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": ["{{base_url}}"],
+							"path": ["login"]
+						},
+						"description": "تسجيل دخول كعميل لإنشاء وإدارة الحجوزات"
+					}
+				},
+				{
+					"name": "Login (Consultant)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('token', jsonData.data.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"consultant@example.com\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": ["{{base_url}}"],
+							"path": ["login"]
+						},
+						"description": "تسجيل دخول كمستشار لعرض الحجوزات الخاصة به"
+					}
+				}
+			]
+		},
+		{
+			"name": "Available Slots",
+			"item": [
+				{
+					"name": "Get Available Slots (Consultant Direct)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/consultants/{{consultant_id}}/available-slots?date=2026-01-20&bookable_type=consultant&bookable_id={{consultant_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["consultants", "{{consultant_id}}", "available-slots"],
+							"query": [
+								{
+									"key": "date",
+									"value": "2026-01-20",
+									"description": "التاريخ بصيغة YYYY-MM-DD"
+								},
+								{
+									"key": "bookable_type",
+									"value": "consultant",
+									"description": "نوع الحجز: consultant أو consultant_service"
+								},
+								{
+									"key": "bookable_id",
+									"value": "{{consultant_id}}",
+									"description": "معرف المستشار أو الخدمة"
+								}
+							]
+						},
+						"description": "جلب المواعيد المتاحة لحجز مباشر مع المستشار\n\nلا يتطلب تسجيل دخول"
+					}
+				},
+				{
+					"name": "Get Available Slots (Service)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/consultants/{{consultant_id}}/available-slots?date=2026-01-20&bookable_type=consultant_service&bookable_id=1",
+							"host": ["{{base_url}}"],
+							"path": ["consultants", "{{consultant_id}}", "available-slots"],
+							"query": [
+								{
+									"key": "date",
+									"value": "2026-01-20",
+									"description": "التاريخ بصيغة YYYY-MM-DD"
+								},
+								{
+									"key": "bookable_type",
+									"value": "consultant_service",
+									"description": "نوع الحجز: consultant_service"
+								},
+								{
+									"key": "bookable_id",
+									"value": "1",
+									"description": "معرف الخدمة"
+								}
+							]
+						},
+						"description": "جلب المواعيد المتاحة لحجز خدمة معينة\n\nلا يتطلب تسجيل دخول"
+					}
+				}
+			]
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "Create Pending Booking (Consultant Direct)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set('booking_id', jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"consultant_id\": 1,\n    \"bookable_type\": \"consultant\",\n    \"bookable_id\": 1,\n    \"start_at\": \"2026-01-20T10:00:00\",\n    \"duration_minutes\": 60,\n    \"notes\": \"ملاحظات اختيارية\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/pending",
+							"host": ["{{base_url}}"],
+							"path": ["bookings", "pending"]
+						},
+						"description": "إنشاء حجز معلق مباشر مع المستشار\n\nملاحظة: يجب تسجيل الدخول كعميل (customer) وليس كمستشار\n\n- consultant_id: معرف المستشار\n- bookable_type: 'consultant' للحجز المباشر\n- bookable_id: معرف المستشار (نفس consultant_id)\n- start_at: وقت البداية (يجب أن يكون من مضاعفات 5 دقائق)\n- duration_minutes: المدة بالدقائق (يجب أن تكون من مضاعفات 5)\n- notes: ملاحظات اختيارية\n\nالحجز يبقى معلقاً لمدة 15 دقيقة ويجب تأكيده قبل انتهاء الصلاحية\n\nصاحب الحجز (client_id) يتم تحديده تلقائياً من المستخدم المسجل دخوله"
+					}
+				},
+				{
+					"name": "Create Pending Booking (Service)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set('booking_id', jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"consultant_id\": 1,\n    \"bookable_type\": \"consultant_service\",\n    \"bookable_id\": 1,\n    \"start_at\": \"2026-01-20T14:00:00\",\n    \"notes\": \"حجز خدمة استشارية\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/pending",
+							"host": ["{{base_url}}"],
+							"path": ["bookings", "pending"]
+						},
+						"description": "إنشاء حجز معلق لخدمة معينة\n\nملاحظة: يجب تسجيل الدخول كعميل (customer) وليس كمستشار\n\n- consultant_id: معرف المستشار\n- bookable_type: 'consultant_service' لحجز خدمة\n- bookable_id: معرف الخدمة\n- start_at: وقت البداية\n- notes: ملاحظات اختيارية\n\nملاحظة: المدة تؤخذ من الخدمة تلقائياً\n\nصاحب الحجز (client_id) يتم تحديده تلقائياً من المستخدم المسجل دخوله"
+					}
+				},
+				{
+					"name": "Confirm Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/{{booking_id}}/confirm",
+							"host": ["{{base_url}}"],
+							"path": ["bookings", "{{booking_id}}", "confirm"]
+						},
+						"description": "تأكيد حجز معلق\n\n- يجب أن يكون الحجز في حالة 'pending'\n- يجب أن لا تكون صلاحية الحجز منتهية (15 دقيقة)\n- يجب أن يكون المستخدم هو صاحب الحجز (العميل)"
+					}
+				},
+				{
+					"name": "Cancel Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"سبب الإلغاء (اختياري)\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/{{booking_id}}/cancel",
+							"host": ["{{base_url}}"],
+							"path": ["bookings", "{{booking_id}}", "cancel"]
+						},
+						"description": "إلغاء حجز\n\n- يمكن للعميل إلغاء حجزه\n- يمكن للمستشار إلغاء الحجوزات الخاصة به\n- يمكن للمسؤول إلغاء أي حجز\n- reason: سبب الإلغاء (اختياري)\n\nلا يمكن إلغاء الحجوزات المكتملة أو الملغاة مسبقاً"
+					}
+				},
+				{
+					"name": "List My Bookings (as Client)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings?role=client&per_page=10",
+							"host": ["{{base_url}}"],
+							"path": ["bookings"],
+							"query": [
+								{
+									"key": "role",
+									"value": "client",
+									"description": "عرض الحجوزات كعميل"
+								},
+								{
+									"key": "per_page",
+									"value": "10",
+									"description": "عدد النتائج في الصفحة"
+								},
+								{
+									"key": "status",
+									"value": "pending",
+									"description": "فلترة حسب الحالة (اختياري)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "جلب قائمة حجوزاتي كعميل\n\n- role: 'client' لعرض الحجوزات التي قمت بها\n- status: فلترة حسب الحالة (pending, confirmed, cancelled, completed, expired)\n- per_page: عدد النتائج في الصفحة"
+					}
+				},
+				{
+					"name": "List My Bookings (as Consultant)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings?role=consultant&per_page=10",
+							"host": ["{{base_url}}"],
+							"path": ["bookings"],
+							"query": [
+								{
+									"key": "role",
+									"value": "consultant",
+									"description": "عرض الحجوزات كمستشار"
+								},
+								{
+									"key": "per_page",
+									"value": "10",
+									"description": "عدد النتائج في الصفحة"
+								},
+								{
+									"key": "status",
+									"value": "confirmed",
+									"description": "فلترة حسب الحالة (اختياري)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "جلب قائمة الحجوزات الخاصة بي كمستشار\n\n- role: 'consultant' لعرض الحجوزات المحجوزة معي\n- status: فلترة حسب الحالة\n- per_page: عدد النتائج في الصفحة"
+					}
+				},
+				{
+					"name": "Get Booking Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings/{{booking_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["bookings", "{{booking_id}}"]
+						},
+						"description": "جلب تفاصيل حجز معين\n\n- يمكن للعميل عرض حجوزاته\n- يمكن للمستشار عرض الحجوزات الخاصة به\n- يمكن للمسؤول عرض أي حجز"
+					}
+				}
+			]
+		},
+		{
+			"name": "Booking Flow Example",
+			"item": [
+				{
+					"name": "1. Login as Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('token', jsonData.data.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"client@example.com\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": ["{{base_url}}"],
+							"path": ["login"]
+						}
+					}
+				},
+				{
+					"name": "2. Check Available Slots",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/consultants/1/available-slots?date=2026-01-20&bookable_type=consultant&bookable_id=1",
+							"host": ["{{base_url}}"],
+							"path": ["consultants", "1", "available-slots"],
+							"query": [
+								{
+									"key": "date",
+									"value": "2026-01-20"
+								},
+								{
+									"key": "bookable_type",
+									"value": "consultant"
+								},
+								{
+									"key": "bookable_id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "3. Create Pending Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set('booking_id', jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"consultant_id\": 1,\n    \"bookable_type\": \"consultant\",\n    \"bookable_id\": 1,\n    \"start_at\": \"2026-01-20T10:00:00\",\n    \"duration_minutes\": 60,\n    \"notes\": \"استشارة تقنية\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/pending",
+							"host": ["{{base_url}}"],
+							"path": ["bookings", "pending"]
+						}
+					}
+				},
+				{
+					"name": "4. Confirm Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/{{booking_id}}/confirm",
+							"host": ["{{base_url}}"],
+							"path": ["bookings", "{{booking_id}}", "confirm"]
+						}
+					}
+				},
+				{
+					"name": "5. View Booking Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings/{{booking_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["bookings", "{{booking_id}}"]
+						}
+					}
+				}
+			],
+			"description": "مثال على تدفق الحجز الكامل:\n1. تسجيل الدخول كعميل\n2. التحقق من المواعيد المتاحة\n3. إنشاء حجز معلق\n4. تأكيد الحجز (خلال 15 دقيقة)\n5. عرض تفاصيل الحجز"
+		}
+	]
+}

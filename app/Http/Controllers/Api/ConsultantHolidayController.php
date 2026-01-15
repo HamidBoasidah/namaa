@@ -13,7 +13,6 @@ use App\Http\Traits\SuccessResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Validation\ValidationException;
 
 class ConsultantHolidayController extends Controller
 {
@@ -111,26 +110,17 @@ class ConsultantHolidayController extends Controller
             $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
         }
 
-        try {
-            $this->authorize('create', ConsultantHoliday::class);
+        $this->authorize('create', ConsultantHoliday::class);
 
-            $data = $request->validated();
-            $data['consultant_id'] = $consultant->id;
+        $data = $request->validated();
+        $data['consultant_id'] = $consultant->id;
 
-            $holiday = $service->create($data);
+        $holiday = $service->create($data);
 
-            return $this->createdResponse(
-                $this->transformHoliday($holiday),
-                'تم إنشاء الإجازة بنجاح'
-            );
-        } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'خطأ في التحقق من البيانات',
-                'status_code' => 422,
-                'errors' => $e->errors(),
-            ], 422);
-        }
+        return $this->createdResponse(
+            $this->transformHoliday($holiday),
+            'تم إنشاء الإجازة بنجاح'
+        );
     }
 
 
@@ -159,13 +149,6 @@ class ConsultantHolidayController extends Controller
                 $this->transformHoliday($updated),
                 'تم تحديث الإجازة بنجاح'
             );
-        } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'خطأ في التحقق من البيانات',
-                'status_code' => 422,
-                'errors' => $e->errors(),
-            ], 422);
         } catch (ModelNotFoundException) {
             $this->throwNotFoundException('الإجازة المطلوبة غير موجودة');
             throw new ModelNotFoundException();

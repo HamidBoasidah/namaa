@@ -19,6 +19,7 @@ class ConsultantFactory extends Factory
             'rating_avg' => $this->faker->randomFloat(2, 0, 5),
             'ratings_count' => $this->faker->numberBetween(0, 500),
             'price_per_hour' => $this->faker->randomFloat(2, 10, 500),
+            'buffer' => $this->faker->numberBetween(0, 60),
             'is_active' => $this->faker->boolean(80),
             'created_at' => now(),
             'updated_at' => now(),

@@ -134,6 +134,7 @@ class ConsultantCredentialsService
                 'user_id' => $user->id,
                 'is_active' => true,
                 'price_per_hour' => 0,
+                'buffer' => 0,
             ]);
         }
 

@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\ConsultationTypeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ConsultantServiceController;
+use App\Http\Controllers\Admin\BookingController;
 use App\Support\RoutePermissions;
 use Illuminate\Support\Facades\Route;
 
@@ -196,6 +197,16 @@ Route::middleware('auth:admin')
 
         Route::patch('consultant-services/{id}/deactivate', [ConsultantServiceController::class, 'deactivate'])
             ->name('consultant-services.deactivate');
+
+        // Bookings
+        Route::resource('bookings', BookingController::class)
+            ->names('bookings');
+
+        Route::patch('bookings/{booking}/cancel', [BookingController::class, 'cancel'])
+            ->name('bookings.cancel');
+
+        Route::get('bookings-available-slots', [BookingController::class, 'availableSlots'])
+            ->name('bookings.available-slots');
 
 
         // Admins (managers of the system)

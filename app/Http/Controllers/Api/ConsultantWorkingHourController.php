@@ -13,7 +13,6 @@ use App\Http\Traits\SuccessResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Validation\ValidationException;
 
 class ConsultantWorkingHourController extends Controller
 {
@@ -127,32 +126,23 @@ class ConsultantWorkingHourController extends Controller
      */
     public function store(StoreConsultantWorkingHourRequest $request, ConsultantWorkingHourService $service): JsonResponse
     {
-        try {
-            $consultant = $this->getConsultant($request);
-            
-            if (!$consultant) {
-                $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-            }
-
-            $this->authorize('create', ConsultantWorkingHour::class);
-
-            $data = $request->validated();
-            $data['consultant_id'] = $consultant->id;
-
-            $workingHour = $service->create($data);
-
-            return $this->createdResponse(
-                $this->transformWorkingHour($workingHour),
-                'تم إنشاء ساعة العمل بنجاح'
-            );
-        } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'خطأ في التحقق من البيانات',
-                'status_code' => 422,
-                'errors' => $e->errors(),
-            ], 422);
+        $consultant = $this->getConsultant($request);
+        
+        if (!$consultant) {
+            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
         }
+
+        $this->authorize('create', ConsultantWorkingHour::class);
+
+        $data = $request->validated();
+        $data['consultant_id'] = $consultant->id;
+
+        $workingHour = $service->create($data);
+
+        return $this->createdResponse(
+            $this->transformWorkingHour($workingHour),
+            'تم إنشاء ساعة العمل بنجاح'
+        );
     }
 
     /**
@@ -180,13 +170,6 @@ class ConsultantWorkingHourController extends Controller
                 $this->transformWorkingHour($updated),
                 'تم تحديث ساعة العمل بنجاح'
             );
-        } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'خطأ في التحقق من البيانات',
-                'status_code' => 422,
-                'errors' => $e->errors(),
-            ], 422);
         } catch (ModelNotFoundException) {
             $this->throwNotFoundException('ساعة العمل المطلوبة غير موجودة');
             throw new ModelNotFoundException();

@@ -33,6 +33,9 @@ return new class extends Migration
             // Hourly price
             $table->decimal('price_per_hour', 10, 2)->nullable()->default(0);
 
+            // buffer time in minutes for consultant (e.g., prep/cleanup)
+            $table->unsignedSmallInteger('buffer')->default(0);
+
             $table->boolean('is_active')->default(true);
 
             $table->softDeletes();

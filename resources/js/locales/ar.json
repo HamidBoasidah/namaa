@@ -26,7 +26,7 @@
     "avatars": "الصور الرمزية",
     "badge": "الشارات",
     "buttons": "الأزرار",
-    "images": "الصور",
+        "selectTime": "اختر الوقت",
     "videos": "الفيديوهات",
     "auth": "المصادقة",
     "signin": "تسجيل الدخول",
@@ -41,7 +41,8 @@
     "tags": "الوسوم",
     "categories": "الفئات",
     "consultant_services": "خدمات المستشارين",
-    "consultationTypes": "أنواع الاستشارات"
+    "consultationTypes": "أنواع الاستشارات",
+    "bookings": "الحجوزات"
 
   },
   "pages": {
@@ -660,6 +661,90 @@
     "next": "التالي"
   }
 
+  ,"bookings": {
+    "showBooking": "عرض الحجز",
+    "addBooking": "إضافة حجز",
+    "editBooking": "تعديل الحجز",
+    "booking": "الحجز",
+    "bookingDetails": "تفاصيل الحجز",
+    "bookingInfo": "معلومات الحجز",
+    "bookingId": "رقم الحجز",
+    "client": "العميل",
+    "consultant": "المستشار",
+    "service": "الخدمة",
+    "dateTime": "التاريخ والوقت",
+    "selectDateTime": "اختر التاريخ والوقت",
+    "selectDateFirst": "الرجاء اختيار تاريخ أولاً",
+    "selectTime": "اختر الوقت",
+    "startAt": "وقت البداية",
+    "endAt": "وقت النهاية",
+    "endTime": "وقت الانتهاء",
+    "duration": "المدة",
+    "buffer": "وقت التحضير",
+    "bufferAutoFilled": "تم تعبئة زمن التحضير تلقائيًا بناءً على الإعدادات ",
+    "expiresAt": "ينتهي في",
+    "notes": "ملاحظات",
+    "bookableType": "نوع الحجز",
+    "serviceInfo": "معلومات الخدمة",
+    "clientInfo": "معلومات العميل",
+    "consultantInfo": "معلومات المستشار",
+    "cancellationInfo": "معلومات الإلغاء",
+    "cancelledAt": "تاريخ الإلغاء",
+    "cancelledBy": "تم الإلغاء بواسطة",
+    "cancelReason": "سبب الإلغاء",
+    "cancelBooking": "إلغاء الحجز",
+    "cancel": "إلغاء الحجز",
+    "cancelConfirmation": "هل أنت متأكد من إلغاء هذا الحجز؟",
+    "cancelReasonPlaceholder": "أدخل سبب الإلغاء (اختياري)",
+    "optional": "اختياري",
+    "cancelledSuccessfully": "تم إلغاء الحجز بنجاح",
+    "cancellationFailed": "فشل إلغاء الحجز",
+    "noBookingsFound": "لا توجد حجوزات",
+    "noBookingsDescription": "لم يتم إنشاء أي حجوزات حتى الآن.",
+    "allConsultants": "جميع المستشارين",
+    "allStatuses": "جميع الحالات",
+    "selectConsultantFirst": "الرجاء اختيار مستشار أولاً",
+    "selectClient": "اختر العميل",
+    "selectConsultant": "اختر المستشار",
+    "selectService": "اختر الخدمة",
+    "unknownClient": "عميل غير معروف",
+    "directConsultation": "استشارة مباشرة",
+    "createdAt": "تاريخ الإنشاء",
+    "createdSuccessfully": "تم إنشاء الحجز بنجاح",
+    "creationFailed": "فشل إنشاء الحجز",
+    "updatedSuccessfully": "تم تحديث الحجز بنجاح",
+    "updateFailed": "فشل تحديث الحجز",
+    "deletedSuccessfully": "تم حذف الحجز بنجاح",
+    "deletionFailed": "فشل حذف الحجز",
+    "deleteConfirmation": "هل أنت متأكد من حذف هذا الحجز؟",
+    "noAvailableSlots": "لا توجد فترات متاحة في هذا اليوم",
+    "available": "متاح",
+    "booked": "محجوز",
+    "passed": "انتهى",
+    "slotBooked": "هذه الفترة محجوزة مسبقاً",
+    "slotPassed": "هذه الفترة قد انتهت",
+    "slotUnavailable": "هذه الفترة غير متاحة",
+    "clickToSelect": "اضغط للاختيار",
+    "status": "الحالة",
+    "statuses": {
+      "pending": "قيد الانتظار",
+      "confirmed": "مؤكد",
+      "completed": "مكتمل",
+      "cancelled": "ملغي",
+      "expired": "منتهي الصلاحية"
+    },
+    "bookableTypes": {
+      "consultant": "مستشار",
+      "consultantService": "خدمة مستشار",
+      "consultant_service": "خدمة استشارية",
+      "undefined": "غير محدد"
+    }
+    ,"consultationMethods": {
+      "audio": "صوتي",
+      "text": "نصي",
+      "video": "فيديو"
+    }
+  }
   ,"auth": {
     "login": {
       "backToDashboard": "العودة إلى لوحة التحكم",

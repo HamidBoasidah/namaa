@@ -42,6 +42,7 @@ class UpdateConsultantProfileRequest extends FormRequest
             'years_of_experience' => 'nullable|integer|min:0|max:100',
             'consultation_type_id' => 'nullable|exists:consultation_types,id',
             'price_per_hour' => 'nullable|numeric|min:0',
+            'buffer' => 'nullable|integer|min:0|max:1440',
         ];
     }
 

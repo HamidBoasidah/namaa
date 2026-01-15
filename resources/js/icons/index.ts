@@ -14,6 +14,7 @@ import ConsultantServiceIcon from './ConsultantServiceIcon.vue';
 import VideoIcon from './VideoIcon.vue';
 import AudioIcon from './AudioIcon.vue';
 import TextIcon from './TextIcon.vue';
+import BookingIcon from './BookingIcon.vue';
 
 export {
   GridIcon,
@@ -32,5 +33,6 @@ export {
   VideoIcon,
   AudioIcon,
   TextIcon,
+  BookingIcon,
 };
  
