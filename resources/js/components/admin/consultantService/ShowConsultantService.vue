@@ -122,6 +122,19 @@
 			<Link :href="route('admin.consultant-services.index')" class="shadow-theme-xs inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700">{{ t('buttons.backToList') }}</Link>
 			<Link :href="route('admin.consultant-services.edit', service.id)" class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white">{{ t('buttons.edit') }}</Link>
 		</div>
+
+		<!-- Reviews Section -->
+		<div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+			<div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+				<h3 class="text-lg font-medium text-gray-800 dark:text-white">{{ t('reviews.title') || 'Reviews' }}</h3>
+			</div>
+			<div class="p-4 sm:p-6">
+				<ReviewsSection
+					entity-type="service"
+					:entity-id="service?.id"
+				/>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -131,6 +144,7 @@ import { Link } from '@inertiajs/vue3'
 import { useI18n } from 'vue-i18n'
 import { route } from '@/route'
 import Badge from '@/components/ui/Badge.vue'
+import { ReviewsSection } from '@/components/reviews'
 
 const { t, locale } = useI18n()
 

@@ -443,5 +443,49 @@
       "consultant": "Consultant",
       "consultant_service": "Consultant Service"
     }
+  },
+  "auth": {
+    "login": {
+      "backToDashboard": "Back to dashboard",
+      "switchToEnglish": "Switch to English",
+      "switchToArabic": "Switch to Arabic",
+      "title": "Sign In",
+      "subtitle": "Enter your email and password to sign in!",
+      "withGoogle": "Sign in with Google",
+      "withX": "Sign in with X",
+      "or": "Or",
+      "email": "Email",
+      "emailPlaceholder": "Enter email address",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "keepLoggedIn": "Keep me logged in",
+      "forgotPassword": "Forgot password?",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign Up",
+      "tagline": "Code Brains — we don't just write code, we build solutions."
+    }
+  },
+  "reviews": {
+    "title": "Reviews",
+    "section": "Reviews section",
+    "list": "Reviews list",
+    "averageRating": "Average Rating",
+    "total": "No reviews | {count} review | {count} reviews",
+    "noReviews": "No reviews yet",
+    "noReviewsDescription": "Be the first to leave a review",
+    "loadMore": "Load more",
+    "retry": "Retry",
+    "errors": {
+      "fetchFailed": "Failed to load reviews. Please try again."
+    }
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "goToPage": "Go to page {page}",
+    "page": "Page {page}",
+    "of": "of",
+    "showing": "Showing {from} to {to} of {total}"
   }
 }

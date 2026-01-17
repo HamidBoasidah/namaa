@@ -14,6 +14,7 @@ use App\Repositories\ReviewRepository;
 use App\Services\ReviewService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReviewController extends Controller
 {
@@ -41,7 +42,33 @@ class ReviewController extends Controller
             return ReviewDTO::fromModel($review)->toArray();
         });
 
-        return $this->collectionResponse($reviews, 'تم جلب قائمة التقييمات بنجاح');
+        // prepare rating counts (1..5)
+        $countsRaw = DB::table('reviews')
+            ->select('rating', DB::raw('count(*) as cnt'))
+            ->groupBy('rating')
+            ->pluck('cnt', 'rating')
+            ->toArray();
+
+        $counts = [];
+        for ($r = 5; $r >= 1; $r--) {
+            $counts[(string)$r] = isset($countsRaw[$r]) ? (int) $countsRaw[$r] : 0;
+        }
+
+        $response = [
+            'success' => true,
+            'message' => 'تم جلب قائمة التقييمات بنجاح',
+            'status_code' => 200,
+            'data' => $reviews->items(),
+            'pagination' => [
+                'current_page' => $reviews->currentPage(),
+                'per_page' => $reviews->perPage(),
+                'total' => $reviews->total(),
+                'last_page' => $reviews->lastPage(),
+            ],
+            'counts' => $counts,
+        ];
+
+        return response()->json($response, 200);
     }
     
     /**

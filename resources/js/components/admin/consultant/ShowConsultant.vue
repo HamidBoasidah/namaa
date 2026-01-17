@@ -115,6 +115,19 @@
             >
               {{ t('consultants.holidays') || 'Holidays' }}
             </button>
+
+            <button
+              type="button"
+              role="tab"
+              :aria-selected="activeTab === 'reviews'"
+              @click="activeTab = 'reviews'"
+              class="flex-1 rounded-lg px-4 py-2 text-sm font-medium transition sm:flex-none"
+              :class="activeTab === 'reviews'
+                ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-white/[0.06] dark:text-white'
+                : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'"
+            >
+              {{ t('reviews.title') || 'Reviews' }}
+            </button>
           </div>
         </div>
       </div>
@@ -129,8 +142,11 @@
         <span v-else-if="activeTab === 'experiences'">
           {{ t('consultants.updateExperiencesHint') || 'View consultant experiences list.' }}
         </span>
-        <span v-else>
+        <span v-else-if="activeTab === 'holidays'">
           {{ t('consultants.updateHolidaysHint') || 'View consultant holidays list.' }}
+        </span>
+        <span v-else>
+          {{ t('reviews.viewHint') || 'View client reviews and ratings for this consultant.' }}
         </span>
       </div>
     </div>
@@ -366,6 +382,26 @@
       </div>
     </div>
 
+    <!-- ========================= -->
+    <!-- Tab: Reviews -->
+    <!-- ========================= -->
+    <div v-show="activeTab === 'reviews'" role="tabpanel" class="space-y-6">
+      <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+          <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+            {{ t('reviews.title') || 'Reviews' }}
+          </h2>
+        </div>
+
+        <div class="p-4 sm:p-6">
+          <ReviewsSection
+            entity-type="consultant"
+            :entity-id="consultant?.id"
+          />
+        </div>
+      </div>
+    </div>
+
     <!-- Buttons -->
     <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
       <Link
@@ -390,6 +426,7 @@ import { Link } from '@inertiajs/vue3'
 import { useI18n } from 'vue-i18n'
 import { route } from '@/route'
 import { UserCircleIcon } from '@/icons'
+import { ReviewsSection } from '@/components/reviews'
 
 const { t, locale } = useI18n()
 
