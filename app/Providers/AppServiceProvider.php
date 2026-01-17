@@ -7,11 +7,13 @@ use App\Models\Certificate;
 use App\Models\ConsultantExperience;
 use App\Models\ConsultantHoliday;
 use App\Models\ConsultantWorkingHour;
+use App\Models\Review;
 use App\Policies\BookingPolicy;
 use App\Policies\CertificatePolicy;
 use App\Policies\ConsultantExperiencePolicy;
 use App\Policies\ConsultantHolidayPolicy;
 use App\Policies\ConsultantWorkingHourPolicy;
+use App\Policies\ReviewPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,5 +38,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(ConsultantExperience::class, ConsultantExperiencePolicy::class);
         Gate::policy(ConsultantWorkingHour::class, ConsultantWorkingHourPolicy::class);
         Gate::policy(ConsultantHoliday::class, ConsultantHolidayPolicy::class);
+        Gate::policy(Review::class, ReviewPolicy::class);
     }
 }

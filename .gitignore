@@ -22,3 +22,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# ignore kiro specs and working files
+.kiro
+.vscode

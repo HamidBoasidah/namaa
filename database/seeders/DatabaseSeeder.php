@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             InitialDataSeeder::class,
             BookingSeeder::class,
             ConsultantWorkingHourSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }

@@ -78,4 +78,9 @@ class Consultant extends BaseModel
         return $this->hasMany(Certificate::class)
             ->orderBy('created_at', 'desc');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

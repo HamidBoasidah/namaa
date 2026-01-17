@@ -61,4 +61,12 @@ class User extends Authenticatable
 
         return $parts ? implode(' ', $parts) : null;
     }
+
+    /**
+     * Get all reviews written by this user as a client.
+     */
+    public function clientReviews()
+    {
+        return $this->hasMany(Review::class, 'client_id');
+    }
 }

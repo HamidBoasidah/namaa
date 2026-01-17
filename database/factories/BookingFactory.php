@@ -21,7 +21,7 @@ class BookingFactory extends Factory
         $consultant = Consultant::inRandomOrder()->first();
         // اختيار عميل فقط (ليس مستشار) كصاحب الحجز
         $client = User::where('user_type', 'customer')->inRandomOrder()->first()
-            ?? User::whereDoesntHave('consultant')->inRandomOrder()->first();
+            ?? User::inRandomOrder()->first();
         
         // Random start time in the next 30 days, aligned to 5-minute intervals
         $startAt = Carbon::now()

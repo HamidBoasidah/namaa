@@ -87,3 +87,23 @@ Route::prefix('bookings')->middleware('auth:sanctum')->group(function () {
 
 // Consultant Available Slots (public endpoint for viewing availability)
 Route::get('/consultants/{id}/available-slots', [App\Http\Controllers\Api\ConsultantAvailabilityController::class, 'availableSlots']);
+
+// All Reviews (public - ordered by rating)
+Route::get('/reviews', [App\Http\Controllers\Api\ReviewController::class, 'index']);
+
+// Reviews API
+Route::prefix('reviews')->middleware('auth:sanctum')->group(function () {
+    Route::post('/', [App\Http\Controllers\Api\ReviewController::class, 'store']);
+    Route::get('/{id}', [App\Http\Controllers\Api\ReviewController::class, 'show']);
+    Route::put('/{id}', [App\Http\Controllers\Api\ReviewController::class, 'update']);
+    Route::delete('/{id}', [App\Http\Controllers\Api\ReviewController::class, 'destroy']);
+});
+
+// My Reviews (authenticated client)
+Route::get('/my/reviews', [App\Http\Controllers\Api\ReviewController::class, 'myReviews'])->middleware('auth:sanctum');
+
+// Consultant Reviews (public/optional auth)
+Route::get('/consultants/{id}/reviews', [App\Http\Controllers\Api\ConsultantReviewsController::class, 'index']);
+
+// Consultant Service Reviews (public/optional auth)
+Route::get('/consultant-services/{id}/reviews', [App\Http\Controllers\Api\ConsultantReviewsController::class, 'serviceReviews']);
