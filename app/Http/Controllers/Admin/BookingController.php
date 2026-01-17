@@ -85,6 +85,17 @@ class BookingController extends Controller
 		$startAt = Carbon::parse($data['start_at']);
 		$endAt = $startAt->copy()->addMinutes($data['duration_minutes']);
 
+		// Resolve consultation_method
+		// For service bookings: get from service
+		// For direct consultant bookings: get from request
+		$consultationMethod = null;
+		if ($data['bookable_type'] === 'consultant_service') {
+			$service = ConsultantService::find($data['bookable_id']);
+			$consultationMethod = $service?->consultation_method ?? 'video';
+		} else {
+			$consultationMethod = $data['consultation_method'] ?? 'video';
+		}
+
 		$bookingService->create([
 			'client_id' => $data['client_id'],
 			'consultant_id' => $data['consultant_id'],
@@ -94,6 +105,7 @@ class BookingController extends Controller
 			'end_at' => $endAt,
 			'duration_minutes' => $data['duration_minutes'],
 			'buffer_after_minutes' => $data['buffer_after_minutes'] ?? 0,
+			'consultation_method' => $consultationMethod,
 			'status' => $data['status'] ?? Booking::STATUS_CONFIRMED,
 			'notes' => $data['notes'] ?? null,
 		]);

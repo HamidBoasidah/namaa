@@ -75,6 +75,12 @@ class StorePendingBookingRequest extends FormRequest
                 'string',
                 'max:1000',
             ],
+            'consultation_method' => [
+                'required_if:bookable_type,consultant',
+                'nullable',
+                'string',
+                'in:video,audio,text',
+            ],
         ];
     }
 
@@ -147,6 +153,8 @@ class StorePendingBookingRequest extends FormRequest
             'duration_minutes.min' => 'المدة يجب أن تكون 5 دقائق على الأقل.',
             'duration_minutes.max' => 'المدة يجب ألا تتجاوز 480 دقيقة (8 ساعات).',
             'notes.max' => 'الملاحظات يجب ألا تتجاوز 1000 حرف.',
+            'consultation_method.required_if' => 'طريقة الاستشارة مطلوبة للحجز المباشر مع المستشار.',
+            'consultation_method.in' => 'طريقة الاستشارة يجب أن تكون video أو audio أو text.',
         ];
     }
 }

@@ -69,6 +69,13 @@ class BookingService
                 $consultant
             );
 
+            // Resolve consultation method
+            $consultationMethod = $this->resolveConsultationMethod(
+                $dto->bookable_type,
+                $bookable,
+                $dto->consultation_method
+            );
+
             $startAt = Carbon::parse($dto->start_at);
             $endAt = $startAt->copy()->addMinutes($durationMinutes);
             $occupiedEnd = $endAt->copy()->addMinutes($bufferMinutes);
@@ -111,6 +118,7 @@ class BookingService
                 'end_at' => $endAt,
                 'duration_minutes' => $durationMinutes,
                 'buffer_after_minutes' => $bufferMinutes,
+                'consultation_method' => $consultationMethod,
                 'notes' => $dto->notes,
             ]);
         });
@@ -434,5 +442,29 @@ class BookingService
         }
 
         return [$duration, $buffer];
+    }
+
+    /**
+     * Resolve consultation method based on bookable type
+     * For service bookings: use service's consultation_method
+     * For direct consultant bookings: use user-provided consultation_method
+     */
+    protected function resolveConsultationMethod(
+        string $bookableType,
+        Model $bookable,
+        ?string $userMethod
+    ): string {
+        if ($bookableType === 'consultant_service') {
+            // For service: use service's consultation method
+            return $bookable->consultation_method;
+        } else {
+            // For direct consultant booking: use user-provided method
+            if ($userMethod === null) {
+                throw ValidationException::withMessages([
+                    'consultation_method' => ['طريقة الاستشارة مطلوبة للحجز المباشر مع المستشار'],
+                ]);
+            }
+            return $userMethod;
+        }
     }
 }

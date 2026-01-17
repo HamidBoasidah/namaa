@@ -106,17 +106,18 @@ class BookingDTO extends BaseDTO
      */
     public static function fromModel(Booking $booking): self
     {
-        // Get bookable title and consultation method based on type
+        // Get bookable title based on type
         $bookableTitle = null;
-        $consultationMethod = null;
         if ($booking->bookable) {
             if ($booking->bookable_type === \App\Models\ConsultantService::class) {
                 $bookableTitle = $booking->bookable->title ?? null;
-                $consultationMethod = $booking->bookable->consultation_method ?? null;
             } else {
                 $bookableTitle = $booking->consultant?->user?->name ?? null;
             }
         }
+
+        // Get consultation method from booking (stored at booking creation)
+        $consultationMethod = $booking->consultation_method;
 
         // Get cancelled by name
         $cancelledByName = null;

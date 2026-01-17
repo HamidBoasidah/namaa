@@ -442,6 +442,12 @@
     "bookableTypes": {
       "consultant": "Consultant",
       "consultant_service": "Consultant Service"
+    },
+    "consultationMethod": "Consultation Method",
+    "methods": {
+      "video": "Video",
+      "audio": "Audio",
+      "text": "Text"
     }
   },
   "auth": {

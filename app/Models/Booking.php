@@ -27,6 +27,13 @@ class Booking extends BaseModel
     // Pending hold duration in minutes
     const PENDING_HOLD_MINUTES = 15;
 
+    // Consultation method constants
+    const METHOD_VIDEO = 'video';
+    const METHOD_AUDIO = 'audio';
+    const METHOD_TEXT = 'text';
+
+    const CONSULTATION_METHODS = [self::METHOD_VIDEO, self::METHOD_AUDIO, self::METHOD_TEXT];
+
     protected $fillable = [
         'client_id',
         'consultant_id',
@@ -36,6 +43,7 @@ class Booking extends BaseModel
         'end_at',
         'duration_minutes',
         'buffer_after_minutes',
+        'consultation_method',
         'status',
         'expires_at',
         'cancelled_at',

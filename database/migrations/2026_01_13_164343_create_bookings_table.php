@@ -27,6 +27,8 @@ return new class extends Migration
             $table->dateTime('end_at');
             $table->unsignedSmallInteger('duration_minutes'); // multiples of 5
 
+            $table->enum('consultation_method', ['video', 'audio', 'text'])->default('video');
+
             // Buffer after the session (snapshot at booking creation, multiples of 5)
             $table->unsignedSmallInteger('buffer_after_minutes')->default(0);
 

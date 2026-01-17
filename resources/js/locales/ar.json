@@ -738,6 +738,12 @@
       "consultantService": "خدمة مستشار",
       "consultant_service": "خدمة استشارية",
       "undefined": "غير محدد"
+    },
+    "consultationMethod": "طريقة الاستشارة",
+    "methods": {
+      "video": "فيديو",
+      "audio": "صوتي",
+      "text": "نصي"
     }
     ,"consultationMethods": {
       "audio": "صوتي",

@@ -48,6 +48,17 @@
             />
           </div>
 
+          <!-- Consultation Method (Read-only) -->
+          <div class="md:col-span-1">
+            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+              {{ t('bookings.consultationMethod') }}
+            </label>
+            <div class="dark:bg-gray-900/50 shadow-theme-xs h-11 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-600 dark:border-gray-700 dark:text-gray-400 flex items-center gap-2">
+              <component :is="getMethodIcon(booking.consultation_method)" class="h-5 w-5" />
+              {{ t(`bookings.methods.${booking.consultation_method}`) }}
+            </div>
+          </div>
+
           <!-- Duration (Read-only display) -->
           <div class="md:col-span-1">
             <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
@@ -277,9 +288,20 @@ import { useI18n } from 'vue-i18n'
 import { useNotifications } from '@/composables/useNotifications'
 import { route } from '@/route'
 import axios from 'axios'
+import { VideoIcon, AudioIcon, TextIcon } from '@/icons'
 
 const { t, locale } = useI18n()
 const { success, error } = useNotifications()
+
+// Get icon component based on consultation method
+function getMethodIcon(method) {
+  switch (method) {
+    case 'video': return VideoIcon
+    case 'audio': return AudioIcon
+    case 'text': return TextIcon
+    default: return VideoIcon
+  }
+}
 
 const props = defineProps({
   booking: { type: Object, required: true },
