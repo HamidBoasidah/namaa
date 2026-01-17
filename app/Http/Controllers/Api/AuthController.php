@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Services\AuthService;
 use App\Http\Traits\ExceptionHandler;
 use App\Http\Traits\SuccessResponse;
-// Logging removed per project request
+use App\Http\Requests\Api\UpdatePasswordRequest;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -69,5 +70,27 @@ class AuthController extends Controller
         return $this->successResponse([
             'user' => $request->user()
         ], 'تم جلب بيانات المستخدم بنجاح');
+    }
+
+    /**
+     * Update the authenticated user's password.
+     *
+     * @param UpdatePasswordRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        try {
+            $user = $request->user();
+            
+            // Update the password
+            $user->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+
+            return $this->successResponse(null, 'تم تحديث كلمة السر بنجاح');
+        } catch (\Exception $e) {
+            return $this->handleException($e);
+        }
     }
 }
