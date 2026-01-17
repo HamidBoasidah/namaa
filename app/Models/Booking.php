@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -93,6 +94,14 @@ class Booking extends BaseModel
     public function cancelledBy(): MorphTo
     {
         return $this->morphTo('cancelled_by');
+    }
+
+    /**
+     * The review for this booking
+     */
+    public function review(): HasOne
+    {
+        return $this->hasOne(Review::class);
     }
 
     // ─────────────────────────────────────────────────────────────

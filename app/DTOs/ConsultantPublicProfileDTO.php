@@ -3,6 +3,7 @@
 namespace App\DTOs;
 
 use App\Models\Consultant;
+use App\Models\ConsultantService;
 use Illuminate\Support\Facades\Storage;
 
 class ConsultantPublicProfileDTO extends BaseDTO
@@ -10,18 +11,18 @@ class ConsultantPublicProfileDTO extends BaseDTO
     public int $consultant_id;
     public array $certificates;
     public array $experiences;
-    public ?array $service;
+    public array $services;
 
     public function __construct(
         int $consultant_id,
         array $certificates,
         array $experiences,
-        ?array $service
+        array $services
     ) {
         $this->consultant_id = $consultant_id;
         $this->certificates = $certificates;
         $this->experiences = $experiences;
-        $this->service = $service;
+        $this->services = $services;
     }
 
     public static function fromModel(Consultant $consultant): self
@@ -45,26 +46,31 @@ class ConsultantPublicProfileDTO extends BaseDTO
                 ];
             })->values()->toArray();
 
-        // تنسيق الخدمة
-        $service = null;
-        if ($consultant->service) {
-            $service = [
-                'id' => $consultant->service->id,
-                'title' => $consultant->service->title,
-                'description' => $consultant->service->description,
-                'price' => (string) ($consultant->service->price ?? '0.00'),
-                'category' => $consultant->service->category ? [
-                    'id' => $consultant->service->category->id,
-                    'name' => $consultant->service->category->name,
-                ] : null,
-            ];
-        }
+        // تنسيق كل خدمات المستشار — نُعيد فقط الخدمات المفعلة
+        $services = ConsultantService::where('consultant_id', $consultant->id)
+            ->where('is_active', true)
+            ->with('category')
+            ->get()
+            ->map(function ($svc) {
+                return [
+                    'id' => $svc->id,
+                    'title' => $svc->title,
+                    'description' => $svc->description,
+                    'price' => (string) ($svc->price ?? '0.00'),
+                    'category' => $svc->category ? [
+                        'id' => $svc->category->id,
+                        'name' => $svc->category->name,
+                    ] : null,
+                    'duration_minutes' => (int) ($svc->duration_minutes ?? 60),
+                    'consultation_method' => $svc->consultation_method ?? 'video',
+                ];
+            })->values()->toArray();
 
         return new self(
             $consultant->id,
             $certificates,
             $experiences,
-            $service
+            $services
         );
     }
 
@@ -74,7 +80,7 @@ class ConsultantPublicProfileDTO extends BaseDTO
             'consultant_id' => $this->consultant_id,
             'certificates' => $this->certificates,
             'experiences' => $this->experiences,
-            'service' => $this->service,
+            'services' => $this->services,
         ];
     }
 }
