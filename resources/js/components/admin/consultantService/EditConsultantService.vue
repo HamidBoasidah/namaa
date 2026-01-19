@@ -118,6 +118,74 @@
 						<textarea v-model="form.description" rows="3" class="dark:bg-dark-900 shadow-theme-xs w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"></textarea>
 					</div>
 
+					<!-- Icon Upload/Management -->
+					<div class="md:col-span-2">
+						<label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+							{{ t('consultant_services.icon') }}
+						</label>
+						
+						<!-- Current Icon Display -->
+						<div v-if="currentIconUrl" class="mb-4">
+							<p class="mb-2 text-xs text-gray-500 dark:text-gray-400">{{ t('consultant_services.currentIcon') }}</p>
+							<div class="flex items-center gap-4">
+								<div class="flex h-20 w-20 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+									<img :src="currentIconUrl" alt="Service icon" class="max-h-16 max-w-16 object-contain" />
+								</div>
+								<button 
+									type="button"
+									@click="removeIcon" 
+									class="inline-flex items-center gap-2 rounded-lg bg-error-500 px-3 py-2 text-sm font-medium text-white transition hover:bg-error-600"
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+									</svg>
+									{{ t('consultant_services.removeIcon') }}
+								</button>
+							</div>
+						</div>
+						
+						<!-- Upload New Icon -->
+						<div class="relative">
+							<label
+								for="service-icon-edit"
+								class="shadow-theme-xs group relative block cursor-pointer rounded-lg border-2 border-dashed border-gray-300 transition hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-500"
+								:class="{ 'border-error-500 dark:border-error-500': iconError || form.errors.icon }"
+							>
+								<div class="flex justify-center p-6">
+									<div class="flex max-w-[260px] flex-col items-center gap-3">
+										<div class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 text-gray-700 transition dark:border-gray-700 dark:text-gray-400">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+												<path d="M20.0004 16V18.5C20.0004 19.3284 19.3288 20 18.5004 20H5.49951C4.67108 20 3.99951 19.3284 3.99951 18.5V16M12.0015 4L12.0015 16M7.37454 8.6246L11.9994 4.00269L16.6245 8.6246" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+											</svg>
+										</div>
+										<div class="text-center">
+											<p class="text-sm text-gray-500 dark:text-gray-400">
+												<span class="font-medium text-gray-800 dark:text-white/90">
+													{{ currentIconUrl ? t('consultant_services.changeIcon') : t('consultant_services.clickToUploadIcon') }}
+												</span>
+											</p>
+											<p class="mt-1 text-xs text-gray-400 dark:text-gray-500">
+												{{ t('consultant_services.iconRequirements') }}
+											</p>
+										</div>
+									</div>
+								</div>
+								
+								<input 
+									ref="iconInput"
+									id="service-icon-edit" 
+									type="file" 
+									class="hidden" 
+									accept="image/jpeg,image/png,image/gif,image/svg+xml,image/webp"
+									@change="handleIconChange" 
+								/>
+							</label>
+						</div>
+						<p v-if="iconError" class="mt-1 text-sm text-error-500">{{ iconError }}</p>
+						<p v-else-if="form.errors.icon" class="mt-1 text-sm text-error-500">{{ form.errors.icon }}</p>
+						<p v-else-if="form.errors.remove_icon" class="mt-1 text-sm text-error-500">{{ form.errors.remove_icon }}</p>
+					</div>
+
 					<!-- Tags -->
 					<div class="md:col-span-2">
 						<label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('consultant_services.tags') }}</label>
@@ -148,7 +216,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onBeforeUnmount } from 'vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import { useI18n } from 'vue-i18n'
 import { useNotifications } from '@/composables/useNotifications'
@@ -172,6 +240,15 @@ const initialTagIds = computed(() => {
 	return Array.isArray(raw) && raw.length && typeof raw[0] === 'object' ? raw.map(tag => tag.id) : (Array.isArray(raw) ? raw : [])
 })
 
+// Icon upload state
+const iconInput = ref(null)
+const iconPreviewUrl = ref(null)
+const iconError = ref(null)
+
+// Allowed file types and max size
+const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp']
+const maxFileSize = 2 * 1024 * 1024 // 2MB in bytes
+
 const form = useForm({
 	_method: 'PUT',
 	consultant_id: props.service?.consultant_id ?? '',
@@ -189,11 +266,105 @@ const form = useForm({
 	includes: props.service?.includes ?? [],
 	target_audience: props.service?.target_audience ?? [],
 	deliverables: props.service?.deliverables ?? [],
+	icon: null,
+	remove_icon: false,
 })
 
 const selectedTags = computed({
 	get() { return tagsOptions.value.filter(opt => (form.tags || []).includes(opt.value)) },
 	set(opts) { form.tags = opts.map(o => o.value) },
+})
+
+/**
+ * Computed property to show current icon URL
+ * Returns null if remove_icon is true, otherwise returns preview or existing icon
+ */
+const currentIconUrl = computed(() => {
+	if (form.remove_icon) return null
+	return iconPreviewUrl.value || props.service?.icon_url
+})
+
+/**
+ * Validate the selected icon file
+ */
+function validateIconFile(file) {
+	iconError.value = null
+	
+	if (!file) return true
+	
+	// Check file type
+	if (!allowedTypes.includes(file.type)) {
+		iconError.value = t('consultant_services.iconInvalidType')
+		return false
+	}
+	
+	// Check file size
+	if (file.size > maxFileSize) {
+		iconError.value = t('consultant_services.iconTooLarge')
+		return false
+	}
+	
+	return true
+}
+
+/**
+ * Handle icon file selection
+ */
+function handleIconChange(event) {
+	const file = event.target.files?.[0] || null
+	
+	// Clear previous preview
+	if (iconPreviewUrl.value) {
+		URL.revokeObjectURL(iconPreviewUrl.value)
+		iconPreviewUrl.value = null
+	}
+	
+	if (!file) {
+		form.icon = null
+		return
+	}
+	
+	// Validate the file
+	if (!validateIconFile(file)) {
+		// Reset the input
+		if (iconInput.value) iconInput.value.value = ''
+		form.icon = null
+		return
+	}
+	
+	// Set the file and create preview
+	form.icon = file
+	form.remove_icon = false // Reset remove flag when uploading new icon
+	iconPreviewUrl.value = URL.createObjectURL(file)
+}
+
+/**
+ * Remove the icon (either new preview or existing icon)
+ */
+function removeIcon() {
+	// Clear preview URL if exists
+	if (iconPreviewUrl.value) {
+		URL.revokeObjectURL(iconPreviewUrl.value)
+		iconPreviewUrl.value = null
+	}
+	
+	form.icon = null
+	iconError.value = null
+	
+	// Reset file input
+	if (iconInput.value) iconInput.value.value = ''
+	
+	// If there was an existing icon, set remove_icon flag
+	if (props.service?.icon_url) {
+		form.remove_icon = true
+	}
+}
+
+// Cleanup on unmount
+onBeforeUnmount(() => {
+	if (iconPreviewUrl.value) {
+		URL.revokeObjectURL(iconPreviewUrl.value)
+	}
 })
 
 function update() {

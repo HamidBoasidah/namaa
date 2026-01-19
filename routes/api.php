@@ -68,13 +68,17 @@ Route::prefix('consultant/holidays')->middleware('auth:sanctum')->group(function
 // Mobile App APIs
 Route::prefix('mobile')->group(function () {
     // Categories
-    Route::get('/categories', [App\Http\Controllers\Api\Mobile\CategoryController::class, 'index']);
-    Route::get('/categories/by-consultation-type/{consultationTypeId}', [App\Http\Controllers\Api\Mobile\CategoryController::class, 'byConsultationType']);
+    Route::get('/categories', [App\Http\Controllers\Api\CategoryController::class, 'index']);
+    Route::get('/categories/by-consultation-type/{consultationTypeId}', [App\Http\Controllers\Api\CategoryController::class, 'byConsultationType']);
     
     // Consultants
-    Route::get('/consultants', [App\Http\Controllers\Api\Mobile\ConsultantController::class, 'index']);
-    Route::get('/consultants/by-category/{categoryId}', [App\Http\Controllers\Api\Mobile\ConsultantController::class, 'byCategory']);
-    Route::get('/consultants/{consultantId}/profile', [App\Http\Controllers\Api\Mobile\ConsultantController::class, 'profile']);
+    Route::get('/consultants', [App\Http\Controllers\Api\ConsultantController::class, 'index']);
+    Route::get('/consultants/by-category/{categoryId}', [App\Http\Controllers\Api\ConsultantController::class, 'byCategory']);
+    Route::get('/consultants/{consultantId}/profile', [App\Http\Controllers\Api\ConsultantController::class, 'profile']);
+    
+    // Consultant Services
+    Route::get('/consultant-services', [App\Http\Controllers\Api\ConsultantServiceController::class, 'index']);
+    Route::get('/consultant-services/{id}', [App\Http\Controllers\Api\ConsultantServiceController::class, 'show']);
 });
 
 // Bookings API

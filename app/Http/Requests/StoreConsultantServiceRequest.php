@@ -44,6 +44,9 @@ class StoreConsultantServiceRequest extends FormRequest
             'auto_accept_requests' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
 
+            // الأيقونة
+            'icon' => ['nullable', 'file', 'mimes:jpeg,png,gif,svg,webp', 'max:2048'],
+
             // تفاصيل الخدمة
             'includes' => ['nullable', 'array'],
             'includes.*' => ['string', 'max:500'],

@@ -353,6 +353,115 @@
           }
         }
       ]
+    },
+    {
+      "name": "Consultant Services",
+      "item": [
+        {
+          "name": "Get All Active Services",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultant-services",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultant-services"
+              ]
+            },
+            "description": "جلب جميع خدمات المستشارين النشطة"
+          }
+        },
+        {
+          "name": "Get Services - With Pagination",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultant-services?per_page=5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultant-services"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "جلب الخدمات مع تحديد عدد العناصر في الصفحة"
+          }
+        },
+        {
+          "name": "Get Service Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultant-services/{{service_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultant-services",
+                "{{service_id}}"
+              ]
+            },
+            "description": "جلب تفاصيل خدمة معينة بما في ذلك معلومات المستشار والفئة"
+          }
+        },
+        {
+          "name": "Get Service Details (Invalid ID)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mobile/consultant-services/99999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mobile",
+                "consultant-services",
+                "99999"
+              ]
+            },
+            "description": "اختبار حالة خدمة غير موجودة - يجب أن يرجع 404"
+          }
+        }
+      ]
     }
   ],
   "variable": [
@@ -370,6 +479,11 @@
       "key": "category_id",
       "value": "1",
       "description": "معرف الفئة للاختبار"
+    },
+    {
+      "key": "service_id",
+      "value": "1",
+      "description": "معرف الخدمة للاختبار"
     }
   ]
 }

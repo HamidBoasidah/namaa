@@ -17,6 +17,8 @@ class ConsultantServiceDTO extends BaseDTO
 
     public $title;
     public $description;
+    public $icon_path;
+    public $icon_url;
     public $price;
     public $buffer;
     public $duration_minutes;
@@ -45,6 +47,8 @@ class ConsultantServiceDTO extends BaseDTO
         $category_name,
         $title,
         $description,
+        $icon_path,
+        $icon_url,
         $price,
         $buffer,
         $duration_minutes,
@@ -68,6 +72,8 @@ class ConsultantServiceDTO extends BaseDTO
         $this->category_name = $category_name;
         $this->title = $title;
         $this->description = $description;
+        $this->icon_path = $icon_path;
+        $this->icon_url = $icon_url;
         $this->price = $price;
         $this->buffer = $buffer;
         $this->duration_minutes = $duration_minutes;
@@ -98,6 +104,8 @@ class ConsultantServiceDTO extends BaseDTO
             $service->category?->name,
             $service->title,
             $service->description,
+            $service->icon_path,
+            $service->icon_url,
             (string) ($service->price ?? '0.00'),
             (int) ($service->buffer ?? 0),
             (int) ($service->duration_minutes ?? 60),
@@ -126,6 +134,8 @@ class ConsultantServiceDTO extends BaseDTO
             'category_name' => $this->category_name,
             'title' => $this->title,
             'description' => $this->description,
+            'icon_path' => $this->icon_path,
+            'icon_url' => $this->icon_url,
             'price' => $this->price,
             'buffer' => $this->buffer,
             'duration_minutes' => $this->duration_minutes,
@@ -150,6 +160,7 @@ class ConsultantServiceDTO extends BaseDTO
             'consultant_display_name' => $this->consultant_display_name,
             'category_name' => $this->category_name,
             'title' => $this->title,
+            'icon_url' => $this->icon_url,
             'price' => $this->price,
             'buffer' => $this->buffer,
             'duration_minutes' => $this->duration_minutes,

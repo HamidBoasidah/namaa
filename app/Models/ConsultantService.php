@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
 use App\Models\Tag;
 
@@ -16,6 +17,7 @@ class ConsultantService extends BaseModel
         'consultant_id',
         'title',
         'description',
+        'icon_path',
         'price',
         'buffer',
         'duration_minutes',
@@ -76,5 +78,14 @@ class ConsultantService extends BaseModel
         return $this->hasMany(ConsultantServiceDetail::class)
             ->where('type', ConsultantServiceDetail::TYPE_DELIVERABLES)
             ->orderBy('sort_order');
+    }
+
+    /**
+     * Get the icon URL attribute.
+     * Returns the full URL using Storage::url() if icon_path exists, null otherwise.
+     */
+    public function getIconUrlAttribute(): ?string
+    {
+        return $this->icon_path ? Storage::url($this->icon_path) : null;
     }
 }

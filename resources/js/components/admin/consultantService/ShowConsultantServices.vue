@@ -63,8 +63,19 @@
       >
         <div class="relative p-5 pb-9">
           <div class="flex items-start gap-3">
-            <!-- Icon based on consultation_method -->
+            <!-- Service Icon or fallback to consultation_method icon -->
             <div 
+              v-if="service.icon_url"
+              class="flex h-12 w-12 items-center justify-center rounded-2xl overflow-hidden bg-gray-50 dark:bg-gray-800"
+            >
+              <img 
+                :src="service.icon_url" 
+                :alt="service.title || t('consultant_services.serviceIcon')"
+                class="h-full w-full object-cover"
+              />
+            </div>
+            <div 
+              v-else
               class="flex h-12 w-12 items-center justify-center rounded-2xl"
               :class="getMethodIconClass(service.consultation_method)"
             >

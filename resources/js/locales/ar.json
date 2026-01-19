@@ -273,7 +273,16 @@
     "autoAccept": "قبول تلقائي للطلبات",
     "noServicesFound": "لا توجد خدمات",
     "buffer": "زمن التحضير (بالدقائق)",
-    "bufferPlaceholder": "ادخل الزمن الاحتياطي بالدقائق"
+    "bufferPlaceholder": "ادخل الزمن الاحتياطي بالدقائق",
+    "icon": "أيقونة الخدمة",
+    "clickToUploadIcon": "اضغط لرفع أيقونة",
+    "iconRequirements": "PNG, JPG, GIF, SVG أو WebP (الحد الأقصى 2 ميجابايت)",
+    "iconInvalidType": "نوع الملف غير مدعوم. الأنواع المسموحة: JPEG, PNG, GIF, SVG, WebP",
+    "iconTooLarge": "حجم الملف كبير جداً. الحد الأقصى 2 ميجابايت",
+    "currentIcon": "الأيقونة الحالية",
+    "changeIcon": "تغيير الأيقونة",
+    "removeIcon": "حذف الأيقونة",
+    "noIcon": "لا توجد أيقونة"
   },
 
   "admins": {

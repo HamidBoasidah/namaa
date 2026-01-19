@@ -26,6 +26,7 @@ return new class extends Migration
 
                 $table->string('title', 255);
                 $table->text('description')->nullable();
+                $table->string('icon_path')->nullable();
 
                 $table->decimal('price', 10, 2);
 

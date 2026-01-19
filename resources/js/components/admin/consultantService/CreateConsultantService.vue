@@ -199,6 +199,69 @@
 						></textarea>
 					</div>
 
+					<!-- Icon Upload -->
+					<div class="md:col-span-2">
+						<label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+							{{ t('consultant_services.icon') }}
+						</label>
+						<div class="relative">
+							<label
+								for="service-icon"
+								class="shadow-theme-xs group relative block cursor-pointer rounded-lg border-2 border-dashed border-gray-300 transition hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-500"
+								:class="{ 'border-error-500 dark:border-error-500': iconError || form.errors.icon }"
+							>
+								<!-- Upload placeholder -->
+								<div v-if="!iconPreview" class="flex justify-center p-6">
+									<div class="flex max-w-[260px] flex-col items-center gap-3">
+										<div class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 text-gray-700 transition dark:border-gray-700 dark:text-gray-400">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+												<path d="M20.0004 16V18.5C20.0004 19.3284 19.3288 20 18.5004 20H5.49951C4.67108 20 3.99951 19.3284 3.99951 18.5V16M12.0015 4L12.0015 16M7.37454 8.6246L11.9994 4.00269L16.6245 8.6246" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+											</svg>
+										</div>
+										<div class="text-center">
+											<p class="text-sm text-gray-500 dark:text-gray-400">
+												<span class="font-medium text-gray-800 dark:text-white/90">{{ t('consultant_services.clickToUploadIcon') }}</span>
+											</p>
+											<p class="mt-1 text-xs text-gray-400 dark:text-gray-500">
+												{{ t('consultant_services.iconRequirements') }}
+											</p>
+										</div>
+									</div>
+								</div>
+								
+								<!-- Image preview -->
+								<div v-else class="relative flex justify-center p-4">
+									<img 
+										:src="iconPreview" 
+										alt="Icon preview" 
+										class="max-h-32 rounded-lg border border-gray-200 object-contain dark:border-gray-700" 
+									/>
+									<button 
+										type="button" 
+										@click.stop.prevent="removeIcon" 
+										class="absolute -top-2 -right-2 hidden rounded-full bg-error-500 p-1 text-white shadow group-hover:flex hover:bg-error-600"
+									>
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+											<line x1="18" y1="6" x2="6" y2="18" />
+											<line x1="6" y1="6" x2="18" y2="18" />
+										</svg>
+									</button>
+								</div>
+								
+								<input 
+									ref="iconInput"
+									id="service-icon" 
+									type="file" 
+									class="hidden" 
+									accept="image/jpeg,image/png,image/gif,image/svg+xml,image/webp"
+									@change="handleIconChange" 
+								/>
+							</label>
+						</div>
+						<p v-if="iconError" class="mt-1 text-sm text-error-500">{{ iconError }}</p>
+						<p v-else-if="form.errors.icon" class="mt-1 text-sm text-error-500">{{ form.errors.icon }}</p>
+					</div>
+
 					<!-- Tags -->
 					<div class="md:col-span-2">
 						<label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
@@ -264,7 +327,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onBeforeUnmount } from 'vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import { useI18n } from 'vue-i18n'
 import { useNotifications } from '@/composables/useNotifications'
@@ -295,6 +358,15 @@ const selectedTags = computed({
 	},
 })
 
+// Icon upload state
+const iconInput = ref(null)
+const iconPreview = ref(null)
+const iconError = ref(null)
+
+// Allowed file types and max size
+const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp']
+const maxFileSize = 2 * 1024 * 1024 // 2MB in bytes
+
 const form = useForm({
 	consultant_id: '',
 	category_id: '',
@@ -311,6 +383,80 @@ const form = useForm({
 	includes: [],
 	target_audience: [],
 	deliverables: [],
+	icon: null,
+})
+
+/**
+ * Validate the selected icon file
+ */
+function validateIconFile(file) {
+	iconError.value = null
+	
+	if (!file) return true
+	
+	// Check file type
+	if (!allowedTypes.includes(file.type)) {
+		iconError.value = t('consultant_services.iconInvalidType')
+		return false
+	}
+	
+	// Check file size
+	if (file.size > maxFileSize) {
+		iconError.value = t('consultant_services.iconTooLarge')
+		return false
+	}
+	
+	return true
+}
+
+/**
+ * Handle icon file selection
+ */
+function handleIconChange(event) {
+	const file = event.target.files?.[0] || null
+	
+	// Clear previous preview
+	if (iconPreview.value) {
+		URL.revokeObjectURL(iconPreview.value)
+		iconPreview.value = null
+	}
+	
+	if (!file) {
+		form.icon = null
+		return
+	}
+	
+	// Validate the file
+	if (!validateIconFile(file)) {
+		// Reset the input
+		if (iconInput.value) iconInput.value.value = ''
+		form.icon = null
+		return
+	}
+	
+	// Set the file and create preview
+	form.icon = file
+	iconPreview.value = URL.createObjectURL(file)
+}
+
+/**
+ * Remove the selected icon
+ */
+function removeIcon() {
+	if (iconPreview.value) {
+		URL.revokeObjectURL(iconPreview.value)
+		iconPreview.value = null
+	}
+	form.icon = null
+	iconError.value = null
+	if (iconInput.value) iconInput.value.value = ''
+}
+
+// Cleanup on unmount
+onBeforeUnmount(() => {
+	if (iconPreview.value) {
+		URL.revokeObjectURL(iconPreview.value)
+	}
 })
 
 function create() {

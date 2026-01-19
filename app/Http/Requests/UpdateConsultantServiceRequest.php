@@ -53,6 +53,10 @@ class UpdateConsultantServiceRequest extends FormRequest
             
             'deliverables' => ['nullable', 'array'],
             'deliverables.*' => ['string', 'max:500'],
+
+            // الأيقونة
+            'icon' => ['nullable', 'file', 'mimes:jpeg,png,gif,svg,webp', 'max:2048'],
+            'remove_icon' => ['nullable', 'boolean'],
         ];
     }
 

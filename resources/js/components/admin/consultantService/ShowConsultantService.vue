@@ -32,6 +32,17 @@
 			<div class="p-4 sm:p-6">
 				<div class="grid grid-cols-1 gap-x-5 gap-y-6 md:grid-cols-2">
 					<div>
+						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.icon') }}</label>
+						<div v-if="service.icon_url" class="mt-2">
+							<img
+								:src="service.icon_url"
+								:alt="service.title"
+								class="h-16 w-16 object-contain rounded-lg border border-gray-200 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-800/50"
+							/>
+						</div>
+						<p v-else class="text-sm text-gray-500 dark:text-gray-400">{{ t('consultant_services.noIcon') }}</p>
+					</div>
+					<div>
 						<label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('consultant_services.serviceName') }}</label>
 						<p class="text-base text-gray-800 dark:text-white/90">{{ service.title || '—' }}</p>
 					</div>
