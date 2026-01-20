@@ -7,154 +7,508 @@
   },
   "item": [
     {
-      "name": "Get All Active Services",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Accept",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/mobile/consultant-services",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "mobile",
-            "consultant-services"
-          ]
-        },
-        "description": "جلب جميع خدمات المستشارين النشطة"
-      }
-    },
-    {
-      "name": "Get Services - With Pagination",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Accept",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/mobile/consultant-services?per_page=5",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "mobile",
-            "consultant-services"
-          ],
-          "query": [
-            {
-              "key": "per_page",
-              "value": "5"
-            }
-          ]
-        },
-        "description": "جلب الخدمات مع تحديد عدد العناصر في الصفحة"
-      }
-    },
-    {
-      "name": "Get Services - Page 2",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Accept",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/mobile/consultant-services?per_page=5&page=2",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "mobile",
-            "consultant-services"
-          ],
-          "query": [
-            {
-              "key": "per_page",
-              "value": "5"
+      "name": "Public APIs",
+      "item": [
+        {
+          "name": "Get Consultant Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultants/{{consultant_id}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultants",
+                "{{consultant_id}}",
+                "profile"
+              ]
             },
-            {
-              "key": "page",
-              "value": "2"
-            }
-          ]
+            "description": "جلب الملف الشخصي العام للمستشار (لا يحتاج تسجيل دخول)\n\nيرجع:\n- معلومات المستخدم: الاسم الأول، الاسم الأخير، الإيميل، الجوال، صورة العرض\n- الشهادات\n- الخبرات\n- الخدمات النشطة"
+          }
         },
-        "description": "جلب الصفحة الثانية من الخدمات"
-      }
+        {
+          "name": "Get All Active Services",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant-services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant-services"
+              ]
+            },
+            "description": "جلب جميع خدمات المستشارين النشطة"
+          }
+        },
+        {
+          "name": "Get Services - With Pagination",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant-services?per_page=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant-services"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "جلب الخدمات مع تحديد عدد العناصر في الصفحة"
+          }
+        },
+        {
+          "name": "Get Service Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant-services/{{service_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant-services",
+                "{{service_id}}"
+              ]
+            },
+            "description": "جلب تفاصيل خدمة معينة بما في ذلك معلومات المستشار والفئة"
+          }
+        },
+        {
+          "name": "Get Service Details (Invalid ID)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant-services/99999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant-services",
+                "99999"
+              ]
+            },
+            "description": "اختبار حالة خدمة غير موجودة - يجب أن يرجع 404"
+          }
+        }
+      ]
     },
     {
-      "name": "Get Service Details",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Accept",
-            "value": "application/json"
+      "name": "Consultant Management",
+      "item": [
+        {
+          "name": "Get My Services",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant/services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant",
+                "services"
+              ]
+            },
+            "description": "جلب قائمة خدمات المستشار الحالي"
           }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/mobile/consultant-services/{{service_id}}",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "mobile",
-            "consultant-services",
-            "{{service_id}}"
-          ]
         },
-        "description": "جلب تفاصيل خدمة معينة بما في ذلك معلومات المستشار والفئة"
-      }
-    },
-    {
-      "name": "Get Service Details (Invalid ID)",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Accept",
-            "value": "application/json"
+        {
+          "name": "Get My Services - With Pagination",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant/services?per_page=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant",
+                "services"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "جلب قائمة خدمات المستشار مع تحديد عدد العناصر في الصفحة"
           }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/mobile/consultant-services/99999",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "mobile",
-            "consultant-services",
-            "99999"
-          ]
         },
-        "description": "اختبار حالة خدمة غير موجودة - يجب أن يرجع 404"
-      }
+        {
+          "name": "Create Service",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"استشارة قانونية\",\n  \"description\": \"استشارة قانونية شاملة في مختلف المجالات\",\n  \"category_id\": 1,\n  \"price\": 150.00,\n  \"duration_minutes\": 60,\n  \"buffer\": 15,\n  \"consultation_method\": \"video\",\n  \"delivery_time\": \"خلال 24 ساعة\",\n  \"auto_accept_requests\": false,\n  \"is_active\": true,\n  \"tags\": [1, 2],\n  \"includes\": [\"تحليل الحالة\", \"تقديم النصيحة\", \"متابعة لمدة أسبوع\"],\n  \"target_audience\": [\"الأفراد\", \"الشركات الصغيرة\"],\n  \"deliverables\": [\"تقرير مكتوب\", \"خطة عمل\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant/services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant",
+                "services"
+              ]
+            },
+            "description": "إنشاء خدمة جديدة للمستشار"
+          }
+        },
+        {
+          "name": "Create Service (with icon)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "استشارة مالية",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "استشارة مالية متخصصة",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "200",
+                  "type": "text"
+                },
+                {
+                  "key": "duration_minutes",
+                  "value": "45",
+                  "type": "text"
+                },
+                {
+                  "key": "consultation_method",
+                  "value": "video",
+                  "type": "text"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "icon",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant/services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant",
+                "services"
+              ]
+            },
+            "description": "إنشاء خدمة جديدة مع أيقونة"
+          }
+        },
+        {
+          "name": "Update Service",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"استشارة قانونية محدثة\",\n  \"price\": 175.00,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant/services/{{service_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant",
+                "services",
+                "{{service_id}}"
+              ]
+            },
+            "description": "تحديث خدمة موجودة"
+          }
+        },
+        {
+          "name": "Update Service (with icon - form-data)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "استشارة محدثة",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "180",
+                  "type": "text"
+                },
+                {
+                  "key": "icon",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant/services/{{service_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant",
+                "services",
+                "{{service_id}}"
+              ]
+            },
+            "description": "تحديث خدمة مع رفع أيقونة جديدة (استخدم POST مع form-data)"
+          }
+        },
+        {
+          "name": "Remove Service Icon",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"remove_icon\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant/services/{{service_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant",
+                "services",
+                "{{service_id}}"
+              ]
+            },
+            "description": "إزالة أيقونة الخدمة"
+          }
+        },
+        {
+          "name": "Delete Service",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant/services/{{service_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant",
+                "services",
+                "{{service_id}}"
+              ]
+            },
+            "description": "حذف خدمة - يمكن للمستشار حذف خدماته فقط"
+          }
+        },
+        {
+          "name": "Delete Service (Unauthorized)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultant/services/99999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultant",
+                "services",
+                "99999"
+              ]
+            },
+            "description": "محاولة حذف خدمة غير موجودة أو لا تخص المستشار"
+          }
+        }
+      ]
     }
   ],
   "variable": [
     {
-      "key": "base_url",
-      "value": "http://localhost",
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000",
       "description": "عنوان الخادم الأساسي"
+    },
+    {
+      "key": "consultant_id",
+      "value": "1",
+      "description": "معرف المستشار للاختبار"
     },
     {
       "key": "service_id",
       "value": "1",
       "description": "معرف الخدمة للاختبار"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "description": "Bearer token للمستشار"
     }
   ]
 }

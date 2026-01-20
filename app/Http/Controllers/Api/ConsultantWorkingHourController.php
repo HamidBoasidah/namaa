@@ -24,14 +24,6 @@ class ConsultantWorkingHourController extends Controller
     }
 
     /**
-     * Get consultant for authenticated user
-     */
-    protected function getConsultant(Request $request): ?Consultant
-    {
-        return Consultant::where('user_id', $request->user()->id)->first();
-    }
-
-    /**
      * Get day name in Arabic
      */
     protected function getDayName(int $dayOfWeek): string
@@ -47,7 +39,6 @@ class ConsultantWorkingHourController extends Controller
         ];
         return $days[$dayOfWeek] ?? '';
     }
-
 
     /**
      * Transform working hour to array
@@ -72,17 +63,13 @@ class ConsultantWorkingHourController extends Controller
      */
     public function index(Request $request, ConsultantWorkingHourService $service): JsonResponse
     {
-        $consultant = $this->getConsultant($request);
-        
-        if (!$consultant) {
-            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-        }
+        $this->authorize('viewAny', ConsultantWorkingHour::class);
 
+        $consultant = Consultant::where('user_id', $request->user()->id)->first();
         $perPage = (int) $request->get('per_page', 10);
 
-        $query = $service->getQueryForConsultant($consultant->id);
-        
-        $workingHours = $query
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $workingHours */
+        $workingHours = $service->getQueryForConsultant($consultant->id)
             ->orderBy('day_of_week')
             ->orderBy('start_time')
             ->paginate($perPage);
@@ -97,17 +84,10 @@ class ConsultantWorkingHourController extends Controller
     /**
      * عرض ساعة عمل محددة
      */
-    public function show(Request $request, ConsultantWorkingHourService $service, $id): JsonResponse
+    public function show(ConsultantWorkingHourService $service, $id): JsonResponse
     {
-        $consultant = $this->getConsultant($request);
-        
-        if (!$consultant) {
-            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-        }
-
         try {
             $workingHour = $service->find($id);
-
             $this->authorize('view', $workingHour);
 
             return $this->resourceResponse(
@@ -116,24 +96,18 @@ class ConsultantWorkingHourController extends Controller
             );
         } catch (ModelNotFoundException) {
             $this->throwNotFoundException('ساعة العمل المطلوبة غير موجودة');
-            throw new ModelNotFoundException(); // This line won't execute but satisfies static analysis
+            throw new ModelNotFoundException();
         }
     }
-
 
     /**
      * إنشاء ساعة عمل جديدة
      */
     public function store(StoreConsultantWorkingHourRequest $request, ConsultantWorkingHourService $service): JsonResponse
     {
-        $consultant = $this->getConsultant($request);
-        
-        if (!$consultant) {
-            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-        }
-
         $this->authorize('create', ConsultantWorkingHour::class);
 
+        $consultant = Consultant::where('user_id', $request->user()->id)->first();
         $data = $request->validated();
         $data['consultant_id'] = $consultant->id;
 
@@ -150,17 +124,11 @@ class ConsultantWorkingHourController extends Controller
      */
     public function update(UpdateConsultantWorkingHourRequest $request, ConsultantWorkingHourService $service, $id): JsonResponse
     {
-        $consultant = $this->getConsultant($request);
-        
-        if (!$consultant) {
-            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-        }
-
         try {
             $workingHour = $service->find($id);
-
             $this->authorize('update', $workingHour);
 
+            $consultant = Consultant::where('user_id', $request->user()->id)->first();
             $data = $request->validated();
             $data['consultant_id'] = $consultant->id;
 
@@ -176,21 +144,13 @@ class ConsultantWorkingHourController extends Controller
         }
     }
 
-
     /**
      * حذف ساعة عمل
      */
-    public function destroy(Request $request, ConsultantWorkingHourService $service, $id): JsonResponse
+    public function destroy(ConsultantWorkingHourService $service, $id): JsonResponse
     {
-        $consultant = $this->getConsultant($request);
-        
-        if (!$consultant) {
-            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-        }
-
         try {
             $workingHour = $service->find($id);
-
             $this->authorize('delete', $workingHour);
 
             $service->delete($id);
@@ -201,6 +161,4 @@ class ConsultantWorkingHourController extends Controller
             throw new ModelNotFoundException();
         }
     }
-
-    
 }

@@ -17,6 +17,14 @@ class ConsultantHolidayPolicy
     }
 
     /**
+     * المستخدم يمكنه رؤية قائمة إجازاته
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->user_type === 'consultant' && $this->getConsultant($user) !== null;
+    }
+
+    /**
      * المستخدم يمكنه رؤية إجازاته فقط
      */
     public function view(User $user, ConsultantHoliday $holiday): bool

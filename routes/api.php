@@ -65,6 +65,21 @@ Route::prefix('consultant/holidays')->middleware('auth:sanctum')->group(function
     Route::delete('/{id}', [App\Http\Controllers\Api\ConsultantHolidayController::class, 'destroy']);
 });
 
+// Consultant Services (API)
+Route::get('/consultant-services', [App\Http\Controllers\Api\ConsultantServiceController::class, 'index']);
+Route::get('/consultant-services/{id}', [App\Http\Controllers\Api\ConsultantServiceController::class, 'show']);
+
+// Consultant Public Profile (API - no auth required)
+Route::get('/consultants/{id}/profile', [App\Http\Controllers\Api\ConsultantController::class, 'profile']);
+
+Route::prefix('consultant/services')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [App\Http\Controllers\Api\ConsultantServiceController::class, 'myServices']);
+    Route::post('/', [App\Http\Controllers\Api\ConsultantServiceController::class, 'store']);
+    Route::put('/{id}', [App\Http\Controllers\Api\ConsultantServiceController::class, 'update']);
+    Route::post('/{id}', [App\Http\Controllers\Api\ConsultantServiceController::class, 'update']); // For multipart/form-data
+    Route::delete('/{id}', [App\Http\Controllers\Api\ConsultantServiceController::class, 'destroy']);
+});
+
 // Mobile App APIs
 Route::prefix('mobile')->group(function () {
     // Categories

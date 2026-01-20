@@ -37,6 +37,9 @@ class ConsultantServiceDTO extends BaseDTO
     public $created_at;
     public $deleted_at;
 
+    // Store model for consultant info
+    protected ?ConsultantService $model = null;
+
     public function __construct(
         $id,
         $consultant_id,
@@ -61,7 +64,8 @@ class ConsultantServiceDTO extends BaseDTO
         $target_audience = [],
         $deliverables = [],
         $created_at = null,
-        $deleted_at = null
+        $deleted_at = null,
+        ?ConsultantService $model = null
     ) {
         $this->id = $id;
         $this->consultant_id = $consultant_id;
@@ -87,6 +91,7 @@ class ConsultantServiceDTO extends BaseDTO
         $this->deliverables = $deliverables ?? [];
         $this->created_at = $created_at;
         $this->deleted_at = $deleted_at;
+        $this->model = $model;
     }
 
     public static function fromModel(ConsultantService $service): self
@@ -118,7 +123,8 @@ class ConsultantServiceDTO extends BaseDTO
             $service->targetAudience?->pluck('content')->toArray() ?? [],
             $service->deliverables?->pluck('content')->toArray() ?? [],
             $service->created_at?->toDateTimeString(),
-            $service->deleted_at?->toDateTimeString()
+            $service->deleted_at?->toDateTimeString(),
+            $service
         );
     }
 
@@ -166,6 +172,57 @@ class ConsultantServiceDTO extends BaseDTO
             'duration_minutes' => $this->duration_minutes,
             'consultation_method' => $this->consultation_method,
             'is_active' => $this->is_active,
+        ];
+    }
+
+    /**
+     * For public list API - minimal fields
+     */
+    public function toListArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'icon_url' => $this->icon_url,
+            'title' => $this->title,
+            'description' => $this->description,
+        ];
+    }
+
+    /**
+     * For public detail API - with consultant info
+     */
+    public function toDetailArray(): array
+    {
+        $consultant = $this->model?->consultant;
+        $user = $consultant?->user;
+        
+        $experiences = $consultant?->experiences?->where('is_active', true)->map(function ($exp) {
+            return [
+                'name' => $exp->name,
+                'organization' => $exp->organization ?? null,
+                'years' => $exp->years ?? null,
+            ];
+        })->values()->toArray() ?? [];
+
+        return [
+            'id' => $this->id,
+            'icon_url' => $this->icon_url,
+            'title' => $this->title,
+            'description' => $this->description,
+            'price' => $this->price,
+            'duration_minutes' => $this->duration_minutes,
+            'consultation_method' => $this->consultation_method,
+            'delivery_time' => $this->delivery_time,
+            'includes' => $this->includes,
+            'target_audience' => $this->target_audience,
+            'deliverables' => $this->deliverables,
+            'consultant' => $consultant ? [
+                'avatar' => $user?->avatar ? asset('storage/' . $user->avatar) : null,
+                'first_name' => $user?->first_name,
+                'last_name' => $user?->last_name,
+                'consultation_type_name' => $consultant->consultationType?->name,
+                'experiences' => $experiences,
+            ] : null,
         ];
     }
 }

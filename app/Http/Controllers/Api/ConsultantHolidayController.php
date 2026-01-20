@@ -24,14 +24,6 @@ class ConsultantHolidayController extends Controller
     }
 
     /**
-     * Get consultant for authenticated user
-     */
-    protected function getConsultant(Request $request): ?Consultant
-    {
-        return Consultant::where('user_id', $request->user()->id)->first();
-    }
-
-    /**
      * Transform holiday to array
      */
     protected function transformHoliday(ConsultantHoliday $holiday): array
@@ -46,23 +38,18 @@ class ConsultantHolidayController extends Controller
         ];
     }
 
-
     /**
      * عرض قائمة الإجازات للمستشار الحالي
      */
     public function index(Request $request, ConsultantHolidayService $service): JsonResponse
     {
-        $consultant = $this->getConsultant($request);
-        
-        if (!$consultant) {
-            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-        }
+        $this->authorize('viewAny', ConsultantHoliday::class);
 
+        $consultant = Consultant::where('user_id', $request->user()->id)->first();
         $perPage = (int) $request->get('per_page', 10);
 
-        $query = $service->getQueryForConsultant($consultant->id);
-        
-        $holidays = $query
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $holidays */
+        $holidays = $service->getQueryForConsultant($consultant->id)
             ->orderBy('holiday_date')
             ->paginate($perPage);
 
@@ -76,17 +63,10 @@ class ConsultantHolidayController extends Controller
     /**
      * عرض إجازة محددة
      */
-    public function show(Request $request, ConsultantHolidayService $service, $id): JsonResponse
+    public function show(ConsultantHolidayService $service, $id): JsonResponse
     {
-        $consultant = $this->getConsultant($request);
-        
-        if (!$consultant) {
-            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-        }
-
         try {
             $holiday = $service->find($id);
-
             $this->authorize('view', $holiday);
 
             return $this->resourceResponse(
@@ -104,14 +84,9 @@ class ConsultantHolidayController extends Controller
      */
     public function store(StoreConsultantHolidayRequest $request, ConsultantHolidayService $service): JsonResponse
     {
-        $consultant = $this->getConsultant($request);
-        
-        if (!$consultant) {
-            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-        }
-
         $this->authorize('create', ConsultantHoliday::class);
 
+        $consultant = Consultant::where('user_id', $request->user()->id)->first();
         $data = $request->validated();
         $data['consultant_id'] = $consultant->id;
 
@@ -123,23 +98,16 @@ class ConsultantHolidayController extends Controller
         );
     }
 
-
     /**
      * تحديث إجازة
      */
     public function update(UpdateConsultantHolidayRequest $request, ConsultantHolidayService $service, $id): JsonResponse
     {
-        $consultant = $this->getConsultant($request);
-        
-        if (!$consultant) {
-            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-        }
-
         try {
             $holiday = $service->find($id);
-
             $this->authorize('update', $holiday);
 
+            $consultant = Consultant::where('user_id', $request->user()->id)->first();
             $data = $request->validated();
             $data['consultant_id'] = $consultant->id;
 
@@ -158,17 +126,10 @@ class ConsultantHolidayController extends Controller
     /**
      * حذف إجازة
      */
-    public function destroy(Request $request, ConsultantHolidayService $service, $id): JsonResponse
+    public function destroy(ConsultantHolidayService $service, $id): JsonResponse
     {
-        $consultant = $this->getConsultant($request);
-        
-        if (!$consultant) {
-            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
-        }
-
         try {
             $holiday = $service->find($id);
-
             $this->authorize('delete', $holiday);
 
             $service->delete($id);

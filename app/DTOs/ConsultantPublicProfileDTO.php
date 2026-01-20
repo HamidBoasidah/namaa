@@ -9,17 +9,32 @@ use Illuminate\Support\Facades\Storage;
 class ConsultantPublicProfileDTO extends BaseDTO
 {
     public int $consultant_id;
+    public ?string $first_name;
+    public ?string $last_name;
+    public ?string $email;
+    public ?string $phone_number;
+    public ?string $avatar;
     public array $certificates;
     public array $experiences;
     public array $services;
 
     public function __construct(
         int $consultant_id,
+        ?string $first_name,
+        ?string $last_name,
+        ?string $email,
+        ?string $phone_number,
+        ?string $avatar,
         array $certificates,
         array $experiences,
         array $services
     ) {
         $this->consultant_id = $consultant_id;
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
+        $this->email = $email;
+        $this->phone_number = $phone_number;
+        $this->avatar = $avatar;
         $this->certificates = $certificates;
         $this->experiences = $experiences;
         $this->services = $services;
@@ -27,6 +42,9 @@ class ConsultantPublicProfileDTO extends BaseDTO
 
     public static function fromModel(Consultant $consultant): self
     {
+        // جلب معلومات المستخدم
+        $user = $consultant->user;
+        
         // تنسيق الشهادات
         $certificates = $consultant->certificates->map(function ($cert) {
             return [
@@ -68,6 +86,11 @@ class ConsultantPublicProfileDTO extends BaseDTO
 
         return new self(
             $consultant->id,
+            $user->first_name ?? null,
+            $user->last_name ?? null,
+            $user->email ?? null,
+            $user->phone_number ?? null,
+            $user->avatar ? Storage::url($user->avatar) : null,
             $certificates,
             $experiences,
             $services
@@ -78,6 +101,11 @@ class ConsultantPublicProfileDTO extends BaseDTO
     {
         return [
             'consultant_id' => $this->consultant_id,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
+            'phone_number' => $this->phone_number,
+            'avatar' => $this->avatar,
             'certificates' => $this->certificates,
             'experiences' => $this->experiences,
             'services' => $this->services,

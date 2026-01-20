@@ -137,6 +137,7 @@ class ConsultantService
         $consultant = Consultant::where('id', $consultantId)
             ->where('is_active', true)
             ->with([
+                'user:id,first_name,last_name,email,phone_number,avatar',
                 'certificates' => function ($query) {
                     $query->orderBy('created_at', 'desc');
                 },
