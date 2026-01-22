@@ -133,6 +133,9 @@ Route::get('/consultant-services/{id}/reviews', [App\Http\Controllers\Api\Consul
 
 // Chat System Routes
 Route::middleware('auth:sanctum')->group(function () {
+    // Conversations list
+    Route::get('/conversations', [App\Http\Controllers\Api\ConversationController::class, 'index']);
+    
     // Conversation messages
     Route::get('/conversations/{conversation}/messages', [App\Http\Controllers\Api\MessageController::class, 'index']);
     Route::post('/conversations/{conversation}/messages', [App\Http\Controllers\Api\MessageController::class, 'store']);

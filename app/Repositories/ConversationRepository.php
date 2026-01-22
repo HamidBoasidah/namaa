@@ -69,4 +69,45 @@ class ConversationRepository extends BaseRepository
             ->where('user_id', $userId)
             ->exists();
     }
+
+    /**
+     * Get all conversations for a user with pagination and search
+     *
+     * @param int $userId
+     * @param string|null $search
+     * @param int $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getUserConversations(int $userId, ?string $search = null, int $perPage = 20)
+    {
+        $query = $this->model
+            ->select('conversations.*')
+            ->join('conversation_participants', 'conversations.id', '=', 'conversation_participants.conversation_id')
+            ->where('conversation_participants.user_id', $userId)
+            ->with([
+                'booking.client',
+                'booking.consultant.user',
+                'participants',
+                'messages' => function ($query) {
+                    $query->latest()->limit(1);
+                }
+            ])
+            ->orderBy('conversations.updated_at', 'desc');
+
+        // Search in participant names if search term provided
+        if ($search) {
+            $query->where(function ($q) use ($search, $userId) {
+                $q->whereHas('participants', function ($participantQuery) use ($search, $userId) {
+                    $participantQuery->where('users.id', '!=', $userId)
+                        ->where(function ($nameQuery) use ($search) {
+                            $nameQuery->where('users.first_name', 'like', "%{$search}%")
+                                ->orWhere('users.last_name', 'like', "%{$search}%")
+                                ->orWhere(DB::raw("CONCAT(users.first_name, ' ', users.last_name)"), 'like', "%{$search}%");
+                        });
+                });
+            });
+        }
+
+        return $query->paginate($perPage);
+    }
 }

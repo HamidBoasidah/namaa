@@ -54,4 +54,37 @@ class ConversationController extends Controller
             'تم جلب المحادثة بنجاح'
         );
     }
+
+    /**
+     * Get user's conversations list
+     * GET /api/conversations
+     * 
+     * @param \App\Http\Requests\Api\GetConversationsRequest $request
+     * @return JsonResponse
+     */
+    public function index(\App\Http\Requests\Api\GetConversationsRequest $request): JsonResponse
+    {
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 20);
+
+        $conversations = $this->chatService->getUserConversations(
+            auth()->id(),
+            $search,
+            $perPage
+        );
+
+        // Check if no conversations found
+        if ($conversations->isEmpty()) {
+            return $this->successResponse(
+                [],
+                'لا توجد محادثات بعد',
+                200
+            );
+        }
+
+        return $this->resourceResponse(
+            \App\Http\Resources\ConversationListResource::collection($conversations),
+            'تم جلب المحادثات بنجاح'
+        );
+    }
 }

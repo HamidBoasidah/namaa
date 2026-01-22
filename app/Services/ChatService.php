@@ -238,4 +238,17 @@ class ChatService
 
         return 'text';
     }
+
+    /**
+     * Get user's conversations list with search
+     *
+     * @param int $userId
+     * @param string|null $search
+     * @param int $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getUserConversations(int $userId, ?string $search = null, int $perPage = 20)
+    {
+        return $this->conversations->getUserConversations($userId, $search, $perPage);
+    }
 }
