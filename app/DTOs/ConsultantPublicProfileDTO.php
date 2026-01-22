@@ -17,6 +17,9 @@ class ConsultantPublicProfileDTO extends BaseDTO
     public array $certificates;
     public array $experiences;
     public array $services;
+    public ?string $price_per_hour;
+    public ?float $rating_avg;
+    public int $ratings_count;
 
     public function __construct(
         int $consultant_id,
@@ -27,7 +30,10 @@ class ConsultantPublicProfileDTO extends BaseDTO
         ?string $avatar,
         array $certificates,
         array $experiences,
-        array $services
+        array $services,
+        ?string $price_per_hour,
+        ?float $rating_avg,
+        int $ratings_count
     ) {
         $this->consultant_id = $consultant_id;
         $this->first_name = $first_name;
@@ -38,6 +44,9 @@ class ConsultantPublicProfileDTO extends BaseDTO
         $this->certificates = $certificates;
         $this->experiences = $experiences;
         $this->services = $services;
+        $this->price_per_hour = $price_per_hour;
+        $this->rating_avg = $rating_avg;
+        $this->ratings_count = $ratings_count;
     }
 
     public static function fromModel(Consultant $consultant): self
@@ -84,6 +93,11 @@ class ConsultantPublicProfileDTO extends BaseDTO
                 ];
             })->values()->toArray();
 
+        // السعر بالساعة ومتوسط التقييم من نموذج المستشار
+        $pricePerHour = $consultant->price_per_hour ? (string) $consultant->price_per_hour : '0.00';
+        $ratingAvg = $consultant->rating_avg ? (float) $consultant->rating_avg : 0.0;
+        $ratingsCount = (int) ($consultant->ratings_count ?? 0);
+
         return new self(
             $consultant->id,
             $user->first_name ?? null,
@@ -94,6 +108,9 @@ class ConsultantPublicProfileDTO extends BaseDTO
             $certificates,
             $experiences,
             $services
+            , $pricePerHour
+            , $ratingAvg
+            , $ratingsCount
         );
     }
 
@@ -109,6 +126,9 @@ class ConsultantPublicProfileDTO extends BaseDTO
             'certificates' => $this->certificates,
             'experiences' => $this->experiences,
             'services' => $this->services,
+            'price_per_hour' => $this->price_per_hour,
+            'rating_avg' => $this->rating_avg,
+            'ratings_count' => $this->ratings_count,
         ];
     }
 }
