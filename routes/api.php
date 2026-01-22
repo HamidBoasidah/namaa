@@ -103,6 +103,9 @@ Route::prefix('bookings')->middleware('auth:sanctum')->group(function () {
     Route::post('/pending', [App\Http\Controllers\Api\BookingController::class, 'storePending']);
     Route::post('/{id}/confirm', [App\Http\Controllers\Api\BookingController::class, 'confirm']);
     Route::post('/{id}/cancel', [App\Http\Controllers\Api\BookingController::class, 'cancel']);
+    
+    // Conversation for booking
+    Route::get('/{booking}/conversation', [App\Http\Controllers\Api\ConversationController::class, 'getOrCreate']);
 });
 
 // Consultant Available Slots (public endpoint for viewing availability)
@@ -127,3 +130,14 @@ Route::get('/consultants/{id}/reviews', [App\Http\Controllers\Api\ConsultantRevi
 
 // Consultant Service Reviews (public/optional auth)
 Route::get('/consultant-services/{id}/reviews', [App\Http\Controllers\Api\ConsultantReviewsController::class, 'serviceReviews']);
+
+// Chat System Routes
+Route::middleware('auth:sanctum')->group(function () {
+    // Conversation messages
+    Route::get('/conversations/{conversation}/messages', [App\Http\Controllers\Api\MessageController::class, 'index']);
+    Route::post('/conversations/{conversation}/messages', [App\Http\Controllers\Api\MessageController::class, 'store']);
+    
+    // Attachment download
+    Route::get('/attachments/{attachment}', [App\Http\Controllers\Api\AttachmentController::class, 'download'])
+        ->name('api.attachments.download');
+});

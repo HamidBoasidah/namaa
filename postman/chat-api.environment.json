@@ -1,0 +1,69 @@
+{
+	"id": "chat-api-environment",
+	"name": "Chat API - Local Development",
+	"values": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "client_email",
+			"value": "client@example.com",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "client_password",
+			"value": "password",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "consultant_email",
+			"value": "consultant@example.com",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "consultant_password",
+			"value": "password",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "booking_id",
+			"value": "1",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "conversation_id",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "message_id",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "attachment_id",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-01-21T00:00:00.000Z",
+	"_postman_exported_using": "Postman/10.0.0"
+}

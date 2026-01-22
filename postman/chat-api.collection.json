@@ -1,0 +1,667 @@
+{
+	"info": {
+		"_postman_id": "chat-api",
+		"name": "Chat System API",
+		"description": "API لنظام الدردشة المرتبط بالحجوزات - إنشاء المحادثات، إرسال الرسائل، وإدارة المرفقات",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "booking_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "conversation_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "message_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "attachment_id",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login (Client)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('token', jsonData.data.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+,
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"client@example.com\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": ["{{base_url}}"],
+							"path": ["login"]
+						},
+						"description": "تسجيل دخول كعميل لإنشاء المحادثات وإرسال الرسائل"
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Consultant)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('token', jsonData.data.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"consultant@example.com\",\n    \"password\": \"password\"\n}"
+						}
+,
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": ["{{base_url}}"],
+							"path": ["login"]
+						},
+						"description": "تسجيل دخول كمستشار للرد على الرسائل"
+					},
+					"response": []
+				}
+			],
+			"description": "طلبات تسجيل الدخول للحصول على التوكن"
+		},
+		{
+			"name": "Conversations",
+			"item": [
+				{
+					"name": "Get or Create Conversation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set('conversation_id', jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings/{{booking_id}}/conversation",
+							"host": ["{{base_url}}"],
+							"path": ["bookings", "{{booking_id}}", "conversation"]
+						},
+						"description": "الحصول على محادثة موجودة أو إنشاء محادثة جديدة للحجز"
+					},
+					"response": []
+				}
+
+			],
+			"description": "إدارة المحادثات المرتبطة بالحجوزات"
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "List Messages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages?per_page=50",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "50",
+									"description": "عدد الرسائل في الصفحة (1-100)"
+								},
+								{
+									"key": "cursor",
+									"value": "",
+									"description": "مؤشر الصفحة التالية",
+									"disabled": true
+								}
+							]
+						},
+						"description": "عرض قائمة الرسائل في المحادثة مع دعم Cursor Pagination"
+					},
+					"response": []
+				},
+				{
+					"name": "Send Text Message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set('message_id', jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+,
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "body",
+									"value": "مرحباً، لدي سؤال بخصوص الاستشارة",
+									"type": "text",
+									"description": "نص الرسالة (حد أقصى 5000 حرف)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "إرسال رسالة نصية فقط"
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message with Attachments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "body",
+									"value": "إليك المستندات المطلوبة",
+									"type": "text",
+									"description": "نص الرسالة (اختياري)"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": [],
+									"description": "ملف مرفق (حد أقصى 5 ملفات، 25MB لكل ملف)"
+								}
+							]
+						}
+,
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "إرسال رسالة مع مرفقات (صور، PDF، مستندات)"
+					},
+					"response": []
+				},
+				{
+					"name": "Send Attachment Only",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": [],
+									"description": "ملف مرفق بدون نص"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "إرسال مرفق فقط بدون نص"
+					},
+					"response": []
+				}
+			],
+			"description": "إرسال وعرض الرسائل في المحادثة"
+		},
+		{
+			"name": "Attachments",
+			"item": [
+				{
+					"name": "Download Attachment",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						]
+,
+						"url": {
+							"raw": "{{base_url}}/attachments/{{attachment_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["attachments", "{{attachment_id}}"]
+						},
+						"description": "تحميل مرفق بشكل آمن (للمشاركين في المحادثة فقط)"
+					},
+					"response": []
+				}
+			],
+			"description": "تحميل المرفقات بشكل آمن"
+		},
+		{
+			"name": "Test Scenarios",
+			"item": [
+				{
+					"name": "Client - First Out-of-Session Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "body",
+									"value": "رسالة خارج وقت الجلسة - الأولى",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "العميل يرسل الرسالة الأولى خارج وقت الجلسة (مسموح)"
+					},
+					"response": []
+				},
+				{
+					"name": "Client - Second Out-of-Session Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						]
+,
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "body",
+									"value": "رسالة خارج وقت الجلسة - الثانية",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "العميل يرسل الرسالة الثانية خارج وقت الجلسة (مسموح)"
+					},
+					"response": []
+				},
+				{
+					"name": "Client - Third Out-of-Session Message (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "body",
+									"value": "رسالة خارج وقت الجلسة - الثالثة (يجب أن تفشل)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "العميل يحاول إرسال الرسالة الثالثة خارج وقت الجلسة (يجب أن يفشل - 403)"
+					},
+					"response": []
+				},
+				{
+					"name": "Consultant - Unlimited Out-of-Session Messages",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+,
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "body",
+									"value": "رد المستشار - بدون حد للرسائل",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "المستشار يمكنه إرسال عدد غير محدود من الرسائل خارج وقت الجلسة"
+					},
+					"response": []
+				},
+				{
+					"name": "Non-Participant Access (Should Fail)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": "استخدم توكن مستخدم غير مشارك"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "محاولة الوصول للمحادثة من مستخدم غير مشارك (يجب أن تفشل - 403)"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid File Type (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						]
+,
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "body",
+									"value": "محاولة إرسال ملف غير مسموح",
+									"type": "text"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": [],
+									"description": "ملف بصيغة غير مسموحة (مثل .exe)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "محاولة إرسال ملف بصيغة غير مسموحة (يجب أن تفشل - 422)"
+					},
+					"response": []
+				},
+				{
+					"name": "Empty Message (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "محاولة إرسال رسالة فارغة بدون نص أو مرفقات (يجب أن تفشل - 422)"
+					},
+					"response": []
+				},
+				{
+					"name": "Non-Confirmed Booking (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						]
+,
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "body",
+									"value": "محاولة إرسال رسالة لحجز غير مؤكد",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations/{{conversation_id}}/messages",
+							"host": ["{{base_url}}"],
+							"path": ["conversations", "{{conversation_id}}", "messages"]
+						},
+						"description": "محاولة إرسال رسالة لحجز بحالة pending/cancelled/completed/expired (يجب أن تفشل - 403)"
+					},
+					"response": []
+				}
+			],
+			"description": "سيناريوهات اختبار مختلفة للتحقق من قواعد العمل"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
