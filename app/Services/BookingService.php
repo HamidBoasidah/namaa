@@ -69,6 +69,14 @@ class BookingService
                 $consultant
             );
 
+            // Snapshot price at booking creation
+            $price = $this->calculatePrice(
+                $dto->bookable_type,
+                $bookable,
+                $durationMinutes,
+                $consultant
+            );
+
             // Resolve consultation method
             $consultationMethod = $this->resolveConsultationMethod(
                 $dto->bookable_type,
@@ -114,6 +122,7 @@ class BookingService
                 'consultant_id' => $consultant->id,
                 'bookable_type' => $bookableClass,
                 'bookable_id' => $dto->bookable_id,
+                'price' => $price,
                 'start_at' => $startAt,
                 'end_at' => $endAt,
                 'duration_minutes' => $durationMinutes,
@@ -300,6 +309,22 @@ class BookingService
                 }
             }
 
+            // Recalculate price if duration or bookable context is available
+            if ($booking->relationLoaded('bookable') === false) {
+                $booking->load('bookable', 'consultant');
+            }
+
+            if ($booking->bookable && $booking->consultant) {
+                $bookableType = $this->normalizeBookableType($booking->bookable_type);
+                $durationMinutes = $data['duration_minutes'] ?? $booking->duration_minutes;
+                $data['price'] = $this->calculatePrice(
+                    $bookableType,
+                    $booking->bookable,
+                    $durationMinutes,
+                    $booking->consultant
+                );
+            }
+
             return $this->bookings->update($id, $data);
         });
     }
@@ -322,10 +347,31 @@ class BookingService
             // Lock consultant to prevent race conditions
             $consultant = Consultant::lockForUpdate()->findOrFail($data['consultant_id']);
 
+            // Normalize bookable type and validate
+            $bookableType = $this->normalizeBookableType($data['bookable_type']);
+            $bookableClass = $this->resolveBookableClass($bookableType);
+
+            $bookable = $this->validateAndGetBookable(
+                $bookableClass,
+                $data['bookable_id'],
+                $consultant->id
+            );
+
             $startAt = Carbon::parse($data['start_at']);
             $endAt = Carbon::parse($data['end_at']);
             $bufferMinutes = $data['buffer_after_minutes'] ?? 0;
             $occupiedEnd = $endAt->copy()->addMinutes($bufferMinutes);
+
+            // Ensure duration_minutes is set (admin forms always provide it)
+            $durationMinutes = $data['duration_minutes'];
+
+            // Snapshot price if not provided
+            $data['price'] = $data['price'] ?? $this->calculatePrice(
+                $bookableType,
+                $bookable,
+                $durationMinutes,
+                $consultant
+            );
 
             // Check for conflicting bookings with lock
             $conflicts = $this->bookings->findBlockingOverlapsWithLock(
@@ -445,6 +491,27 @@ class BookingService
     }
 
     /**
+     * Calculate booking price based on bookable type
+     * - Consultant service: fixed service price
+     * - Direct consultant: hourly rate * duration (minutes / 60)
+     */
+    protected function calculatePrice(
+        string $bookableType,
+        Model $bookable,
+        int $durationMinutes,
+        Consultant $consultant
+    ): float {
+        if ($bookableType === 'consultant_service') {
+            return round((float) ($bookable->price ?? 0), 2);
+        }
+
+        $hourlyRate = (float) ($consultant->price_per_hour ?? 0);
+        $hours = $durationMinutes / 60;
+
+        return round($hourlyRate * $hours, 2);
+    }
+
+    /**
      * Resolve consultation method based on bookable type
      * For service bookings: use service's consultation_method
      * For direct consultant bookings: use user-provided consultation_method
@@ -466,5 +533,19 @@ class BookingService
             }
             return $userMethod;
         }
+    }
+
+    /**
+     * Normalize bookable type to slug form
+     */
+    protected function normalizeBookableType(string $bookableType): string
+    {
+        return match ($bookableType) {
+            'consultant', Consultant::class => 'consultant',
+            'consultant_service', ConsultantServiceModel::class => 'consultant_service',
+            default => throw ValidationException::withMessages([
+                'bookable_type' => ['نوع الحجز غير صالح'],
+            ]),
+        };
     }
 }

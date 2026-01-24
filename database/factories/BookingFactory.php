@@ -68,7 +68,26 @@ class BookingFactory extends Factory
             'cancelled_by_type' => null,
             'cancelled_by_id' => null,
             'notes' => $this->faker->optional(0.3)->sentence(),
+            // Snapshot price: service price or consultant hourly rate * duration
+            'price' => $this->determinePrice($bookableType, $consultant ?? null, $service ?? null, $durationMinutes),
         ];
+    }
+
+    /**
+     * Determine booking price for factory
+     */
+    protected function determinePrice($bookableType, ?Consultant $consultant, ?ConsultantService $service, int $durationMinutes): float
+    {
+        if ($bookableType === ConsultantService::class && $service) {
+            return (float) ($service->price ?? 0);
+        }
+
+        if ($consultant) {
+            $hourly = (float) ($consultant->price_per_hour ?? 0);
+            return round($hourly * ($durationMinutes / 60), 2);
+        }
+
+        return 0.00;
     }
 
     /**

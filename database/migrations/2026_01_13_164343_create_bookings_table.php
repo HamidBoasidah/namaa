@@ -22,6 +22,9 @@ return new class extends Migration
              */
             $table->morphs('bookable'); // bookable_type, bookable_id
 
+            // Snapshot price at booking time
+            $table->decimal('price', 10, 2);
+
             // Time (store consistently; app treats as KSA single TZ)
             $table->dateTime('start_at');
             $table->dateTime('end_at');

@@ -21,6 +21,7 @@ class BookingDTO extends BaseDTO
     public string $bookable_type_short;
     public int $bookable_id;
     public ?string $bookable_title;
+    public ?string $price;
     public ?string $consultation_method;
     public string $start_at;
     public string $end_at;
@@ -53,6 +54,7 @@ class BookingDTO extends BaseDTO
         string $bookable_type_short,
         int $bookable_id,
         ?string $bookable_title,
+        ?string $price,
         ?string $consultation_method,
         string $start_at,
         string $end_at,
@@ -84,6 +86,7 @@ class BookingDTO extends BaseDTO
         $this->bookable_type_short = $bookable_type_short;
         $this->bookable_id = $bookable_id;
         $this->bookable_title = $bookable_title;
+        $this->price = $price;
         $this->consultation_method = $consultation_method;
         $this->start_at = $start_at;
         $this->end_at = $end_at;
@@ -144,6 +147,7 @@ class BookingDTO extends BaseDTO
             bookable_type_short: $shortType,
             bookable_id: $booking->bookable_id,
             bookable_title: $bookableTitle,
+            price: $booking->price !== null ? (string) $booking->price : null,
             consultation_method: $consultationMethod,
             start_at: $booking->start_at?->format('Y-m-d\TH:i:s') ?? '',
             end_at: $booking->end_at?->format('Y-m-d\TH:i:s') ?? '',
@@ -180,6 +184,7 @@ class BookingDTO extends BaseDTO
             'bookable_type_short' => $this->bookable_type_short,
             'bookable_id' => $this->bookable_id,
             'bookable_title' => $this->bookable_title,
+            'price' => $this->price,
             'consultation_method' => $this->consultation_method,
             'start_at' => $this->start_at,
             'end_at' => $this->end_at,
@@ -211,6 +216,7 @@ class BookingDTO extends BaseDTO
             'bookable_type' => $this->bookable_type,
             'bookable_title' => $this->bookable_title,
             'consultation_method' => $this->consultation_method,
+            'price' => $this->price,
             'start_at' => $this->start_at,
             'end_at' => $this->end_at,
             'duration_minutes' => $this->duration_minutes,

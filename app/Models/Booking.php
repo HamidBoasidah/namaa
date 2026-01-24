@@ -39,6 +39,7 @@ class Booking extends BaseModel
         'consultant_id',
         'bookable_type',
         'bookable_id',
+        'price',
         'start_at',
         'end_at',
         'duration_minutes',
@@ -53,10 +54,18 @@ class Booking extends BaseModel
         'notes',
     ];
 
+    /**
+     * Default attribute values to avoid DB errors when price not provided
+     */
+    protected $attributes = [
+        'price' => '0.00',
+    ];
+
     protected $casts = [
         'client_id' => 'integer',
         'consultant_id' => 'integer',
         'bookable_id' => 'integer',
+        'price' => 'decimal:2',
         'start_at' => 'datetime',
         'end_at' => 'datetime',
         'expires_at' => 'datetime',
