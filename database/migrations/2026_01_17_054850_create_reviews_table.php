@@ -14,6 +14,10 @@ return new class extends Migration
             // Core relations
             $table->foreignId('booking_id')->constrained('bookings')->cascadeOnDelete();
             $table->foreignId('consultant_id')->constrained('consultants')->cascadeOnDelete();
+            $table->foreignId('consultant_service_id')
+                ->nullable()
+                ->constrained('consultant_services')
+                ->cascadeOnDelete();
             $table->foreignId('client_id')->constrained('users')->cascadeOnDelete();
 
             // Review content

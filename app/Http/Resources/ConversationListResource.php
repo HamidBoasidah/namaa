@@ -21,6 +21,10 @@ class ConversationListResource extends JsonResource
         // Get last message
         $lastMessage = $this->messages->first();
 
+        // Get unread count for current user
+        $unreadCount = app(\App\Services\ReadStateService::class)
+            ->getUnreadCount($this->id, $currentUserId);
+
         return [
             'id' => $this->id,
             'booking_id' => $this->booking_id,
@@ -37,6 +41,7 @@ class ConversationListResource extends JsonResource
                 'is_from_me' => $lastMessage->sender_id === $currentUserId,
                 'created_at' => $lastMessage->created_at?->toIso8601String(),
             ] : null,
+            'unread_count' => $unreadCount,
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];

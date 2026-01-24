@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('conversation_id')->constrained('conversations')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            
+            // Read state tracking columns
+            $table->unsignedBigInteger('last_read_message_id')->nullable();
+            $table->timestamp('last_read_at')->nullable();
+            
             $table->timestamps();
 
             // Unique constraint on (conversation_id, user_id) to prevent duplicate participants

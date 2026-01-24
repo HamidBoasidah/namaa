@@ -13,6 +13,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\MessageAttachment;
 use App\Models\Review;
+use App\Observers\ReviewObserver;
 use App\Policies\AttachmentPolicy;
 use App\Policies\BookingPolicy;
 use App\Policies\ConsultantServicePolicy;
@@ -41,6 +42,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register Observers
+        Review::observe(ReviewObserver::class);
+
         // Register Policies
         Gate::policy(Booking::class, BookingPolicy::class);
         Gate::policy(Certificate::class, CertificatePolicy::class);

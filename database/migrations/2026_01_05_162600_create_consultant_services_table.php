@@ -45,10 +45,15 @@ return new class extends Migration
 
                 $table->boolean('is_active')->default(true);
 
+                // Ratings
+                $table->decimal('rating_avg', 3, 2)->default(0);
+                $table->unsignedInteger('ratings_count')->default(0);
+
                 $table->softDeletes();
                 $table->timestamps();
 
                 $table->unique(['consultant_id', 'title', 'deleted_at']);
+                $table->index('rating_avg');
         });
     }
 

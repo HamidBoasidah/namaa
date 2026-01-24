@@ -19,15 +19,18 @@ class ChatService
     protected ConversationRepository $conversations;
     protected MessageRepository $messages;
     protected AttachmentService $attachments;
+    protected ReadStateService $readStateService;
 
     public function __construct(
         ConversationRepository $conversations,
         MessageRepository $messages,
-        AttachmentService $attachments
+        AttachmentService $attachments,
+        ReadStateService $readStateService
     ) {
         $this->conversations = $conversations;
         $this->messages = $messages;
         $this->attachments = $attachments;
+        $this->readStateService = $readStateService;
     }
 
     /**
@@ -250,5 +253,45 @@ class ChatService
     public function getUserConversations(int $userId, ?string $search = null, int $perPage = 20)
     {
         return $this->conversations->getUserConversations($userId, $search, $perPage);
+    }
+
+    /**
+     * Get messages for a conversation and mark as read
+     * Fetches paginated messages and automatically updates read marker
+     *
+     * @param int $conversationId
+     * @param int $userId
+     * @param int $perPage
+     * @param string|null $cursor
+     * @return array{messages: \Illuminate\Contracts\Pagination\CursorPaginator, unread_count: int}
+     */
+    public function getMessagesAndMarkRead(
+        int $conversationId,
+        int $userId,
+        int $perPage = 50,
+        ?string $cursor = null
+    ): array {
+        // Fetch messages (existing logic)
+        $messages = $this->messages->paginateMessages(
+            $conversationId,
+            $perPage,
+            $cursor
+        );
+
+        // Mark as read (new logic)
+        if ($messages->isNotEmpty()) {
+            $latestMessageId = $messages->max('id');
+            $this->readStateService->markAsRead(
+                new \App\DTOs\MarkReadDTO($conversationId, $userId, $latestMessageId)
+            );
+        }
+
+        // Get updated unread count
+        $unreadCount = $this->readStateService->getUnreadCount($conversationId, $userId);
+
+        return [
+            'messages' => $messages,
+            'unread_count' => $unreadCount
+        ];
     }
 }

@@ -140,6 +140,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/conversations/{conversation}/messages', [App\Http\Controllers\Api\MessageController::class, 'index']);
     Route::post('/conversations/{conversation}/messages', [App\Http\Controllers\Api\MessageController::class, 'store']);
     
+    // Mark conversation as read
+    Route::post('/conversations/{conversation}/read', [App\Http\Controllers\Api\ConversationController::class, 'markAsRead']);
+    
     // Attachment download
     Route::get('/attachments/{attachment}', [App\Http\Controllers\Api\AttachmentController::class, 'download'])
         ->name('api.attachments.download');

@@ -26,7 +26,46 @@ class MessageController extends Controller
 
     /**
      * List messages in a conversation with cursor pagination
-     * GET /api/conversations/{conversation}/messages
+     * 
+     * Fetches paginated messages for a conversation and implicitly marks the
+     * conversation as read up to the latest fetched message.
+     * 
+     * Endpoint: GET /api/conversations/{conversation}/messages
+     * Authentication: Required (sanctum)
+     * Authorization: User must be a participant in the conversation
+     * 
+     * Query Parameters:
+     * - per_page (optional): Number of messages per page (default: 50)
+     * - cursor (optional): Cursor for pagination
+     * 
+     * Response Structure:
+     * {
+     *   "success": true,
+     *   "message": "تم جلب الرسائل بنجاح",
+     *   "status_code": 200,
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "conversation_id": 123,
+     *       "sender_id": 456,
+     *       "body": "Hello",
+     *       "type": "text",
+     *       "context": "in_session",
+     *       "created_at": "2024-01-01T00:00:00Z"
+     *     }
+     *   ],
+     *   "meta": {
+     *     "next_cursor": "...",
+     *     "prev_cursor": "...",
+     *     "per_page": 50,
+     *     "unread_count": 0
+     *   }
+     * }
+     * 
+     * Implicit Mark as Read:
+     * - Automatically updates read marker to latest fetched message
+     * - Returns updated unread_count in meta
+     * - Uses optimistic approach for race condition handling
      * 
      * @param Conversation $conversation
      * @param GetMessagesRequest $request
@@ -41,23 +80,28 @@ class MessageController extends Controller
         $perPage = $request->input('per_page', config('chat.pagination.messages_per_page', 50));
         $cursor = $request->input('cursor');
 
-        // Get paginated messages from repository
-        $messages = app(\App\Repositories\MessageRepository::class)
-            ->paginateMessages($conversation->id, $perPage, $cursor);
+        // Get messages and mark as read
+        $result = $this->chatService->getMessagesAndMarkRead(
+            conversationId: $conversation->id,
+            userId: $request->user()->id,
+            perPage: $perPage,
+            cursor: $cursor
+        );
 
         // Transform to resource collection
-        $data = MessageResource::collection($messages);
+        $data = MessageResource::collection($result['messages']);
 
-        // Build response with pagination metadata
+        // Build response with pagination metadata and unread count
         $response = [
             'success' => true,
             'message' => 'تم جلب الرسائل بنجاح',
             'status_code' => 200,
             'data' => $data,
             'meta' => [
-                'next_cursor' => $messages->nextCursor()?->encode(),
-                'prev_cursor' => $messages->previousCursor()?->encode(),
-                'per_page' => $messages->perPage(),
+                'next_cursor' => $result['messages']->nextCursor()?->encode(),
+                'prev_cursor' => $result['messages']->previousCursor()?->encode(),
+                'per_page' => $result['messages']->perPage(),
+                'unread_count' => $result['unread_count'],
             ],
         ];
 
