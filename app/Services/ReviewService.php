@@ -149,6 +149,14 @@ class ReviewService
     }
 
     /**
+     * Find a review by booking ID
+     */
+    public function findByBookingId(int $bookingId): ?Review
+    {
+        return $this->reviews->findByBookingId($bookingId);
+    }
+
+    /**
      * Get paginated reviews for a consultant
      */
     public function getConsultantReviews(int $consultantId, int $perPage = 10): LengthAwarePaginator

@@ -35,6 +35,7 @@ class BookingDTO extends BaseDTO
     public ?int $cancelled_by_id;
     public ?string $cancelled_by_name;
     public ?string $notes;
+    public ?string $section;
     public ?string $created_at;
     public ?string $updated_at;
 
@@ -68,6 +69,7 @@ class BookingDTO extends BaseDTO
         ?int $cancelled_by_id,
         ?string $cancelled_by_name,
         ?string $notes,
+        ?string $section = null,
         ?string $created_at,
         ?string $updated_at
     ) {
@@ -100,6 +102,7 @@ class BookingDTO extends BaseDTO
         $this->cancelled_by_id = $cancelled_by_id;
         $this->cancelled_by_name = $cancelled_by_name;
         $this->notes = $notes;
+        $this->section = $section;
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
     }
@@ -126,6 +129,14 @@ class BookingDTO extends BaseDTO
         $cancelledByName = null;
         if ($booking->cancelledBy) {
             $cancelledByName = $booking->cancelledBy->name ?? null;
+        }
+
+        // Determine section: for service bookings return service category name, otherwise 'consultant'
+        $section = null;
+        if ($booking->bookable_type === \App\Models\ConsultantService::class) {
+            $section = $booking->bookable?->category?->name ?? null;
+        } else {
+            $section = 'consultant';
         }
 
         // derive a short key used for translations (matches bookings.bookableTypes keys)
@@ -161,6 +172,7 @@ class BookingDTO extends BaseDTO
             cancelled_by_id: $booking->cancelled_by_id,
             cancelled_by_name: $cancelledByName,
             notes: $booking->notes,
+            section: $section,
             created_at: $booking->created_at?->format('Y-m-d\TH:i:s'),
             updated_at: $booking->updated_at?->format('Y-m-d\TH:i:s')
         );
@@ -198,6 +210,7 @@ class BookingDTO extends BaseDTO
             'cancelled_by_id' => $this->cancelled_by_id,
             'cancelled_by_name' => $this->cancelled_by_name,
             'notes' => $this->notes,
+            'section' => $this->section,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
@@ -217,6 +230,7 @@ class BookingDTO extends BaseDTO
             'bookable_title' => $this->bookable_title,
             'consultation_method' => $this->consultation_method,
             'price' => $this->price,
+            'section' => $this->section,
             'start_at' => $this->start_at,
             'end_at' => $this->end_at,
             'duration_minutes' => $this->duration_minutes,

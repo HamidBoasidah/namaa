@@ -10,6 +10,7 @@ use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
 use App\Http\Traits\ExceptionHandler;
 use App\Http\Traits\SuccessResponse;
+use App\Models\Booking;
 use App\Repositories\ReviewRepository;
 use App\Services\ReviewService;
 use Illuminate\Http\JsonResponse;
@@ -169,6 +170,33 @@ class ReviewController extends Controller
         });
 
         return $this->collectionResponse($reviews, 'تم جلب قائمة التقييمات بنجاح');
+    }
+
+    /**
+     * Get review by booking id (if exists)
+     * GET /api/bookings/{id}/review
+     */
+    public function reviewByBooking(int $bookingId): JsonResponse
+    {
+        $booking = Booking::find($bookingId);
+
+        if (!$booking) {
+            $this->throwNotFoundException('الحجز غير موجود');
+        }
+
+        // Ensure user can view this booking
+        $this->authorize('view', $booking);
+
+        $review = $this->reviewService->findByBookingId($bookingId);
+
+        if (!$review) {
+            return $this->successResponse(null, 'لا يوجد تقييم لهذا الحجز', 200);
+        }
+
+        return $this->resourceResponse(
+            ReviewDTO::fromModel($review)->toArray(),
+            'تم جلب تقييم الحجز بنجاح'
+        );
     }
 
 

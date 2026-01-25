@@ -103,6 +103,7 @@ Route::prefix('bookings')->middleware('auth:sanctum')->group(function () {
     Route::post('/pending', [App\Http\Controllers\Api\BookingController::class, 'storePending']);
     Route::post('/{id}/confirm', [App\Http\Controllers\Api\BookingController::class, 'confirm']);
     Route::post('/{id}/cancel', [App\Http\Controllers\Api\BookingController::class, 'cancel']);
+    Route::get('/{id}/review', [App\Http\Controllers\Api\ReviewController::class, 'reviewByBooking']);
     
     // Conversation for booking
     Route::get('/{booking}/conversation', [App\Http\Controllers\Api\ConversationController::class, 'getOrCreate']);
