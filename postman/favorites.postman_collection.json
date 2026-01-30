@@ -1,0 +1,111 @@
+{
+  "info": {
+    "name": "Favorites API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection to test favorites endpoints (requires Bearer token)"
+  },
+  "item": [
+    {
+      "name": "List favorites",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/favorites",
+          "host": ["{{base_url}}"],
+          "path": ["api", "favorites"]
+        }
+      }
+    },
+    {
+      "name": "Add favorite",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"consultant_id\": 1\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/favorites",
+          "host": ["{{base_url}}"],
+          "path": ["api", "favorites"]
+        }
+      }
+    },
+    {
+      "name": "Update favorite (change consultant)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"consultant_id\": 2\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/favorites/{{favorite_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "favorites", "{{favorite_id}}"]
+        }
+      }
+    },
+    {
+      "name": "Delete favorite",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/favorites/{{favorite_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "favorites", "{{favorite_id}}"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "favorite_id",
+      "value": "1"
+    }
+  ]
+}

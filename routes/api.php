@@ -109,6 +109,14 @@ Route::prefix('bookings')->middleware('auth:sanctum')->group(function () {
     Route::get('/{booking}/conversation', [App\Http\Controllers\Api\ConversationController::class, 'getOrCreate']);
 });
 
+// Favorites (consultants) for authenticated users
+Route::middleware('auth:sanctum')->prefix('favorites')->group(function () {
+    Route::get('/', [App\Http\Controllers\Api\FavoriteController::class, 'index']);
+    Route::post('/', [App\Http\Controllers\Api\FavoriteController::class, 'store']);
+    Route::put('/{id}', [App\Http\Controllers\Api\FavoriteController::class, 'update']);
+    Route::delete('/{id}', [App\Http\Controllers\Api\FavoriteController::class, 'destroy']);
+});
+
 // Consultant Available Slots (public endpoint for viewing availability)
 Route::get('/consultants/{id}/available-slots', [App\Http\Controllers\Api\ConsultantAvailabilityController::class, 'availableSlots']);
 
