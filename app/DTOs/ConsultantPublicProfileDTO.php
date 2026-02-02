@@ -93,6 +93,8 @@ class ConsultantPublicProfileDTO extends BaseDTO
                     ] : null,
                     'duration_minutes' => (int) ($svc->duration_minutes ?? 60),
                     'consultation_method' => $svc->consultation_method ?? 'video',
+                    'rating_avg' => $svc->rating_avg !== null ? (float) $svc->rating_avg : 0.0,
+                    'ratings_count' => (int) ($svc->ratings_count ?? 0),
                 ];
             })->values()->toArray();
 
