@@ -190,19 +190,35 @@ class BookingController extends Controller
 	 */
 	public function availableSlots(Request $request)
 	{
-		$request->validate([
-			'consultant_id' => 'required|exists:consultants,id',
-			'date' => 'required|date',
-			'duration' => 'nullable|integer|min:5',
-			'bookable_type' => 'nullable|string|in:consultant,consultant_service',
-			'bookable_id' => 'nullable|integer',
-		]);
+		try {
+			$request->validate([
+				'consultant_id' => 'required|exists:consultants,id',
+				'date' => 'required|date',
+				'duration' => 'nullable|integer|min:5',
+				'bookable_type' => 'nullable|string|in:consultant,consultant_service,Consultant,ConsultantService',
+				'bookable_id' => 'nullable|integer',
+				'exclude_booking_id' => 'nullable|integer|exists:bookings,id',
+			]);
+		} catch (\Illuminate\Validation\ValidationException $e) {
+			return response()->json([
+				'error' => 'Validation failed',
+				'messages' => $e->errors(),
+				'slots' => []
+			], 422);
+		}
 
 		$consultantId = $request->input('consultant_id');
 		$date = Carbon::parse($request->input('date'));
 		$duration = (int) $request->input('duration', 60);
 		$bookableType = $request->input('bookable_type', 'consultant');
 		$bookableId = $request->input('bookable_id');
+		$excludeBookingId = $request->input('exclude_booking_id');
+		
+		// Normalize bookable_type to lowercase with underscore
+		$bookableType = strtolower($bookableType);
+		if ($bookableType === 'consultantservice') {
+			$bookableType = 'consultant_service';
+		}
 
 		// Get consultant with buffer
 		$consultant = Consultant::find($consultantId);
@@ -238,6 +254,7 @@ class BookingController extends Controller
 
 		// Get existing bookings for this consultant on this date (blocking only)
 		// Blocking = confirmed OR (pending with expires_at > now)
+		// Exclude the booking being edited (if provided)
 		$existingBookings = Booking::where('consultant_id', $consultantId)
 			->whereDate('start_at', $date)
 			->where(function ($query) {
@@ -246,6 +263,9 @@ class BookingController extends Controller
 						$q->where('status', Booking::STATUS_PENDING)
 						  ->where('expires_at', '>', now());
 					});
+			})
+			->when($excludeBookingId, function ($query) use ($excludeBookingId) {
+				$query->where('id', '!=', $excludeBookingId);
 			})
 			->get();
 

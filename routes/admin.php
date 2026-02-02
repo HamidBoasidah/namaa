@@ -199,14 +199,14 @@ Route::middleware('auth:admin')
             ->name('consultant-services.deactivate');
 
         // Bookings
+        Route::get('bookings/available-slots', [BookingController::class, 'availableSlots'])
+            ->name('bookings.available-slots');
+            
         Route::resource('bookings', BookingController::class)
             ->names('bookings');
 
         Route::patch('bookings/{booking}/cancel', [BookingController::class, 'cancel'])
             ->name('bookings.cancel');
-
-        Route::get('bookings-available-slots', [BookingController::class, 'availableSlots'])
-            ->name('bookings.available-slots');
 
 
         // Admins (managers of the system)

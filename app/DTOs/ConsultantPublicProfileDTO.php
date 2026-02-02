@@ -20,6 +20,7 @@ class ConsultantPublicProfileDTO extends BaseDTO
     public ?string $price_per_hour;
     public ?float $rating_avg;
     public int $ratings_count;
+    public bool $is_favorite;
 
     public function __construct(
         int $consultant_id,
@@ -33,7 +34,8 @@ class ConsultantPublicProfileDTO extends BaseDTO
         array $services,
         ?string $price_per_hour,
         ?float $rating_avg,
-        int $ratings_count
+        int $ratings_count,
+        bool $is_favorite = false
     ) {
         $this->consultant_id = $consultant_id;
         $this->first_name = $first_name;
@@ -47,9 +49,10 @@ class ConsultantPublicProfileDTO extends BaseDTO
         $this->price_per_hour = $price_per_hour;
         $this->rating_avg = $rating_avg;
         $this->ratings_count = $ratings_count;
+        $this->is_favorite = $is_favorite;
     }
 
-    public static function fromModel(Consultant $consultant): self
+    public static function fromModel(Consultant $consultant, bool $isFavorite = false): self
     {
         // جلب معلومات المستخدم
         $user = $consultant->user;
@@ -111,6 +114,7 @@ class ConsultantPublicProfileDTO extends BaseDTO
             , $pricePerHour
             , $ratingAvg
             , $ratingsCount
+            , $isFavorite
         );
     }
 
@@ -129,6 +133,7 @@ class ConsultantPublicProfileDTO extends BaseDTO
             'price_per_hour' => $this->price_per_hour,
             'rating_avg' => $this->rating_avg,
             'ratings_count' => $this->ratings_count,
+            'is_favorite' => $this->is_favorite,
         ];
     }
 }

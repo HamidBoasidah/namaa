@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ConsultantService;
 use App\DTOs\ConsultantMobileDTO;
 use App\DTOs\ConsultantPublicProfileDTO;
+use App\Repositories\FavoriteRepository;
 use App\Http\Traits\SuccessResponse;
 use App\Http\Traits\ExceptionHandler;
 use App\Http\Traits\CanFilter;
@@ -72,13 +73,15 @@ class ConsultantController extends Controller
      * جلب الملف الشخصي العام للمستشار
      * GET /api/mobile/consultants/{consultantId}/profile
      */
-    public function profile(int $consultantId, ConsultantService $consultantService)
+    public function profile(int $consultantId, ConsultantService $consultantService, FavoriteRepository $favoriteRepo)
     {
         try {
             $consultant = $consultantService->getPublicProfile($consultantId);
 
+            $isFavorite = auth()->check() ? $favoriteRepo->existsForUser(auth()->id(), $consultant->id) : false;
+
             return $this->resourceResponse(
-                ConsultantPublicProfileDTO::fromModel($consultant)->toArray(),
+                ConsultantPublicProfileDTO::fromModel($consultant, $isFavorite)->toArray(),
                 'تم جلب الملف الشخصي بنجاح'
             );
         } catch (ModelNotFoundException) {

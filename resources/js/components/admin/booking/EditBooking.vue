@@ -168,7 +168,17 @@
                     <svg class="mb-2 h-12 w-12 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('bookings.noAvailableSlots') }}</p>
+                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t('bookings.noAvailableSlots') }}</p>
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ t('bookings.consultantNotWorkingThisDay') }}</p>
+                  </div>
+
+                  <!-- All Slots Booked -->
+                  <div v-else-if="timeSlots.length > 0 && timeSlots.every(s => !s.available)" class="flex flex-col items-center justify-center py-8 text-center">
+                    <svg class="mb-2 h-12 w-12 text-orange-300 dark:text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t('bookings.allSlotsBooked') }}</p>
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ t('bookings.tryAnotherDate') }}</p>
                   </div>
 
                   <!-- Time Slots Grid -->
@@ -241,6 +251,7 @@
                 </svg>
               </span>
             </div>
+            <p v-if="form.errors.status" class="mt-1 text-sm text-error-500">{{ form.errors.status }}</p>
           </div>
 
           <!-- Notes -->
@@ -493,6 +504,7 @@ function updateFormStartAt() {
 // Fetch available time slots from API
 async function fetchAvailableSlots() {
   if (!props.booking.consultant_id || !selectedDate.value) {
+    console.log('Missing consultant_id or selectedDate')
     timeSlots.value = []
     return
   }
@@ -503,20 +515,41 @@ async function fetchAvailableSlots() {
     const dateStr = selectedDate.value.toISOString().split('T')[0]
     const url = route('admin.bookings.available-slots')
     
-    const response = await axios.get(url, {
-      params: {
-        consultant_id: props.booking.consultant_id,
-        date: dateStr,
-        duration: form.duration_minutes,
-        bookable_type: props.booking.bookable_type,
-        bookable_id: props.booking.bookable_id || null,
-        exclude_booking_id: props.booking.id, // Exclude current booking from conflict check
-      }
-    })
+    const params = {
+      consultant_id: props.booking.consultant_id,
+      date: dateStr,
+      duration: form.duration_minutes,
+      bookable_type: props.booking.bookable_type,
+      bookable_id: props.booking.bookable_id || null,
+      exclude_booking_id: props.booking.id,
+    }
+    
+    console.log('📅 Fetching slots...')
+    console.log('URL:', url)
+    console.log('Params:', params)
+    
+    const response = await axios.get(url, { params })
+    
+    console.log('✅ Response received:', response.data)
     
     timeSlots.value = response.data.slots || []
+    
+    const availableCount = timeSlots.value.filter(s => s.available).length
+    const bookedCount = timeSlots.value.filter(s => !s.available && s.reason === 'booked').length
+    const pastCount = timeSlots.value.filter(s => !s.available && s.reason === 'past').length
+    
+    console.log(`📊 Slots Summary:`)
+    console.log(`   Total: ${timeSlots.value.length}`)
+    console.log(`   ✓ Available: ${availableCount}`)
+    console.log(`   ✗ Booked: ${bookedCount}`)
+    console.log(`   ⏰ Past: ${pastCount}`)
   } catch (err) {
-    console.error('Error fetching slots:', err)
+    console.error('❌ Error fetching slots:', err)
+    if (err.response) {
+      console.error('Response status:', err.response.status)
+      console.error('Response data:', err.response.data)
+    }
+    error(t('bookings.errorFetchingSlots'))
     // Generate default slots if API fails
     timeSlots.value = generateDefaultSlots()
   } finally {
