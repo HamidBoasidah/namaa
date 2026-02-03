@@ -7,6 +7,14 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+// User Profile (authenticated)
+Route::prefix('user/profile')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [App\Http\Controllers\Api\UserProfileController::class, 'show']);
+    Route::put('/', [App\Http\Controllers\Api\UserProfileController::class, 'update']);
+    Route::post('/', [App\Http\Controllers\Api\UserProfileController::class, 'update']); // multipart/form-data
+    Route::delete('/', [App\Http\Controllers\Api\UserProfileController::class, 'destroy']);
+});
+
 
 
 // Authentication Routes
