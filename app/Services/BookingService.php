@@ -193,6 +193,66 @@ class BookingService
     }
 
     /**
+     * Accept/confirm a pending booking by the consultant who owns the booking.
+     * Similar to confirm() but verifies consultant ownership instead of client.
+     *
+     * @param int $bookingId
+     * @param int $consultantId
+     * @return Booking
+     */
+    public function acceptByConsultant(int $bookingId, int $consultantId): Booking
+    {
+        return DB::transaction(function () use ($bookingId, $consultantId) {
+            // Find booking
+            $booking = $this->bookings->findOrFail($bookingId);
+
+            // Verify consultant ownership
+            if ($booking->consultant_id !== $consultantId) {
+                throw ValidationException::withMessages([
+                    'booking' => ['غير مصرح لك بتأكيد هذا الحجز'],
+                ]);
+            }
+
+            // Verify status is pending
+            if ($booking->status !== Booking::STATUS_PENDING) {
+                throw ValidationException::withMessages([
+                    'booking' => ['لا يمكن تأكيد هذا الحجز - الحالة غير صالحة'],
+                ]);
+            }
+
+            // Verify not expired
+            if (!$booking->expires_at || $booking->expires_at->lte(now())) {
+                throw ValidationException::withMessages([
+                    'booking' => ['انتهت صلاحية الحجز'],
+                ]);
+            }
+
+            // Lock consultant to serialize confirmation attempts
+            Consultant::lockForUpdate()->findOrFail($booking->consultant_id);
+
+            // Calculate occupied end time
+            $occupiedEnd = $booking->end_at->copy()->addMinutes($booking->buffer_after_minutes);
+
+            // Re-check for conflicts with lock (exclude this booking from check)
+            $conflicts = $this->bookings->findBlockingOverlapsWithLock(
+                $booking->consultant_id,
+                $booking->start_at,
+                $occupiedEnd,
+                $booking->id // Exclude self
+            );
+
+            if ($conflicts->isNotEmpty()) {
+                throw ValidationException::withMessages([
+                    'booking' => ['الموعد المحدد غير متاح - يوجد حجز آخر في هذا الوقت'],
+                ]);
+            }
+
+            // Confirm booking
+            return $this->bookings->confirm($booking);
+        });
+    }
+
+    /**
      * Cancel a booking
      * Records who cancelled (polymorphic)
      */

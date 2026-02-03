@@ -125,6 +125,28 @@ class BookingController extends Controller
     }
 
     /**
+     * Consultant accepts/confirms a pending booking
+     * POST /api/bookings/{id}/accept
+     */
+    public function accept(ConfirmBookingRequest $request, int $id): JsonResponse
+    {
+        $booking = $this->bookingRepository->findOrFail($id);
+
+        // Ensure the current user is the consultant for this booking
+        $consultant = Consultant::where('user_id', $request->user()->id)->first();
+        if (!$consultant || $consultant->id !== $booking->consultant_id) {
+            $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
+        }
+
+        $confirmed = $this->bookingService->acceptByConsultant($id, $consultant->id);
+
+        return $this->updatedResponse(
+            BookingDTO::fromModel($confirmed->fresh(['client', 'consultant.user', 'bookable']))->toArray(),
+            'تم تأكيد الحجز بنجاح'
+        );
+    }
+
+    /**
      * Cancel a booking
      * POST /api/bookings/{id}/cancel
      */
