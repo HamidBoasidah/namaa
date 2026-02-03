@@ -96,8 +96,17 @@ class ConsultantController extends Controller
      * Stream consultant certificate document (inline view)
      * GET /api/consultants/certificates/{certificate}/document
      */
-    public function viewCertificate(Certificate $certificate, CertificateService $certificateService): StreamedResponse
+    public function viewCertificate(Certificate $certificate, CertificateService $certificateService)
     {
-        return $certificateService->streamDocument($certificate, false);
+        // Return a URL that points to the document streaming endpoint instead of streaming
+        // the file directly. The endpoint is the same route and will perform existence
+        // checks when the URL is requested.
+        $url = url('/api/consultants/certificates/' . $certificate->id . '/document');
+
+        return response()->json([
+            'success' => true,
+            'url' => $url,
+            'original_name' => $certificate->document_scan_copy_original_name ?? null,
+        ]);
     }
 }
