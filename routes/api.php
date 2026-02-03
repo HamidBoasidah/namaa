@@ -72,6 +72,9 @@ Route::get('/consultant-services/{id}', [App\Http\Controllers\Api\ConsultantServ
 // Consultant Public Profile (API - no auth required)
 Route::get('/consultants/{id}/profile', [App\Http\Controllers\Api\ConsultantController::class, 'profile']);
 
+// Consultant certificate document (public or auth depending on use-case)
+Route::get('/consultants/certificates/{certificate}/document', [App\Http\Controllers\Api\ConsultantController::class, 'viewCertificate']);
+
 Route::prefix('consultant/services')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [App\Http\Controllers\Api\ConsultantServiceController::class, 'myServices']);
     Route::post('/', [App\Http\Controllers\Api\ConsultantServiceController::class, 'store']);

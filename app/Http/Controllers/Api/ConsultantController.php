@@ -12,6 +12,9 @@ use App\Http\Traits\ExceptionHandler;
 use App\Http\Traits\CanFilter;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Certificate;
+use App\Services\CertificateService;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ConsultantController extends Controller
 {
@@ -87,5 +90,14 @@ class ConsultantController extends Controller
         } catch (ModelNotFoundException) {
             $this->throwNotFoundException('المستشار غير موجود أو غير متاح');
         }
+    }
+
+    /**
+     * Stream consultant certificate document (inline view)
+     * GET /api/consultants/certificates/{certificate}/document
+     */
+    public function viewCertificate(Certificate $certificate, CertificateService $certificateService): StreamedResponse
+    {
+        return $certificateService->streamDocument($certificate, false);
     }
 }
