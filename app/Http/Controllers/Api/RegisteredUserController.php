@@ -19,8 +19,8 @@ class RegisteredUserController extends Controller
         $data = $request->validated();
 
         // إذا وُجد ملف مرفق نُمرره ضمن البيانات ليتولى الـ Service التعامل معه
-        if ($request->hasFile('attachment')) {
-            $data['attachment'] = $request->file('attachment');
+        if ($request->hasFile('avatar')) {
+            $data['avatar'] = $request->file('avatar');
         }
 
         $user = $userService->create($data);
