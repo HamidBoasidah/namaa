@@ -217,6 +217,7 @@ class ConsultantServiceDTO extends BaseDTO
             'target_audience' => $this->target_audience,
             'deliverables' => $this->deliverables,
             'consultant' => $consultant ? [
+                'id' => $consultant->id,
                 'avatar' => $user?->avatar ? asset('storage/' . $user->avatar) : null,
                 'first_name' => $user?->first_name,
                 'last_name' => $user?->last_name,
