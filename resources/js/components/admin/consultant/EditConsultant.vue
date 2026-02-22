@@ -232,14 +232,14 @@
 								{{ t('consultants.pricePerHour') || 'السعر بالساعة' }}
 							</label>
 							<input
-								v-model.number="form.price_per_hour"
+								v-model.number="form.price"
 								type="number"
 								min="0"
 								step="0.01"
 								:placeholder="t('consultants.pricePerHour') || 'السعر بالساعة'"
 								class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
 							/>
-							<p v-if="form.errors.price_per_hour" class="mt-1 text-sm text-error-500">{{ form.errors.price_per_hour }}</p>
+							<p v-if="form.errors.price" class="mt-1 text-sm text-error-500">{{ form.errors.price }}</p>
 						</div>
 
 						<!-- is_active -->
@@ -768,7 +768,7 @@ const form = useForm({
 	consultation_type_id: consultant.consultation_type_id ?? '',
 	years_of_experience: consultant.years_of_experience ?? '',
 	avatar: null,
-	price_per_hour: consultant.price_per_hour ?? '',
+	price: consultant.price ?? '',
 	is_active: consultant.is_active ?? true,
 })
 

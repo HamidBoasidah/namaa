@@ -565,7 +565,7 @@ class BookingService
             return round((float) ($bookable->price ?? 0), 2);
         }
 
-        $hourlyRate = (float) ($consultant->price_per_hour ?? 0);
+        $hourlyRate = (float) ($consultant->price ?? 0);
         $hours = $durationMinutes / 60;
 
         return round($hourlyRate * $hours, 2);

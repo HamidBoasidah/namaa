@@ -162,7 +162,7 @@
             <!-- Price per hour (visible for consultants) -->
             <div v-if="form.user_type === 'consultant'">
               <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                {{ t('consultants.pricePerHour') || 'Price per hour' }}
+                {{ t('consultants.price') || 'Price' }}
               </label>
               <input
                 v-model.number="form.price_per_hour"
@@ -170,9 +170,47 @@
                 min="0"
                 step="0.01"
                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
-                :placeholder="t('consultants.pricePerHour') || 'Price per hour'"
+                :placeholder="t('consultants.pricePlaceholder') || 'Price'"
               />
               <p v-if="form.errors.price_per_hour" class="mt-1 text-sm text-error-500">{{ form.errors.price_per_hour }}</p>
+            </div>
+            <!-- Duration (visible for consultants) -->
+            <div v-if="form.user_type === 'consultant'">
+              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                {{ t('consultant_services.duration') }}
+              </label>
+              <input
+                v-model.number="form.duration_minutes"
+                type="number"
+                min="1"
+                step="1"
+                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+                :placeholder="t('consultant_services.duration')"
+              />
+              <p v-if="form.errors.duration_minutes" class="mt-1 text-sm text-error-500">{{ form.errors.duration_minutes }}</p>
+            </div>
+
+            <!-- Consultation Method (visible for consultants) -->
+            <div v-if="form.user_type === 'consultant'">
+              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                {{ t('consultant_services.consultationMethod') }}
+              </label>
+              <div class="relative z-20 bg-transparent">
+                <select
+                  v-model="form.consultation_method"
+                  class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+                >
+                  <option value="video">{{ t('consultant_services.methods.video') }}</option>
+                  <option value="audio">{{ t('consultant_services.methods.audio') }}</option>
+                  <option value="text">{{ t('consultant_services.methods.text') }}</option>
+                </select>
+                <span class="pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-700 dark:text-gray-400">
+                  <svg class="stroke-current" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </div>
+              <p v-if="form.errors.consultation_method" class="mt-1 text-sm text-error-500">{{ form.errors.consultation_method }}</p>
             </div>
             <!-- Buffer (visible for consultants) -->
             <div v-if="form.user_type === 'consultant'">
@@ -403,6 +441,8 @@ const form = useForm({
   consultation_type_id: null,
   years_of_experience: null,
     price_per_hour: null,
+  duration_minutes: 60,
+  consultation_method: 'video',
   buffer: null,
   phone_number: '',
   is_active: true,

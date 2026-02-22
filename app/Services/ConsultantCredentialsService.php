@@ -133,7 +133,9 @@ class ConsultantCredentialsService
             $consultant = Consultant::create([
                 'user_id' => $user->id,
                 'is_active' => true,
-                'price_per_hour' => 0,
+                'price' => 0,
+                'duration_minutes' => 60,
+                'consultation_method' => 'video',
                 'buffer' => 0,
             ]);
         }

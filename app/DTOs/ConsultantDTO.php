@@ -15,7 +15,7 @@ class ConsultantDTO extends BaseDTO
     public $user_phone;
     public $avatar;
     public $gender;
-    public $price_per_hour;
+    public $price;
     public $buffer;
 
     public $years_of_experience;
@@ -37,6 +37,8 @@ class ConsultantDTO extends BaseDTO
 
     public $created_at;
     public $deleted_at;
+    public $duration_minutes;
+    public $consultation_method;
 
     public function __construct(
         $id,
@@ -53,8 +55,10 @@ class ConsultantDTO extends BaseDTO
 
         $consultation_type_id,
         $consultation_type_name,
-        $price_per_hour,
+        $price,
         $buffer,
+        $duration_minutes = null,
+        $consultation_method = null,
 
         $rating_avg,
         $ratings_count,
@@ -86,8 +90,11 @@ class ConsultantDTO extends BaseDTO
         $this->consultation_type_id = $consultation_type_id;
         $this->consultation_type_name = $consultation_type_name;
 
-        $this->price_per_hour = $price_per_hour;
+        $this->price = $price;
         $this->buffer = $buffer;
+
+        $this->duration_minutes = $duration_minutes ?? null;
+        $this->consultation_method = $consultation_method ?? 'video';
 
         $this->rating_avg = $rating_avg;
         $this->ratings_count = $ratings_count;
@@ -122,8 +129,10 @@ class ConsultantDTO extends BaseDTO
             $consultant->consultation_type_id ?? null,
             $consultant->consultationType?->name ?? null,
 
-            (float) ($consultant->price_per_hour ?? 0),
+            (float) ($consultant->price ?? 0),
             (int) ($consultant->buffer ?? 0),
+            (int) ($consultant->duration_minutes ?? 60),
+            $consultant->consultation_method ?? 'video',
             (float) ($consultant->rating_avg ?? 0),
             (int) ($consultant->ratings_count ?? 0),
             (bool) ($consultant->is_active ?? false),
@@ -182,11 +191,14 @@ class ConsultantDTO extends BaseDTO
             'rating_avg' => $this->rating_avg,
             'ratings_count' => $this->ratings_count,
             'is_active' => $this->is_active,
-            'price_per_hour' => $this->price_per_hour,
+            'price' => $this->price,
             'buffer' => $this->buffer,
+            'consultation_method' => $this->consultation_method,
 
             'working_hours' => $this->working_hours,
             'active_working_hours' => $this->active_working_hours,
+
+            'duration_minutes' => $this->duration_minutes,
 
             'holidays' => $this->holidays,
 

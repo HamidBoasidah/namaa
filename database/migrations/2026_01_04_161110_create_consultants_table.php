@@ -30,11 +30,17 @@ return new class extends Migration
             $table->decimal('rating_avg', 3, 2)->default(0);
             $table->unsignedInteger('ratings_count')->default(0);
 
-            // Hourly price
-            $table->decimal('price_per_hour', 10, 2)->nullable()->default(0);
+            // Price
+            $table->decimal('price', 10, 2)->nullable()->default(0);
+
+            // Default duration for consultations (minutes)
+            $table->unsignedSmallInteger('duration_minutes')->default(60);
 
             // buffer time in minutes for consultant (e.g., prep/cleanup)
             $table->unsignedSmallInteger('buffer')->default(0);
+
+            // Preferred consultation method for direct consultant bookings
+            $table->enum('consultation_method', ['video', 'audio', 'text'])->default('video');
 
             $table->boolean('is_active')->default(true);
 

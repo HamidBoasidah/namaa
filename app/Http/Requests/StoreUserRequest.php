@@ -34,7 +34,8 @@ class StoreUserRequest extends FormRequest
             // when user_type is consultant, consultation_type must be provided and exist
             'consultation_type_id' => 'required_if:user_type,consultant|nullable|exists:consultation_types,id',
             'years_of_experience' => 'nullable|integer|min:0',
-            'price_per_hour' => 'nullable|numeric|min:0',
+            'price' => 'nullable|numeric|min:0',
+            'duration_minutes' => 'nullable|integer|min:1',
 
             // optional certificate upload for consultants (image/pdf up to 5MB)
             'certificate' => 'required_if:user_type,consultant|nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',

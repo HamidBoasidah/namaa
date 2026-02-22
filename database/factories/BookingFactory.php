@@ -83,7 +83,7 @@ class BookingFactory extends Factory
         }
 
         if ($consultant) {
-            $hourly = (float) ($consultant->price_per_hour ?? 0);
+            $hourly = (float) ($consultant->price ?? 0);
             return round($hourly * ($durationMinutes / 60), 2);
         }
 

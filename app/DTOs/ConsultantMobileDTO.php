@@ -12,8 +12,10 @@ class ConsultantMobileDTO extends BaseDTO
     public ?string $avatar;
     public float $rating_avg;
     public int $ratings_count;
-    public float $price_per_hour;
+    public float $price;
     public int $buffer;
+    public int $duration_minutes;
+    public string $consultation_method;
     public array $service_categories;
 
     public function __construct(
@@ -23,7 +25,9 @@ class ConsultantMobileDTO extends BaseDTO
         ?string $avatar,
         float $rating_avg,
         int $ratings_count,
-        float $price_per_hour = 0,
+        float $price = 0,
+        int $duration_minutes = 60,
+        string $consultation_method = 'video',
         int $buffer = 0,
         array $service_categories = []
     ) {
@@ -33,7 +37,9 @@ class ConsultantMobileDTO extends BaseDTO
         $this->avatar = $avatar;
         $this->rating_avg = $rating_avg;
         $this->ratings_count = $ratings_count;
-        $this->price_per_hour = $price_per_hour;
+        $this->price = $price;
+        $this->duration_minutes = $duration_minutes;
+        $this->consultation_method = $consultation_method;
         $this->buffer = $buffer;
         $this->service_categories = $service_categories;
     }
@@ -47,7 +53,9 @@ class ConsultantMobileDTO extends BaseDTO
             $consultant->user?->avatar ? asset('storage/' . $consultant->user->avatar) : null,
             (float) ($consultant->rating_avg ?? 0),
             (int) ($consultant->ratings_count ?? 0),
-            (float) ($consultant->price_per_hour ?? 0),
+            (float) ($consultant->price ?? 0),
+            (int) ($consultant->duration_minutes ?? 60),
+            $consultant->consultation_method ?? 'video',
             (int) ($consultant->buffer ?? 0),
             $serviceCategories
         );
@@ -62,7 +70,9 @@ class ConsultantMobileDTO extends BaseDTO
             'avatar' => $this->avatar,
             'rating_avg' => $this->rating_avg,
             'ratings_count' => $this->ratings_count,
-            'price_per_hour' => $this->price_per_hour,
+            'price' => $this->price,
+            'duration_minutes' => $this->duration_minutes,
+            'consultation_method' => $this->consultation_method,
             'buffer' => $this->buffer,
             'service_categories' => $this->service_categories,
         ];

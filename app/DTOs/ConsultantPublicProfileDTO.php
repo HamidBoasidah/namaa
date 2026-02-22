@@ -17,7 +17,9 @@ class ConsultantPublicProfileDTO extends BaseDTO
     public array $certificates;
     public array $experiences;
     public array $services;
-    public ?string $price_per_hour;
+    public ?string $price;
+    public ?int $duration_minutes;
+    public ?string $consultation_method;
     public ?float $rating_avg;
     public int $ratings_count;
     public bool $is_favorite;
@@ -32,9 +34,11 @@ class ConsultantPublicProfileDTO extends BaseDTO
         array $certificates,
         array $experiences,
         array $services,
-        ?string $price_per_hour,
+        ?string $price,
+        ?int $duration_minutes,
         ?float $rating_avg,
         int $ratings_count,
+        ?string $consultation_method = 'video',
         bool $is_favorite = false
     ) {
         $this->consultant_id = $consultant_id;
@@ -46,7 +50,9 @@ class ConsultantPublicProfileDTO extends BaseDTO
         $this->certificates = $certificates;
         $this->experiences = $experiences;
         $this->services = $services;
-        $this->price_per_hour = $price_per_hour;
+        $this->price = $price;
+        $this->duration_minutes = $duration_minutes;
+        $this->consultation_method = $consultation_method ?? 'video';
         $this->rating_avg = $rating_avg;
         $this->ratings_count = $ratings_count;
         $this->is_favorite = $is_favorite;
@@ -99,9 +105,12 @@ class ConsultantPublicProfileDTO extends BaseDTO
             })->values()->toArray();
 
         // السعر بالساعة ومتوسط التقييم من نموذج المستشار
-        $pricePerHour = $consultant->price_per_hour ? (string) $consultant->price_per_hour : '0.00';
+        $pricePerHour = $consultant->price ? (string) $consultant->price : '0.00';
         $ratingAvg = $consultant->rating_avg ? (float) $consultant->rating_avg : 0.0;
         $ratingsCount = (int) ($consultant->ratings_count ?? 0);
+
+        $duration = $consultant->duration_minutes ?? 60;
+        $consultationMethod = $consultant->consultation_method ?? 'video';
 
         return new self(
             $consultant->id,
@@ -114,8 +123,10 @@ class ConsultantPublicProfileDTO extends BaseDTO
             $experiences,
             $services
             , $pricePerHour
+            , $duration
             , $ratingAvg
             , $ratingsCount
+            , $consultationMethod
             , $isFavorite
         );
     }
@@ -132,7 +143,9 @@ class ConsultantPublicProfileDTO extends BaseDTO
             'certificates' => $this->certificates,
             'experiences' => $this->experiences,
             'services' => $this->services,
-            'price_per_hour' => $this->price_per_hour,
+            'price' => $this->price,
+            'duration_minutes' => $this->duration_minutes,
+            'consultation_method' => $this->consultation_method,
             'rating_avg' => $this->rating_avg,
             'ratings_count' => $this->ratings_count,
             'is_favorite' => $this->is_favorite,

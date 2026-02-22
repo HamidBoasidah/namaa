@@ -16,7 +16,9 @@ class ConsultantProfileDTO extends BaseDTO
     public $gender;
     public $years_of_experience;
     public $consultation_type;
-    public $price_per_hour;
+    public $price;
+    public $duration_minutes;
+    public $consultation_method;
     public $buffer;
 
     public function __construct(
@@ -29,7 +31,9 @@ class ConsultantProfileDTO extends BaseDTO
         $gender,
         $years_of_experience,
         $consultation_type,
-        $price_per_hour = 0,
+        $price = 0,
+        $duration_minutes = 60,
+        $consultation_method = 'video',
         $buffer = 0
     ) {
         $this->id = $id;
@@ -41,7 +45,9 @@ class ConsultantProfileDTO extends BaseDTO
         $this->gender = $gender;
         $this->years_of_experience = $years_of_experience;
         $this->consultation_type = $consultation_type;
-        $this->price_per_hour = $price_per_hour;
+        $this->price = $price;
+        $this->duration_minutes = $duration_minutes;
+        $this->consultation_method = $consultation_method;
         $this->buffer = $buffer;
     }
 
@@ -65,7 +71,9 @@ class ConsultantProfileDTO extends BaseDTO
             $user->gender,
             $consultant?->years_of_experience,
             $consultationType
-            , $consultant?->price_per_hour ?? 0,
+            , $consultant?->price ?? 0,
+            $consultant?->duration_minutes ?? 60,
+            $consultant?->consultation_method ?? 'video',
             $consultant?->buffer ?? 0
         );
     }
@@ -82,7 +90,9 @@ class ConsultantProfileDTO extends BaseDTO
             'gender' => $this->gender,
             'years_of_experience' => $this->years_of_experience,
             'consultation_type' => $this->consultation_type,
-            'price_per_hour' => $this->price_per_hour,
+            'price' => $this->price,
+            'duration_minutes' => $this->duration_minutes,
+            'consultation_method' => $this->consultation_method,
             'buffer' => $this->buffer,
         ];
     }
