@@ -44,6 +44,7 @@ class UpdateConsultantProfileRequest extends FormRequest
             'price' => 'nullable|numeric|min:0',
             'duration_minutes' => 'nullable|integer|min:1',
             'buffer' => 'nullable|integer|min:0|max:1440',
+            'consultation_method' => 'nullable|string|in:video,audio,text',
         ];
     }
 

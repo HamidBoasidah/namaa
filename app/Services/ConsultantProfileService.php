@@ -118,6 +118,7 @@ class ConsultantProfileService
             'consultation_type_id',
             'price',
             'duration_minutes',
+            'consultation_method',
             'buffer',
         ];
 
