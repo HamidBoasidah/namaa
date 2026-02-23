@@ -116,6 +116,9 @@ class ConsultantProfileService
         $consultantFields = [
             'years_of_experience',
             'consultation_type_id',
+            'price',
+            'duration_minutes',
+            'buffer',
         ];
 
         return array_filter(
