@@ -261,4 +261,23 @@ Route::middleware('auth:admin')
 
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
+
+        // Landing Page Management
+        Route::prefix('landing')->as('landing.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\LandingPageAdminController::class, 'index'])->name('index');
+            Route::get('/{id}', [\App\Http\Controllers\Admin\LandingPageAdminController::class, 'show'])->name('show');
+            
+            // Sections
+            Route::post('/{pageId}/sections', [\App\Http\Controllers\Admin\LandingPageAdminController::class, 'storeSection'])->name('sections.store');
+            Route::put('/sections/{sectionId}', [\App\Http\Controllers\Admin\LandingPageAdminController::class, 'updateSection'])->name('sections.update');
+            Route::delete('/sections/{sectionId}', [\App\Http\Controllers\Admin\LandingPageAdminController::class, 'deleteSection'])->name('sections.delete');
+            Route::post('/sections/reorder', [\App\Http\Controllers\Admin\LandingPageAdminController::class, 'reorderSections'])->name('sections.reorder');
+            
+            // Section Items
+            Route::post('/sections/{sectionId}/items', [\App\Http\Controllers\Admin\LandingPageAdminController::class, 'storeSectionItem'])->name('items.store');
+            Route::put('/items/{itemId}', [\App\Http\Controllers\Admin\LandingPageAdminController::class, 'updateSectionItem'])->name('items.update');
+            Route::delete('/items/{itemId}', [\App\Http\Controllers\Admin\LandingPageAdminController::class, 'deleteSectionItem'])->name('items.delete');
+            Route::post('/sections/{sectionId}/items/reorder', [\App\Http\Controllers\Admin\LandingPageAdminController::class, 'reorderSectionItems'])->name('items.reorder');
+        });
 });
+

@@ -282,27 +282,12 @@ const menuGroups = computed(() =>
             },
           ],
         },
-        // {
-        //   icon: BuildingIcon,
-        //   name: t('menu.locations'),
-        //   subItems: [
-        //     {
-        //       name: t('menu.governorates'),
-        //       path: route('admin.governorates.index'),
-        //       permission: 'governorates.view',
-        //     },
-        //     {
-        //       name: t('menu.districts'),
-        //       path: route('admin.districts.index'),
-        //       permission: 'districts.view',
-        //     },
-        //     {
-        //       name: t('menu.areas'),
-        //       path: route('admin.areas.index'),
-        //       permission: 'areas.view',
-        //     }
-        //   ],
-        // },
+        {
+          icon: GridIcon,
+          name: t('menu.landingPage'),
+          path: route('admin.landing.index'),
+          permission: null,
+        },
         {
           icon: UserCircleIcon,
           name: t('menu.certificates'),

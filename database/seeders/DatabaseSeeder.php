@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ConsultantWorkingHourSeeder::class,
             ReviewSeeder::class,
             ChatReadStateSeeder::class,
+            LandingPageSeeder::class,
         ]);
     }
 }
