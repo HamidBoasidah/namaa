@@ -25,7 +25,7 @@ class RegisteredUserController extends Controller
 
         if ($exists) {
             return response()->json([
-                'message' => 'الحساب موجود مسبقا',
+                'message' => 'الحساب موجود مسبقا, يرجى تسجيل الدخول',
             ], 422);
         }
 

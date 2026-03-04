@@ -113,7 +113,7 @@ class BookingController extends Controller
     public function confirm(ConfirmBookingRequest $request, int $id): JsonResponse
     {
         $booking = $this->bookingRepository->findOrFail($id);
-        
+
         $this->authorize('confirm', $booking);
 
         $confirmed = $this->bookingService->confirm($id, $request->user()->id);
@@ -133,7 +133,7 @@ class BookingController extends Controller
         $booking = $this->bookingRepository->findOrFail($id);
 
         // Ensure the current user is the consultant for this booking
-        $consultant = Consultant::where('user_id', $request->user()->id)->first();
+        $consultant = Consultant::where('user_id', auth()->id())->first();
         if (!$consultant || $consultant->id !== $booking->consultant_id) {
             $this->throwForbiddenException('غير مصرح لك بالوصول لهذا المورد');
         }
@@ -153,7 +153,7 @@ class BookingController extends Controller
     public function cancel(CancelBookingRequest $request, int $id): JsonResponse
     {
         $booking = $this->bookingRepository->findOrFail($id);
-        
+
         $this->authorize('cancel', $booking);
 
         $cancelled = $this->bookingService->cancel(
