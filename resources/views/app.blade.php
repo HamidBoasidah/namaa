@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="app-url" content="{{ config('app.url') }}">
 
         <!-- In resources/views/app.blade.php, inside <head> -->
         <link rel="icon" href="{{ asset('favicon.ico') }}?v={{ filemtime(public_path('favicon.ico')) }}">

@@ -24,10 +24,10 @@ class StoreUserRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email',
             'avatar' => 'nullable|file|image|max:2048',
-            'phone_number' => ['required', 'regex:/^05\\d{8}$/', 'unique:users,phone_number'],
-            'whatsapp_number' => ['nullable', 'regex:/^05\\d{8}$/', 'unique:users,whatsapp_number'],
+            'phone_number' => ['required', 'regex:/^05\\d{8}$/'],
+            'whatsapp_number' => ['nullable', 'regex:/^05\\d{8}$/'],
             'gender' => 'nullable|in:male,female',
             'password' => 'required|string|min:8',
             'user_type' => 'required|in:customer,consultant',

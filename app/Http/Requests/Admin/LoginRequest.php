@@ -41,6 +41,15 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        $admin = \App\Models\Admin::where('email', $this->string('email'))->first();
+
+        if ($admin && ! $admin->is_active) {
+            RateLimiter::hit($this->throttleKey());
+            throw ValidationException::withMessages([
+                'email' => __('Account is disabled. Please contact the administrator.'),
+            ]);
+        }
+
         if (! Auth::guard('admin')->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 
@@ -16,6 +17,18 @@ class RegisteredUserController extends Controller
      */
     public function store(StoreUserRequest $request, UserService $userService): JsonResponse
     {
+        // التحقق من وجود الحساب مسبقاً (بريد أو رقم جوال أو واتساب) وإرجاع رسالة موحدة
+        $exists = User::where('email', $request->input('email'))
+            ->orWhere('phone_number', $request->input('phone_number'))
+            ->when($request->filled('whatsapp_number'), fn ($q) => $q->orWhere('whatsapp_number', $request->input('whatsapp_number')))
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'message' => 'الحساب موجود مسبقا',
+            ], 422);
+        }
+
         $data = $request->validated();
 
         // إذا وُجد ملف مرفق نُمرره ضمن البيانات ليتولى الـ Service التعامل معه

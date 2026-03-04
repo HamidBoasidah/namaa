@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Admin>
@@ -23,12 +22,13 @@ class AdminFactory extends Factory
             'phone_number' => fake()->numerify('5########'),
             'whatsapp_number' => fake()->numerify('7########'),
             'address' => fake()->address(),
-            'password' => Hash::make('password'),
+            // كلمة المرور نصلها نصاً؛ نموذج Admin يهشّرها تلقائياً (cast hashed)
+            'password' => static::$password ??= 'password',
             'facebook' => 'https://facebook.com/' . fake()->userName(),
             'x_url' => 'https://x.com/' . fake()->userName(),
             'linkedin' => 'https://linkedin.com/in/' . fake()->userName(),
             'instagram' => 'https://instagram.com/' . fake()->userName(),
-            'is_active' => $this->faker->boolean(),
+            'is_active' => true,
             'locale' => 'ar',
             'created_by' => null,
             'updated_by' => null,

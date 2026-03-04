@@ -25,6 +25,7 @@ use App\Policies\ConversationPolicy;
 use App\Policies\MessagePolicy;
 use App\Policies\ReviewPolicy;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -42,6 +43,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // عند الطلبات الواردة عبر الويب، استخدم عنوان الطلب الحالي (HTTPS/الدومين الفعلي)
+        // لتفادي Mixed Content عندما يكون APP_URL أو config cache يشير إلى رابط محلي
+        if (! $this->app->runningInConsole() && $this->app->has('request') && request()->hasHeader('Host')) {
+            $rootUrl = request()->getSchemeAndHttpHost();
+            config(['app.url' => $rootUrl]);
+            URL::forceRootUrl($rootUrl);
+            if (request()->secure()) {
+                URL::forceScheme('https');
+            }
+        }
+
         // Register Observers
         Review::observe(ReviewObserver::class);
 
