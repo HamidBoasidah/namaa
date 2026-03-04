@@ -492,7 +492,7 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://namaa.test/",
+      "value": "https://namaa-gzeyhmq4.on-forge.com/",
       "description": "عنوان الخادم الأساسي"
     },
     {
