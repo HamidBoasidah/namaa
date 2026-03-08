@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 interface Testimonial {
   name?: string;
@@ -31,17 +31,38 @@ const defaultTestimonials: Testimonial[] = [
 
 const testimonials = props.section?.items?.length ? props.section.items : defaultTestimonials;
 const currentIndex = ref(0);
+const AUTOPLAY_MS = 5000;
+let autoplayTimer: ReturnType<typeof setInterval> | null = null;
 
-const next = () => {
+function goTo(index: number) {
+  currentIndex.value = index;
+}
+
+function next() {
   currentIndex.value = (currentIndex.value + 1) % testimonials.length;
-};
-const prev = () => {
-  currentIndex.value = (currentIndex.value - 1 + testimonials.length) % testimonials.length;
-};
+}
+
+function startAutoplay() {
+  stopAutoplay();
+  autoplayTimer = setInterval(next, AUTOPLAY_MS);
+}
+
+function stopAutoplay() {
+  if (autoplayTimer) {
+    clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  }
+}
+
+onMounted(() => {
+  startAutoplay();
+});
+onUnmounted(() => {
+  stopAutoplay();
+});
 </script>
 
 <template>
-  <!-- Reyiada "آراء العملاء" / "انطباعات حقيقية من عملائنا" -->
   <section id="testimonials" class="relative py-20 lg:py-28 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-14">
@@ -76,7 +97,8 @@ const prev = () => {
               </div>
               <div
                 v-else
-                class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-teal-600 flex items-center justify-center text-3xl shadow-md"
+                class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex items-center justify-center text-3xl shadow-md"
+                style="background-color: #028187; color: white;"
               >
                 {{ testimonials[currentIndex].avatar || '👤' }}
               </div>
@@ -109,38 +131,17 @@ const prev = () => {
           </div>
         </div>
 
-        <div class="flex items-center justify-center gap-4 mt-6">
+        <!-- Dots only - no arrows; clickable; auto-play -->
+        <div class="flex items-center justify-center gap-2 mt-6">
           <button
+            v-for="(_, index) in testimonials"
+            :key="index"
             type="button"
-            @click="prev"
-            class="w-11 h-11 rounded-lg border border-stone-200 bg-white flex items-center justify-center hover:border-teal-300 hover:bg-stone-50 transition-colors"
-            aria-label="السابق"
-          >
-            <svg class="w-5 h-5 text-stone-600 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </button>
-          <div class="flex items-center gap-2">
-            <button
-              v-for="(_, index) in testimonials"
-              :key="index"
-              type="button"
-              @click="currentIndex = index"
-              class="rounded-full transition-all h-2"
-              :class="currentIndex === index ? 'bg-teal-600 w-6' : 'bg-stone-300 w-2 hover:bg-stone-400'"
-              :aria-label="`الشهادة ${index + 1}`"
-            />
-          </div>
-          <button
-            type="button"
-            @click="next"
-            class="w-11 h-11 rounded-lg border border-stone-200 bg-white flex items-center justify-center hover:border-teal-300 hover:bg-stone-50 transition-colors"
-            aria-label="التالي"
-          >
-            <svg class="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </button>
+            @click="goTo(index)"
+            class="rounded-full transition-all duration-300 h-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#028187]"
+            :class="currentIndex === index ? 'w-8 bg-[#028187]' : 'w-2.5 bg-stone-300 hover:bg-stone-400'"
+            :aria-label="`الشهادة ${index + 1}`"
+          />
         </div>
       </div>
     </div>

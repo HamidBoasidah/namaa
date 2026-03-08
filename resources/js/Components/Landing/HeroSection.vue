@@ -85,9 +85,12 @@ defineProps<Props>();
                 alt="استشارة مالية"
                 class="w-full h-full object-cover"
               />
-              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                <p class="text-white font-semibold">جلسة استشارية مباشرة</p>
-                <p class="text-white/80 text-sm">فيديو • صوت • محادثة</p>
+              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-white font-semibold">جلسة استشارية مباشرة</p>
+                  <p class="text-white/80 text-sm">فيديو • صوت • محادثة</p>
+                </div>
+                <img src="/images/logo/logo-icon.svg" alt="نماء" class="h-10 w-10 opacity-90 shrink-0" />
               </div>
             </div>
           </div>

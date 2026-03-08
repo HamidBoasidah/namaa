@@ -31,7 +31,7 @@ const navLinks = [
 </script>
 
 <template>
-  <div class="min-h-screen bg-white text-stone-900" dir="rtl">
+  <div class="min-h-screen bg-white text-stone-900 landing-bg" dir="rtl">
     <!-- Top bar - Reyiada style contact strip (hidden when scrolled) -->
     <div
       v-show="!isScrolled"
@@ -59,9 +59,7 @@ const navLinks = [
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 lg:h-18">
           <Link href="/" class="flex items-center gap-2 shrink-0">
-            <span class="text-xl lg:text-2xl font-bold text-stone-900 tracking-tight">
-              نماء الأعمال
-            </span>
+            <img src="/images/logo/logo.svg" alt="نماء الأعمال" class="h-8 lg:h-9 w-auto" />
           </Link>
 
           <nav class="hidden lg:flex items-center gap-0">
@@ -150,5 +148,28 @@ const navLinks = [
 <style scoped>
 [dir="rtl"] {
   direction: rtl;
+}
+
+/* Subtle background motion */
+.landing-bg {
+  position: relative;
+}
+.landing-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 50% at 20% 20%, rgba(2, 129, 135, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(2, 129, 135, 0.05) 0%, transparent 50%);
+  animation: landing-bg-shift 18s ease-in-out infinite;
+}
+.landing-bg > * {
+  position: relative;
+  z-index: 1;
+}
+@keyframes landing-bg-shift {
+  0%, 100% { opacity: 1; transform: scale(1) translate(0, 0); }
+  50% { opacity: 0.9; transform: scale(1.02) translate(-1%, -0.5%); }
 }
 </style>
