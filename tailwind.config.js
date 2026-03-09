@@ -21,7 +21,7 @@ module.exports = {
                 muted: '#A58DA0',
                 pale: '#A0BDA0',
                 offwhite: '#F5F7F6',
-                black: '#0E0EEE',
+                black: '#0E0E0E',
             },
             }
         }

@@ -31,7 +31,7 @@ const navLinks = [
 </script>
 
 <template>
-  <div class="min-h-screen bg-white text-brand-black landing-bg" dir="rtl">
+  <div class="min-h-screen bg-brand-offwhite text-brand-black landing-bg" dir="rtl">
     <!-- Top bar -->
     <div
       v-show="!isScrolled"
@@ -51,15 +51,15 @@ const navLinks = [
       </div>
     </div>
 
-    <!-- Main Header -->
+    <!-- Main Header (dark when scrolled) -->
     <header
       class="fixed z-50 left-0 right-0 transition-all duration-300"
-      :class="isScrolled ? 'top-0 bg-white shadow-md border-b border-gray-200' : 'top-10 lg:top-10 bg-white/95 backdrop-blur-sm border-b border-gray-200'"
+      :class="isScrolled ? 'top-0 bg-brand-dark shadow-lg border-b border-brand-dark' : 'top-10 lg:top-10 bg-white/95 backdrop-blur-sm border-b border-gray-200'"
     >
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 lg:h-18">
           <Link href="/" class="flex items-center gap-2 shrink-0">
-            <img src="/images/logo/logo.png" alt="نماء الأعمال" class="h-8 lg:h-9 w-auto" />
+            <img src="/images/logo/logo.png" alt="نماء الأعمال" class="h-8 lg:h-9 w-auto" :class="isScrolled ? 'brightness-0 invert' : ''" />
           </Link>
 
           <nav class="hidden lg:flex items-center gap-0">
@@ -67,7 +67,8 @@ const navLinks = [
               v-for="link in navLinks"
               :key="link.href"
               :href="link.href"
-              class="px-4 py-2 text-sm font-medium text-brand-dark hover:text-brand-black hover:bg-gray-100 rounded-lg transition-colors"
+              class="px-4 py-2 text-sm font-medium rounded-lg transition-colors"
+              :class="isScrolled ? 'text-white/90 hover:text-white hover:bg-white/10' : 'text-brand-dark hover:text-brand-black hover:bg-gray-100'"
             >
               {{ link.label }}
             </Link>
@@ -76,13 +77,15 @@ const navLinks = [
           <div class="hidden lg:flex items-center gap-3">
             <Link
               href="/login"
-              class="px-4 py-2.5 text-sm font-semibold text-brand-dark hover:text-brand-black transition-colors"
+              class="px-4 py-2.5 text-sm font-semibold transition-colors"
+              :class="isScrolled ? 'text-white/90 hover:text-white' : 'text-brand-dark hover:text-brand-black'"
             >
               انضم كمستشار
             </Link>
             <Link
               href="/register"
-              class="px-5 py-2.5 text-sm font-semibold text-white bg-brand-dark rounded-lg hover:bg-brand-black transition-colors"
+              class="px-5 py-2.5 text-sm font-semibold rounded-lg transition-colors"
+              :class="isScrolled ? 'text-brand-dark bg-white hover:bg-gray-100' : 'text-white bg-brand-dark hover:bg-brand-black'"
             >
               حمل التطبيق
             </Link>
@@ -90,7 +93,8 @@ const navLinks = [
 
           <button
             type="button"
-            class="lg:hidden p-2 rounded-lg text-brand-dark hover:bg-gray-100"
+            class="lg:hidden p-2 rounded-lg transition-colors"
+            :class="isScrolled ? 'text-white hover:bg-white/10' : 'text-brand-dark hover:bg-gray-100'"
             aria-label="القائمة"
             @click="toggleMenu"
           >
@@ -114,23 +118,25 @@ const navLinks = [
       >
         <div
           v-show="isMenuOpen"
-          class="lg:hidden border-t border-gray-200 bg-white"
+          class="lg:hidden border-t"
+          :class="isScrolled ? 'bg-brand-dark border-white/20' : 'bg-white border-gray-200'"
         >
           <div class="max-w-6xl mx-auto px-4 py-4 space-y-1">
             <Link
               v-for="link in navLinks"
               :key="link.href"
               :href="link.href"
-              class="block px-4 py-3 text-base font-medium text-brand-dark rounded-lg hover:bg-gray-100"
+              class="block px-4 py-3 text-base font-medium rounded-lg transition-colors"
+              :class="isScrolled ? 'text-white hover:bg-white/10' : 'text-brand-dark hover:bg-gray-100'"
               @click="isMenuOpen = false"
             >
               {{ link.label }}
             </Link>
             <div class="pt-4 flex flex-col gap-2">
-              <Link href="/login" class="text-center px-4 py-3 font-semibold text-brand-dark rounded-lg border border-gray-300" @click="isMenuOpen = false">
+              <Link href="/login" class="text-center px-4 py-3 font-semibold rounded-lg transition-colors" :class="isScrolled ? 'text-white border border-white/50 hover:bg-white/10' : 'text-brand-dark border border-gray-300 hover:bg-gray-100'" @click="isMenuOpen = false">
                 انضم كمستشار
               </Link>
-              <Link href="/register" class="text-center px-4 py-3 font-semibold text-white bg-brand-dark rounded-lg hover:bg-brand-black" @click="isMenuOpen = false">
+              <Link href="/register" class="text-center px-4 py-3 font-semibold rounded-lg transition-colors" :class="isScrolled ? 'bg-white text-brand-dark hover:bg-gray-100' : 'text-white bg-brand-dark hover:bg-brand-black'" @click="isMenuOpen = false">
                 حمل التطبيق
               </Link>
             </div>
