@@ -33,29 +33,10 @@ const navLinks = [
 
 <template>
   <div class="landing-page min-h-screen landing-bg bg-brand-offwhite text-brand-dark" dir="rtl">
-    <!-- Top bar - light -->
-    <div
-      v-show="!isScrolled"
-      class="fixed top-0 left-0 right-0 z-[60] bg-white border-b border-gray-200 text-gray-600 text-sm py-2 hidden lg:block"
-    >
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <div class="flex items-center gap-6">
-          <a href="tel:+966501234567" class="hover:text-brand-500 transition-colors">+966 50 123 4567</a>
-          <a href="mailto:info@consultant-platform.com" class="hover:text-brand-500 transition-colors">info@consultant-platform.com</a>
-        </div>
-        <Link
-          href="#contact"
-          class="font-semibold text-brand-500 hover:text-brand-600 transition-colors"
-        >
-          تواصل معنا
-        </Link>
-      </div>
-    </div>
-
     <!-- Main Header - light, professional -->
     <header
-      class="fixed z-50 left-0 right-0 transition-all duration-300 top-10 lg:top-10 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm"
-      :class="isScrolled ? 'top-0 shadow-md' : ''"
+      class="fixed z-50 left-0 right-0 top-0 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm"
+      :class="isScrolled ? 'shadow-md' : ''"
     >
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 lg:h-18">
@@ -140,7 +121,7 @@ const navLinks = [
       </Transition>
     </header>
 
-    <main :class="isScrolled ? 'pt-16 lg:pt-20' : 'pt-24 lg:pt-28'">
+    <main class="pt-16 lg:pt-20">
       <slot />
     </main>
   </div>
