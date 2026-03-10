@@ -79,7 +79,7 @@ defineProps<Props>();
               />
               <img
                 v-else
-                src="/images/landing/hero-consultant.jpg"
+                src="/images/landing/hero-financial.png"
                 alt="استشارة مالية"
                 class="w-full h-full object-cover"
               />
