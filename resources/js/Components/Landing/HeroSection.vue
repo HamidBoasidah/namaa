@@ -27,10 +27,10 @@ defineProps<Props>();
             استشارات مالية ومحاسبية
           </p>
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-brand-dark leading-[1.2] tracking-tight mb-6">
-            {{ section.title || 'خُذ قراراتك بثقة مع خبراء مال وأعمال بجانبك' }}
+            {{ section.title || 'خُذ قراراتك بثقة مع خبراء مال وأعمال بجانبك دائمًا' }}
           </h1>
           <p class="text-lg sm:text-xl text-gray-600 max-w-xl mx-auto lg:mx-0 mb-4 leading-relaxed">
-            {{ section.subtitle || 'من تحليل القوائم المالية إلى دراسة الجدوى وخطط النمو، كل ما تحتاجه في مكان واحد.' }}
+            {{ section.subtitle || 'من تحليل القوائم المالية إلى دراسة الجدوى وخطط النمو، كل ما تحتاجه متاح في مكان واحد.' }}
           </p>
           <p class="text-brand-muted text-sm mb-10">
             مستشارون معتمدون • جلسات مباشرة • تقارير احترافية
