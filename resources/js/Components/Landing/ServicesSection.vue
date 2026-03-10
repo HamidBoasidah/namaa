@@ -89,3 +89,4 @@ const getServiceIconPath = (iconName: string) => {
       </div>
     </div>
   </section>
+</template>
