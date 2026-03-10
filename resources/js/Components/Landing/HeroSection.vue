@@ -16,9 +16,9 @@ defineProps<Props>();
 </script>
 
 <template>
-  <!-- Light hero - professional -->
-  <section class="relative min-h-[85vh] flex items-center overflow-hidden bg-brand-offwhite">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(18,57,42,0.04),transparent_50%)]" aria-hidden="true" />
+  <!-- Light hero - white background -->
+  <section class="relative min-h-[85vh] flex items-center overflow-hidden bg-white">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(18,57,42,0.03),transparent_50%)]" aria-hidden="true" />
 
     <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
       <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
