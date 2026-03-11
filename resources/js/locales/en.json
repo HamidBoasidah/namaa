@@ -305,7 +305,50 @@
     "previous": "Previous",
     "next": "Next"
 }
-,"auth": {
+,"landing": {
+    "nav": {
+        "home": "Home",
+        "features": "Features",
+        "howItWorks": "How it works",
+        "services": "Services",
+        "testimonials": "Testimonials",
+        "faq": "FAQ",
+        "joinAsAdvisor": "Join as advisor",
+        "downloadApp": "Download app",
+        "switchToArabic": "العربية"
+    },
+    "hero": {
+        "badge": "Financial & accounting consulting",
+        "title": "Make decisions with confidence alongside finance experts",
+        "subtitle": "From financial statements to feasibility studies and growth plans — everything you need in one place.",
+        "tagline": "Certified advisors • Live sessions • Professional reports",
+        "ctaBook": "Book a consultation",
+        "ctaExplore": "Explore our services",
+        "advisorsCount": "certified advisors",
+        "rating": "Platform rating"
+    },
+    "footer": {
+        "tagline": "We shape success from the start",
+        "description": "At Kasb, we put a full roadmap in your hands to lead your project to success. Consultations based on accurate data and clear market vision.",
+        "learnMore": "Learn more",
+        "exploreServices": "Explore our services",
+        "importantLinks": "Important links",
+        "home": "Home",
+        "features": "Features",
+        "ourServices": "Our services",
+        "faq": "FAQ",
+        "contactUs": "Contact us",
+        "services": "Services",
+        "forClients": "For clients",
+        "forAdvisors": "For advisors",
+        "pricing": "Pricing",
+        "socialMedia": "Social media",
+        "copyright": "All rights reserved.",
+        "platformDescription": "A platform connecting entrepreneurs and project owners with certified financial and accounting consultants for specialized consultations and services.",
+        "address": "Riyadh, Kingdom of Saudi Arabia"
+    }
+},
+"auth": {
     "login": {
         "backToDashboard": "Back to dashboard",
         "switchToEnglish": "Switch to English",

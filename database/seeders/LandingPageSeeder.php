@@ -16,10 +16,10 @@ class LandingPageSeeder extends Seeder
     {
         // Create the main landing page
         $landingPage = LandingPage::create([
-            'title' => 'نماء الأعمال - الصفحة الرئيسية',
+            'title' => 'كسب - الصفحة الرئيسية',
             'slug' => 'home',
             'is_active' => true,
-            'meta_title' => 'نماء الأعمال - منصة الاستشارات المالية والمحاسبية',
+            'meta_title' => 'كسب - منصة الاستشارات المالية والمحاسبية',
             'meta_description' => 'منصة تربط رواد الأعمال بمستشارين ماليين ومحاسبين معتمدين',
         ]);
 
@@ -27,7 +27,7 @@ class LandingPageSeeder extends Seeder
         $heroSection = LandingSection::create([
             'landing_page_id' => $landingPage->id,
             'type' => 'hero',
-            'title' => 'خُذ قراراتك بثقة مع خبراء مال وأعمال بجانبك دائمًا',
+            'title' => 'خُذ قراراتك بثقة مع خبراء مال وأعمال',
             'subtitle' => 'من تحليل القوائم المالية إلى دراسة الجدوى وخطط النمو، كل ما تحتاجه متاح في مكان واحد.',
             'order' => 0,
             'is_active' => true,

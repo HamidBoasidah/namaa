@@ -45,7 +45,7 @@ const getFeatureIconPath = (iconName: string) => {
   <section id="mobile-app" class="relative py-20 lg:py-28 bg-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-14">
-        <img src="/images/logo/logo.png" alt="نماء الأعمال" class="h-10 mx-auto mb-6 object-contain" />
+        <img src="/images/logo/logo.png" alt="كسب" class="h-10 mx-auto mb-6 object-contain" />
         <h2 class="text-3xl sm:text-4xl font-bold text-brand-dark mb-3">
           انضم كمستشار
         </h2>
