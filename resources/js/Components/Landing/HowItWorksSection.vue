@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -18,13 +19,14 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const defaultSteps = [
-  { title: 'تصميم المستشارين والخدمات', description: 'ابحث عن المستشارين حسب التخصص والتقييمات واختر الخدمة المناسبة', icon: 'check' },
-  { title: 'اختر الوقت والطريقة وادفع بأمان', description: 'حدد موعد الجلسة ونوع الاستشارة (فيديو/صوت/نص)، وأتمم الدفع الآمن', icon: 'check' },
-  { title: 'التق بالمستشار واستلم التقرير', description: 'احضر الجلسة الاستشارية، استلم التقارير والمخرجات، ثم قيّم الخدمة', icon: 'check' },
-];
-
-const steps = props.section.items || defaultSteps;
+const steps = computed(() => {
+  if (props.section.items?.length) return props.section.items;
+  return [0, 1, 2].map((i) => ({
+    title: t(`landing.howItWorks.steps.${i}.title`),
+    description: t(`landing.howItWorks.steps.${i}.description`),
+    icon: 'check',
+  }));
+});
 </script>
 
 <template>

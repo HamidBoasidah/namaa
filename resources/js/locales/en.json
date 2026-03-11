@@ -351,30 +351,72 @@
     "features": {
         "title": "Why choose our platform?",
         "subtitle": "Everything you need for professional financial and accounting consulting, easily and securely.",
-        "tagline": "Trusted by thousands of entrepreneurs and project owners"
+        "tagline": "Trusted by thousands of entrepreneurs and project owners",
+        "downloadApp": "Download the app now",
+        "items": [
+            {"title": "Find the right consultant", "description": "Choose from certified consultants by specialty and your business needs"},
+            {"title": "Online consultation sessions", "description": "Video, audio, or text chat at your convenience"},
+            {"title": "Ready-made specialized services", "description": "Feasibility studies, financial analysis, business plans, debt restructuring"},
+            {"title": "Unified management", "description": "Your appointments, session records, and reports in one place"},
+            {"title": "Secure payment and clear refund policy", "description": "Secure transactions and transparent refund policy"},
+            {"title": "Rate and share your experience", "description": "Help other entrepreneurs choose the right consultant"}
+        ]
     },
     "howItWorks": {
         "sectionTitle": "How it works",
         "title": "Three simple steps",
-        "subtitle": "To get the consultation you need"
+        "subtitle": "To get the consultation you need",
+        "steps": [
+            {"title": "Browse consultants and services", "description": "Search consultants by specialty and ratings, then choose the right service"},
+            {"title": "Pick time and method, pay securely", "description": "Set your session time and consultation type (video/audio/text), then complete secure payment"},
+            {"title": "Meet the consultant and get your report", "description": "Attend the session, receive reports and deliverables, then rate the service"}
+        ]
     },
     "services": {
         "sectionTitle": "Our services",
         "title": "Services that refine your project",
-        "subtitle": "A range of financial and accounting services designed to support your business growth."
+        "subtitle": "A range of financial and accounting services designed to support your business growth.",
+        "more": "More",
+        "items": [
+            {"title": "Feasibility study", "description": "Study market size, customer types, behavior, and competitors to find growth opportunities and threats."},
+            {"title": "Market analysis", "description": "Study market size, customer types, behavior, and competitors to find growth opportunities and threats."},
+            {"title": "Financial analysis", "description": "Estimate project costs, revenues, and profits; calculate break-even and return on investment."},
+            {"title": "Business plan", "description": "A document outlining project goals, operations, resources, and financial and marketing plan for a set period."},
+            {"title": "Investment management", "description": "Monitor and organize investment decisions from selecting opportunities to performance and risk reduction."},
+            {"title": "Business valuation", "description": "Review company performance, growth, and profitability to determine market value or readiness for investment or sale."}
+        ]
     },
     "faq": {
         "sectionTitle": "FAQ",
-        "subtitle": "Frequently asked questions"
+        "subtitle": "Frequently asked questions",
+        "items": [
+            {"question": "How can I book a consultation?", "answer": "Browse available consultants, choose the right one, then set the consultation type (video/audio/text) and your preferred time. After secure payment, you'll receive a booking confirmation and contact details."},
+            {"question": "What types of services are available?", "answer": "We offer financial and accounting consulting, feasibility studies, market analysis, financial planning, financial statements, tax consulting, and project valuation."},
+            {"question": "How are consultants vetted?", "answer": "All consultants are verified for academic qualifications, professional certifications, and practical experience before joining the platform."},
+            {"question": "How do consultants receive their earnings?", "answer": "Consultants receive earnings periodically (weekly or monthly) via bank transfer or the in-app e-wallet."},
+            {"question": "Are consultations confidential and secure?", "answer": "Yes. All consultations and data are protected with modern encryption and strict privacy policies."},
+            {"question": "What if I have a technical issue during a consultation?", "answer": "Contact support 24/7 via in-app chat or email. We resolve issues promptly and reschedule when needed."}
+        ]
     },
     "testimonials": {
         "sectionTitle": "What our clients say",
         "subtitle": "Real feedback from our clients",
-        "tagline": "Entrepreneurs and project owners who achieved their goals through our consultations"
+        "tagline": "Entrepreneurs and project owners who achieved their goals through our consultations",
+        "carouselLabel": "Testimonial {n}",
+        "items": [
+            {"name": "Mohammed Al-Saeed", "role": "Business owner", "description": "\"The consultant was very professional and gave me practical advice to improve cash flow.\""},
+            {"name": "Fatima Ahmed", "role": "Business owner", "description": "\"The consultation clarified competitors' weaknesses and gave me new ideas for growth.\""},
+            {"name": "Khaled Al-Otaibi", "role": "Entrepreneur", "description": "\"I got a full feasibility study in record time; it really helped me convince investors.\""}
+        ]
     },
     "mobileApp": {
         "title": "Join as advisor",
-        "subtitle": "Grow your client base and income by offering your services on our platform"
+        "subtitle": "Grow your client base and income by offering your services on our platform",
+        "features": [
+            {"title": "Manage your business from a mobile dashboard", "description": "Track bookings, clients, and profits easily from your phone"},
+            {"title": "Add your services and set your prices", "description": "Feasibility studies, financial analysis, business plans — offer your services at your own prices"},
+            {"title": "Expand your reach", "description": "Multiple offers, instant notifications, e-wallet, detailed reports"}
+        ]
     }
 },
 "auth": {

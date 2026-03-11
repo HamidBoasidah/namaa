@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -17,16 +18,16 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const defaultFeatures = [
-  { title: 'ابحث عن المستشار المناسب', description: 'اختر من مستشارين معتمدين حسب التخصص واحتياجات عملك', icon: 'search' },
-  { title: 'جلسات استشارية أونلاين', description: 'فيديو أو صوت أو محادثة نصية حسب راحتك', icon: 'video' },
-  { title: 'خدمات جاهزة ومتخصصة', description: 'دراسات جدوى، تحليل مالي، خطط أعمال، إعادة هيكلة الديون', icon: 'document' },
-  { title: 'إدارة موحدة', description: 'مواعيدك، سجلات الجلسات، والتقارير من مكان واحد', icon: 'folder' },
-  { title: 'دفع آمن واسترداد واضح', description: 'معاملات آمنة وسياسة استرداد شفافة', icon: 'shield' },
-  { title: 'قيّم وشارك تجربتك', description: 'ساعد رواد الأعمال باختيار المستشار الأنسب', icon: 'star' },
-];
+const defaultIcons = ['search', 'video', 'document', 'folder', 'shield', 'star'];
 
-const features = props.section.items || defaultFeatures;
+const features = computed(() => {
+  if (props.section.items?.length) return props.section.items;
+  return defaultIcons.map((icon, i) => ({
+    title: t(`landing.features.items.${i}.title`),
+    description: t(`landing.features.items.${i}.description`),
+    icon,
+  }));
+});
 
 const getIconPath = (iconName: string) => {
   const paths: Record<string, string> = {
@@ -78,7 +79,7 @@ const getIconPath = (iconName: string) => {
             v-if="index === 0"
             class="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-brand-pale/30 text-brand-dark text-xs font-medium"
           >
-            حمل التطبيق الآن
+            {{ t('landing.features.downloadApp') }}
           </div>
         </article>
       </div>

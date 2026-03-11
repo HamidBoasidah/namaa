@@ -24,16 +24,18 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const defaultServices: ServiceItem[] = [
-  { title: 'دراسة جدوى', description: 'دراسة حجم السوق، أنواع العملاء، سلوكهم، والمنافسين لاكتشاف فرص النمو والتهديدات.', icon: 'lightbulb', link: '#', link_text: 'المزيد' },
-  { title: 'تحليل سوق', description: 'دراسة حجم السوق، أنواع العملاء، سلوكهم، والمنافسين لاكتشاف فرص النمو والتهديدات.', icon: 'search', link: '#', link_text: 'المزيد' },
-  { title: 'تحليل مالي', description: 'تقدير التكاليف والإيرادات والأرباح المتوقعة للمشروع، وحساب مؤشرات مثل نقطة التعادل والعائد على الاستثمار.', icon: 'chart', link: '#', link_text: 'المزيد' },
-  { title: 'خطة عمل', description: 'وثيقة توضح أهداف المشروع، وخطوات التشغيل، والموارد المطلوبة، والخطة المالية والتسويقية لفترة زمنية محددة.', icon: 'document', link: '#', link_text: 'المزيد' },
-  { title: 'إدارة استثمار', description: 'مراقبة وتنظيم قرارات الاستثمار من اختيار الفرص وتوزيع رأس المال حتى مراقبة الأداء وتقليل المخاطر.', icon: 'briefcase', link: '#', link_text: 'المزيد' },
-  { title: 'تقييم أعمال', description: 'فحص أداء ونمو ومردودية الشركة لتحديد قيمتها السوقية أو جاذبيتها للاستثمار أو البيع.', icon: 'chart-bar', link: '#', link_text: 'المزيد' },
-];
+const defaultIcons = ['lightbulb', 'search', 'chart', 'document', 'briefcase', 'chart-bar'];
 
-const services = computed(() => props.section.items || defaultServices);
+const services = computed(() => {
+  if (props.section.items?.length) return props.section.items;
+  return defaultIcons.map((icon, i) => ({
+    title: t(`landing.services.items.${i}.title`),
+    description: t(`landing.services.items.${i}.description`),
+    icon,
+    link: '#',
+    link_text: t('landing.services.more'),
+  }));
+});
 
 const getServiceIconPath = (iconName: string) => {
   const paths: Record<string, string> = {
@@ -85,7 +87,7 @@ const getServiceIconPath = (iconName: string) => {
             {{ service.description }}
           </p>
           <span class="inline-flex items-center gap-1 text-sm font-semibold text-brand-accent group-hover:gap-2 transition-all">
-            {{ service.link_text || 'المزيد' }}
+            {{ service.link_text ?? t('landing.services.more') }}
             <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>

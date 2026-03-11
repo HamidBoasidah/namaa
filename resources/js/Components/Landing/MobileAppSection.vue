@@ -23,13 +23,17 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const defaultFeatures: FeatureItem[] = [
-  { title: 'أدر عملك من لوحة تحكم متنقلة', description: 'تابع حجوزاتك، عملائك، وأرباحك من هاتفك المحمول بسهولة', icon: 'mobile', background_color: 'from-brand-dark/5 to-white' },
-  { title: 'أضف خدماتك وحدد أسعارك', description: 'دراسات جدوى، تحليل مالي، خطط أعمال - قدم خدماتك بأسعارك الخاصة', icon: 'tag', background_color: 'from-brand-dark/5 to-white' },
-  { title: 'وسع نطاق عملك', description: 'عروض متعددة، إشعارات فورية، محفظة إلكترونية، تقارير تفصيلية', icon: 'chart-up', background_color: 'from-brand-dark/5 to-white' },
-];
+const defaultIcons = ['mobile', 'tag', 'chart-up'];
 
-const features = computed(() => props.section?.items || defaultFeatures);
+const features = computed(() => {
+  if (props.section?.items?.length) return props.section.items;
+  return defaultIcons.map((icon, i) => ({
+    title: t(`landing.mobileApp.features.${i}.title`),
+    description: t(`landing.mobileApp.features.${i}.description`),
+    icon,
+    background_color: 'from-brand-dark/5 to-white',
+  }));
+});
 
 const getBg = (f: FeatureItem, i: number) =>
   f.background_color || 'from-brand-dark/5 to-white';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -14,25 +14,25 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const defaultFaqs = [
-  { question: 'كيف يمكنني حجز استشارة؟', answer: 'يمكنك تصفح المستشارين المتاحين، اختيار المستشار المناسب، ثم تحديد نوع الاستشارة (فيديو/صوت/نص) والوقت المناسب لك. بعد إتمام الدفع الآمن، ستتلقى تأكيداً بالحجز وتفاصيل الاتصال.', isOpen: true },
-  { question: 'ما أنواع الخدمات المتاحة؟', answer: 'نوفر استشارات مالية ومحاسبية، دراسة الجدوى، تحليل السوق، التخطيط المالي، إعداد القوائم المالية، الاستشارات الضريبية، وتقييم المشاريع.', isOpen: false },
-  { question: 'كيف يتم فحص المستشارين؟', answer: 'جميع المستشارين يخضعون لتحقق من المؤهلات الأكاديمية والشهادات المهنية والخبرة العملية قبل الانضمام للمنصة.', isOpen: false },
-  { question: 'كيف يتلقى المستشارون أرباحهم؟', answer: 'يتلقى المستشارون أرباحهم دورياً (أسبوعياً أو شهرياً) عبر تحويل بنكي أو المحفظة الإلكترونية في التطبيق.', isOpen: false },
-  { question: 'هل الاستشارات سرية وآمنة؟', answer: 'نعم، جميع الاستشارات والبيانات محمية بتشفير حديث ونلتزم بسياسات خصوصية صارمة.', isOpen: false },
-  { question: 'ماذا أفعل إذا واجهت مشكلة تقنية أثناء الاستشارة؟', answer: 'تواصل مع فريق الدعم على مدار الساعة عبر الشات في التطبيق أو البريد. نحل أي مشكلة فوراً ونعيد الجدولة عند الحاجة.', isOpen: false },
-];
+const openIndex = ref(0);
 
-const faqs = ref(
-  props.section?.items?.map((item, index) => ({
-    question: item.title,
-    answer: item.description,
-    isOpen: index === 0,
-  })) || defaultFaqs
-);
+const faqs = computed(() => {
+  if (props.section?.items?.length) {
+    return props.section.items.map((item, index) => ({
+      question: item.title,
+      answer: item.description,
+      isOpen: openIndex.value === index,
+    }));
+  }
+  return [0, 1, 2, 3, 4, 5].map((i) => ({
+    question: t(`landing.faq.items.${i}.question`),
+    answer: t(`landing.faq.items.${i}.answer`),
+    isOpen: openIndex.value === i,
+  }));
+});
 
 const toggle = (index: number) => {
-  faqs.value[index].isOpen = !faqs.value[index].isOpen;
+  openIndex.value = openIndex.value === index ? -1 : index;
 };
 </script>
 
@@ -54,7 +54,7 @@ const toggle = (index: number) => {
           v-for="(faq, index) in faqs"
           :key="index"
           class="group rounded-2xl overflow-hidden transition-all duration-300 bg-white border border-gray-200"
-          :class="faq.isOpen ? 'ring-2 ring-brand-forest/40 border-brand-200' : 'hover:border-brand-200'"
+          :class="openIndex === index ? 'ring-2 ring-brand-forest/40 border-brand-200' : 'hover:border-brand-200'"
         >
           <button
             type="button"
@@ -63,14 +63,14 @@ const toggle = (index: number) => {
           >
             <span
               class="faq-bar shrink-0 w-1 rounded-full min-h-[24px] transition-colors duration-300"
-              :class="faq.isOpen ? 'faq-bar-open' : 'bg-brand-200 group-hover:bg-brand-300'"
+              :class="openIndex === index ? 'faq-bar-open' : 'bg-brand-200 group-hover:bg-brand-300'"
             />
             <span class="text-lg font-bold text-brand-dark flex-1 pt-0.5">
               {{ faq.question }}
             </span>
             <svg
               class="w-5 h-5 text-brand-500 shrink-0 transition-transform duration-300 mt-0.5"
-              :class="faq.isOpen ? 'rotate-180' : ''"
+              :class="openIndex === index ? 'rotate-180' : ''"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -87,7 +87,7 @@ const toggle = (index: number) => {
             leave-from-class="opacity-100 max-h-[500px]"
             leave-to-class="opacity-0 max-h-0"
           >
-            <div v-show="faq.isOpen" class="overflow-hidden">
+            <div v-show="openIndex === index" class="overflow-hidden">
               <div class="px-6 pb-5 pr-14 text-gray-600 leading-relaxed text-sm border-t border-gray-100 pt-4">
                 {{ faq.answer }}
               </div>

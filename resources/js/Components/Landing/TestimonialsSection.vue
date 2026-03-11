@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -26,13 +26,18 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const defaultTestimonials: Testimonial[] = [
-  { title: 'محمد السعيد', subtitle: 'مشغل أونجة البدنيل', rating: 5, description: '"المستشار كان محترفاً جداً وقدم لي نصائح عملية لتحسين التدفقات النقدية."', avatar: '👨‍💼' },
-  { title: 'فاطمة أحمد', subtitle: 'صاحبة مشروع تجاري', rating: 5, description: '"جلسة الاستشارة وضحت لي نقاط ضعف المنافسين وزودتني بأفكار جديدة للتطوير."', avatar: '👩‍💼' },
-  { title: 'خالد العتيبي', subtitle: 'رائد أعمال', rating: 5, description: '"حصلت على دراسة جدوى كاملة في وقت قياسي، ساعدتني في إقناع المستثمرين."', avatar: '👨‍💻' },
-];
+const defaultAvatars = ['👨‍💼', '👩‍💼', '👨‍💻'];
 
-const testimonials = props.section?.items?.length ? props.section.items : defaultTestimonials;
+const testimonials = computed<Testimonial[]>(() => {
+  if (props.section?.items?.length) return props.section.items;
+  return [0, 1, 2].map((i) => ({
+    title: t(`landing.testimonials.items.${i}.name`),
+    subtitle: t(`landing.testimonials.items.${i}.role`),
+    description: t(`landing.testimonials.items.${i}.description`),
+    rating: 5,
+    avatar: defaultAvatars[i],
+  }));
+});
 const currentIndex = ref(0);
 const AUTOPLAY_MS = 5000;
 let autoplayTimer: ReturnType<typeof setInterval> | null = null;
@@ -42,7 +47,7 @@ function goTo(index: number) {
 }
 
 function next() {
-  currentIndex.value = (currentIndex.value + 1) % testimonials.length;
+  currentIndex.value = (currentIndex.value + 1) % testimonials.value.length;
 }
 
 function startAutoplay() {
@@ -141,7 +146,7 @@ onUnmounted(() => {
             @click="goTo(index)"
             class="rounded-full transition-all duration-300 h-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-500"
             :class="currentIndex === index ? 'w-8 bg-brand-forest' : 'w-2.5 bg-brand-200 hover:bg-brand-300'"
-            :aria-label="`الشهادة ${index + 1}`"
+            :aria-label="t('landing.testimonials.carouselLabel', { n: index + 1 })"
           />
         </div>
       </div>
